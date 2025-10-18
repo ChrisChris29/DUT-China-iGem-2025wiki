@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://static.igem.wiki/common/icons/favicons/igem-2022.svg"/>
+    <link rel="license" href="https://creativecommons.org/licenses/by/4.0/"/>
+
+     <!-- Bootstrap CSS -->
+    <link href="{{ url_for('static', filename = 'bootstrap.min.css') }}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename = 'style.css') }}" rel="stylesheet">
+
+    <title>{% block title %}{% endblock %} | DUT-China - iGEM 2025</title>
+    <style>
+       /* 1. 加载页面样式 */
+      .loader-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(255, 248, 222); /* 纯色背景，可根据需要修改 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* 确保在最上层 */
+        transition: opacity 1s ease-out; /* 渐变淡出过渡效果 */
+      }
+      
+      .loader-gif {
+        max-width: 50%;
+        max-height: 40%;
+        object-fit: contain;
+      }
+      
+      /* 加载完成后隐藏加载页面 */
+      .loader-container.fade-out {
+        opacity: 0;
+        pointer-events: none; /* 防止点击穿透 */
+      }
+
+
+      /* 2. 回到顶部按钮样式 */
+      .back-to-top {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 999;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 0;
+      }
+
+      .back-to-top.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .back-to-top img {
+        width: 180px; /* 根据需要调整图片大小 */
+        height: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .back-to-top:hover img {
+        transform: scale(1.05); /* 轻微放大效果 */
+      }
+      /* 全局鼠标 */
+      body, img{
+          cursor: url("https://static.igem.wiki/teams/5844/layout/cursor/dut-china-cur.webp"), default;
+      }
+
+      /* 文本部分鼠标 */
+      p, h1, h2, h3, h4, h5, h6, li{
+        cursor: url("https://static.igem.wiki/teams/5844/layout/cursor/dut-china-cur-text.webp"), text !important; 
+        pointer-events: auto !important;
+      }
+
+      /* 可点击部分鼠标 */
+      a, button{
+        cursor: url("https://static.igem.wiki/teams/5844/layout/cursor/dut-china-cur-pointer.webp"), pointer !important; 
+        pointer-events: auto !important;
+      }
+    </style>        
+  </head>
+<body>
+  
+  <!-- 加载页面 -->
+  <div class="loader-container" id="loader">
+    <!-- 动图容器 -->
+    <img id="loader-image" 
+         alt="Loading..." 
+         class="loader-gif"
+         loop
+         autoplay>
+  </div>
+
+  <!-- Navigation -->
+  {% include 'menu.html' %}
+
+  <!-- Header -->
+  {% block lead %}{% endblock %}
+
+  <!-- Page Content -->
+  <div class="container">
+    {% block page_content %}{% endblock %}
+  </div>
+
+  <!-- 回到顶部按钮 -->
+  <button id="backToTop" class="back-to-top">
+    <img src="https://static.igem.wiki/teams/5844/layout/dut-china-backtop.webp" alt="back to the top" class="default-img">
+    <img src="https://static.igem.wiki/teams/5844/layout/dut-china-backtop-activated.webp" alt="back to the top(honer)" class="hover-img" style="display: none;">
+  </button>
+
+  <!-- Footer: MUST mention license AND have a link to team wiki's repository on gitlab.igem.org -->
+  {% include 'footer.html' %}
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="{{ url_for('static', filename = 'bootstrap.bundle.min.js') }}"></script>
+
+  <script>
+
+    // 处理动图缓存问题，确保每次刷新都重新加载并播放
+    document.addEventListener('DOMContentLoaded', function() {
+      const img = document.getElementById('loader-image');
+      // 替换为你的WebP动图路径
+      const imagePath = 'https://static.igem.wiki/teams/5844/layout/dut-china-load.webp';
+      
+      // 添加随机参数防止缓存
+      const randomParam = new Date().getTime();
+      img.src = `${imagePath}?v=${randomParam}`;
+      
+      // 确保动图加载完成后再开始播放
+      img.onload = function() {
+        img.style.display = 'block';
+      };
+    });
+
+    // 等待页面完全加载
+    window.addEventListener('load', function() {
+      // 延迟加载效果，确保动画有足够时间展示
+      setTimeout(function() {
+        const loader = document.getElementById('loader');
+        loader.classList.add('fade-out');
+        
+        // 完全隐藏后移除元素
+        setTimeout(function() {
+          loader.style.display = 'none';
+        }, 1000); // 与过渡时间一致
+      }, 800); // 可以调整延迟时间（毫秒）
+    });
+
+    // 2. 回到顶部按钮功能
+    const backToTopButton = document.getElementById('backToTop');
+    const defaultImg = backToTopButton.querySelector('.default-img');
+    const hoverImg = backToTopButton.querySelector('.hover-img');
+
+    // 监听滚动事件，控制按钮显示/隐藏
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) { // 当滚动超过300px时显示按钮
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+
+    // 点击按钮回到顶部
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // 平滑滚动效果
+      });
+    });
+
+    // 鼠标悬停切换图片
+    backToTopButton.addEventListener('mouseenter', () => {
+      defaultImg.style.display = 'none';
+      hoverImg.style.display = 'block';
+    });
+
+    // 鼠标离开恢复图片
+    backToTopButton.addEventListener('mouseleave', () => {
+      defaultImg.style.display = 'block';
+      hoverImg.style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

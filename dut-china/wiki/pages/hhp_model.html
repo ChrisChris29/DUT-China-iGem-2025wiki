@@ -1,0 +1,764 @@
+{% extends "layout.html" %}
+  
+{% block title %}HHP Model{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-hhp.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<!-- 引入MathJax脚本，用于渲染LaTeX公式 -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 23px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: nowrap;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 23px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px; /* 增加最大宽度 */
+    width: clamp(70%, 75vw, 80%); /* 增加宽度百分比 */
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem); /* 减少右边距，使内容框向右移动 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* 图片相关样式 */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 表格样式 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#introduction" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">Introduction</span>
+    </a>
+    
+    <a href="#methods" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">Methods</span>
+    </a>
+    
+    <a href="#results" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">Results</span>
+    </a>
+    
+    <a href="#discussion" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">Discussion</span>
+    </a>
+    
+    <a href="#conclusion" class="wz-nav-link wz-nav-item">
+        <span id="text-5" class="wz-nav-text">Conclusion</span>
+    </a>
+    
+    <a href="#references" class="wz-nav-link wz-nav-item">
+        <span id="text-6" class="wz-nav-text">References</span>
+    </a>
+
+    <a href="#user" class="wz-nav-link wz-nav-item">
+        <span id="text-7" class="wz-nav-text">User Manual</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="introduction" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Introduction</h2>
+          <p class="textztbf">Hepatocellular carcinoma (HCC) features a highly hypoxic tumor microenvironment that severely limits the efficacy of mRNA therapies. Hypoxia impedes drug diffusion, induces metabolic reprogramming, and leads to lactic acid accumulation via activation of the HIF-1α signaling pathway. This creates an acidic, inhibitory environment that significantly reduces the delivery efficiency and expression levels of mRNA drugs.</p>
+          <p class="textztbf">To quantify the impact of hypoxia in HCC on mRNA drugs and to ensure our final mRNA drug design overcomes this challenge, our iGEM team developed a spatially resolved pharmacokinetic (PK) model: the Hypoxic HCC PK Model. This model quantifies the effects of the hypoxic microenvironment on the pharmacokinetic behavior of mRNA Lipid Nanoparticles (LNPs).</p>
+          <p class="textztbf">The core innovation lies in dividing the tumor into three functional subregions based on oxygen partial pressure gradients:</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>Oxygen rich zone</li>
+              <li>Chronic hypoxia zone</li>
+              <li>Necrotic core zone</li>
+          </ul>
+          <p class="textztbf">By integrating hypoxia gradient functions, HIF-1α concentration fields, vascular permeability correction mechanisms, and acid catalyzed degradation kinetics, the model establishes HIF-1α regulated drug transport and degradation pathways. This enables precise simulation and visual prediction of drug distribution, metabolism, and expression within tumors. Furthermore, the model can simulate the distribution and metabolism of various mRNA drugs in HCC by inputting relevant data, facilitating the analysis of dosing strategies and ultimately advancing mRNA drug design and clinical translation for hypoxic tumors.</p>
+      </section>
+
+      <section id="methods" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Methods</h2>
+          <h3>Hypoxic Microenvironment Architecture</h3>
+          <p class="textztbf">The hypoxic microenvironment is a common feature in solid tumor development, particularly in HCC. This hypoxia is not uniformly distributed but exhibits spatial heterogeneity, characterized by a gradual decrease in oxygen partial pressure from perfused regions towards the tumor core, forming a hypoxia gradient. This gradient drives various biological effects, including tumor cell metabolic reprogramming, abnormal vasculature, interstitial hypertension, and immune suppression, thereby promoting tumor proliferation, invasion, and treatment resistance.</p>
+          <p class="textztbf">The complexity and dynamic nature of the hypoxic microenvironment make direct study and intervention in biological systems challenging. Therefore, constructing a simplified geometric model is crucial. We first conducted an in depth study of the HCC tumor microenvironment and developed a simplified 3D geometric model of an HCC tumor based on the causes and distribution of hypoxic regions to facilitate subsequent research.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp1.webp" alt="Cellular Spatial Distribution and Hypoxic Zonation"></image>
+          </div>
+          <div class="image-caption">Figure 1: Cellular Spatial Distribution and Hypoxic Zonation</div>
+          
+          <p class="textztbf">Cancer cells are distributed in layers around blood vessels:</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>0-100 μm: Proliferation active zone (Oxygen partial pressure >10 mmHg)</li>
+              <li>100-200 μm: Chronic hypoxia zone (Oxygen partial pressure 2-10 mmHg)</li>
+              <li>>200 μm: Necrotic core (Oxygen partial pressure <2 mmHg)</li>
+          </ul>
+          
+          <p class="textztbf">Based on this model, we defined mathematical functions describing how hypoxia severity varies spatially through oxygen partial pressure gradients and HIF-1α concentration fields.</p>
+          <h3>1. Oxygen Partial Pressure Gradient Function (Linear Decay Model)</h3>
+          <p class="textztbf">Reference 1 notes the existence of radial oxygen partial pressure gradients, where oxygen partial pressure decreases with increasing distance from blood vessels, and experimentally validated this phenomenon. Building on this, we established an oxygen partial pressure gradient function and visualized it. A detailed formula explanation is provided in the supplementary materials.</p>
+          
+           <!-- 公式1 -->
+            <li style="list-style-type: none;">
+                \[
+                pO_2(r) = pO_2 \cdot e^{-kr} \quad (0 \leq r \leq R_{\text{tumor}})
+                \]
+            </li>
+
+          <p class="textztbf">Parameters:</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>r: Distance from the blood vessel (μm)</li>
+              <li>pO₂: Oxygen partial pressure in the perivascular zone (≥10 mmHg)</li>
+              <li>k: Decay coefficient (0.02-0.05 μm⁻¹)</li>
+          </ul>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp2.webp" alt="Visualization of Radial Oxygen Partial Pressure Gradient"></image>
+          </div>
+          <div class="image-caption">Figure 2: Visualization of Radial Oxygen Partial Pressure Gradient</div>
+          
+          <p class="textztbf">Key thresholds:</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>Hypoxia threshold (pO₂ = 2.5 mmHg): occurs at approximately 200 μm.</li>
+              <li>Severe hypoxia threshold (pO₂ = 0.5 mmHg): occurs at approximately 430 μm.</li>
+              <li>Tumor center pO₂: 0.03 mmHg.</li>
+          </ul>
+          
+          <h3>2. HIF-1α Concentration Field (Hypoxia Response Function)</h3>
+          <p class="textztbf">Reference 3 describes the oxygen dependent catalytic mechanism of PHD (prolyl hydroxylase domain protein). Under normoxia, PHD uses molecular oxygen (O₂) as a substrate to catalyze the hydroxylation of HIF-1α at two proline residues (Pro 402 and Pro 564 in human HIF-1α). When oxygen concentration decreases, PHD activity diminishes. This oxygen dependency stabilizes HIF-1α under hypoxia, whereas under normoxia it undergoes ubiquitination and proteasomal degradation. Based on this, we established the HIF-1α concentration field hypoxia response function. Detailed formula explanations are provided in the user guide.</p>
+          
+          <!-- 公式2 -->
+            <li style="list-style-type: none;">
+                \[
+                [\text{HIF} - 1\alpha](r) = \frac{K_m}{pO_2(r) + K_m} \cdot [\text{HIF} - 1\alpha]_{\text{max}}
+                \]
+            </li>
+          
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>[HIF-1α](r): HIF-1α concentration at distance r from the vessel</li>
+              <li>pO₂(r): Oxygen partial pressure (mmHg) at position r</li>
+              <li>Km: Michaelis constant of HIF-1α degrading enzymes (oxygen partial pressure at half maximal degradation rate)</li>
+              <li>[HIF-1α]ₐₓₘ: Maximum HIF-1α concentration under complete hypoxia</li>
+          </ul>
+          <p class="textztbf">This formula quantifies the regulation of HIF-1α concentration by the hypoxia gradient and serves as a key input parameter for vascular permeability correction (Jv equation) and acid catalyzed degradation kinetics in the PK model.</p>
+          <p class="textztbf">We next investigated how hypoxia influences drug behavior and identified two core mechanisms: vascular permeability and acid catalyzed degradation. Based on these, we developed the vascular permeability correction equation and the acid catalyzed degradation kinetic equation.</p>
+          <p class="textztbf">1. Vascular Permeability Modification Equation</p>
+          <!-- 公式3 -->
+            <li style="list-style-type: none;">
+                \[
+                J_v = L_p \cdot \Delta P \cdot \left(1 + \alpha \cdot \frac{[\text{HIF}-1\alpha]}{K_d}\right) - \sigma \Delta \pi
+                \]
+            </li>
+          <p class="textztbf">The basic structure follows Starling's law, where vascular flux is driven by the hydrostatic pressure gradient (Lp · ΔP) and counteracted by the colloid osmotic pressure gradient (σΔπ). Jv is integrated into the PK model's "tumor vasculature → tissue transport" rate term, where [HIF-1α] is dynamically calculated by the aforementioned hypoxia response function, enabling spatially resolved drug extravasation simulation.</p>
+          <p class="textztbf">Parameters:</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>Jv: Transvascular flux of carriers (reflecting nanoparticle extravasation rate)</li>
+              <li>Lp: Hydraulic conductivity of the vessel wall (normal tissue ≈10⁻⁷ cm·s⁻¹·mmHg⁻¹)</li>
+              <li>α: Hypoxia amplification factor (3 to 5 fold, determined by VEGF mediated vascular structural disruption)</li>
+              <li>Kd: HIF-1α binding dissociation constant (≈5 nM), used to normalize its effect</li>
+              <li>σ: Reflection coefficient (tumor vessels ≈0.7-0.8)</li>
+          </ul>
+          
+          <p class="textztbf">2. Acid Catalyzed Degradation Kinetics: Hypoxia Accelerates Nucleic Acid Carrier Hydrolysis</p>
+          <!-- 公式4 -->
+            <li style="list-style-type: none;"">
+                \[
+                \frac{d[C]}{dt} = -k_{\text{cat}} \cdot [\text{CA9}] \cdot [C]
+                \]
+                Which
+                \[
+                [\text{CA9}] = [\text{CA9}]_0 \cdot e^{\beta \cdot (6.5 - \text{pH})}
+                \]
+            </li>
+          <p class="textztbf">Parameters:</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>[C]: mRNA carrier concentration (μM)</li>
+              <li>kcat: CA9 catalytic constant (≈120 s⁻¹, at pH 6.5)</li>
+              <li>β: pH sensitivity coefficient (0.8, dependent on carrier material)</li>
+              <li>pH: Microenvironment acidity (hypoxic core region ≈6.0-6.8)</li>
+          </ul>
+          
+          <p class="textztbf">This equation supports both PK modeling and mRNA characteristic analysis, providing a foundation for subsequent sections.</p>
+          <h3>PKPD Model</h3>
+          <p class="textztbf">Based on the mathematical quantification of the hypoxic microenvironment, we constructed a mechanism driven Pharmacokinetic/Pharmacodynamic (PKPD) model to precisely simulate the spatiotemporal dynamics of mRNA LNPs in HCC. The core innovation involves the deep integration of the classical compartmental model with tumor hypoxia heterogeneity, enabling multiscale prediction from systemic exposure to tissue distribution.</p>
+          <p class="textztbf">The Pharmacokinetic (PK) component employs a system of Ordinary Differential Equations (ODEs). The central venous compartment represents the initial systemic circulation after intravenous injection. The figure below illustrates the systemic process post injection, including major drug clearance organs (liver and kidneys) and the core target organ, the tumor. A key design feature is the specialized treatment of the tumor compartment: rather than being homogeneous, it is explicitly divided into three functional subcompartments based on hypoxia severity defined by the pO₂ gradient (pO₂(r)) and HIF-1α concentration field. [These correspond to the Aerobic Zone (A1), Hypoxic Zone (A2), and Necrotic Zone (A3).] This segmentation allows the model to simulate the dynamic process of drug penetration into different hypoxic regions within the tumor after extravasation from the vasculature.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp3.webp" alt="Systemic Drug Circulation and Metabolism"></image>
+          </div>
+          <div class="image-caption">Figure 3: Systemic Drug Circulation and Metabolism</div>
+          
+          <p class="textztbf">The figure below focuses on the tumor interior, revealing the quantitative mechanisms of drug transport between compartments. The model uses the central vascular lumen as the drug input source, connected via a peripheral zone to three tumor cell subcompartments (A1, A2, A3). The arrows connecting compartments and their rate constants (k12, k13, k14, k15, k21, k31...) form the mathematical core. These rate constants are not fixed but are dynamically driven by hypoxic microenvironment parameters.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp4.webp" alt="Hepatic Tumor Subcompartmental Structure"></image>
+          </div>
+          <div class="image-caption">Figure 4: Hepatic Tumor Subcompartmental Structure</div>
+          
+          <p class="textztbf">The Pharmacodynamic (PD) component extends the ODE framework, focusing on depicting drug expression and metabolic processes within cells. The model accounts for hypoxia's dual negative impact on efficacy: reduced mRNA translation efficiency due to energy deficiency, coupled with accelerated protein degradation in the hypoxic microenvironment, collectively leading to low and transient concentrations of therapeutic proteins within tumors. Currently, lacking a defined efficacy protein threshold, the model primarily simulates the PK and PD processes.</p>
+          <p class="textztbf">This framework achieves multiscale integration from whole body PK to spatially resolved intratumoral PK. By dynamically embedding hypoxic biological mechanisms into the mathematical model, it provides a quantitative basis and simulation foundation for optimizing drug delivery strategies targeting the hypoxic microenvironment of HCC.</p>
+          <p class="textztbf">We collected mRNA drug related data required for the PKPD model. Specific data tables are provided at the end of the document.</p>
+          <p class="textztbf">Data for eGFP, Luciferase, and HNF4α were gathered initially.</p>
+          <p class="textztbf">eGFP & Luciferase: These are reporter proteins characterized in our wet lab experiments. Although primarily used in preclinical research, models built upon them are crucial for translating results to clinical applications. Establishing PKPD models for them helps identify patterns in key parameters (e.g., clearance rate, expression efficiency), predict approximate human doses required for therapeutic gene expression levels, and enable surrogate biomarker validation.</p>
+          <p class="textztbf">HNF4α: This is the target protein for upregulation in our project's wet lab. Pharmacokinetic studies on HNF4α provide critical quantitative data and iterative optimization directions. By obtaining HNF4α protein expression kinetics data including onset time, peak concentration, and duration, we can inversely optimize key operational parameters in the wet lab. Furthermore, these data directly guided improvements to the LNP delivery system formulation, aiming to enhance liver targeting to ensure greater mRNA uptake by hepatocytes and efficient translation of functional HNF4α protein, ultimately demonstrating therapeutic efficacy against HCC models in vitro and in vivo. This process transformed wet lab experimentation from traditional empirical exploration into data driven, precision iterative optimization.</p>
+          <p class="textztbf">We integrated the data into the model framework depicted below for simulation. All relevant code is provided at the end of this paper.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhpwz.webp" alt="Code Framework Diagram"></image>
+          </div>
+          <div class="image-caption">Figure 5: Code Framework Diagram</div>
+          
+          <p class="textztbf">Finally, we visualized the results using spatial heatmaps and developed a dedicated web platform to enhance usability. The platform allows users to adjust drug and HCC environment parameters via a sidebar, generating time dynamic curves directly upon parameter modification. This enables users to simulate the temporal evolution within tumors when different mRNA drugs act on HCC.</p>
+          
+          <p class="textztbf">https://pkpd model app igem.streamlit.app/ (Web Link)</p>
+          <div style="display: flex; justify-content: center; margin: 2rem 0;">
+            <iframe title="Web-based User Guide for the HHP Model" 
+                    width="672" 
+                    height="378" 
+                    src="https://video.igem.org/videos/embed/pwQhuPTiU2zubxJoBVXBxQ" 
+                    allow="fullscreen" 
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
+                    style="border: 0px; max-width: 100%;">
+            </iframe>
+          </div>
+      </section>
+
+      <section id="results" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Results</h2>
+          <p class="textztbf">Based on data outputs and spatial visualization analysis for eGFP, Luciferase, and HNF4α, we propose a dosing regimen for this project.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp6.webp" alt="HNF4α drug, mRNA, and protein concentration time profiles"></image>
+          </div>
+          <div class="image-caption">Figure 6: HNF4α drug, mRNA, and protein concentration time profiles.</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp7.webp" alt="Spatial distribution map of HNF4α protein in hepatocellular carcinoma"></image>
+          </div>
+          <div class="image-caption">Figure 7: Spatial distribution map of HNF4α protein in hepatocellular carcinoma</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp8.webp" alt="Luciferase drug, mRNA, and protein concentration time profiles"></image>
+          </div>
+          <div class="image-caption">Figure 8: Luciferase drug, mRNA, and protein concentration time profiles.</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp9.webp" alt="Spatial distribution map of luciferase protein in hepatocellular carcinoma"></image>
+          </div>
+          <div class="image-caption">Figure 9: Spatial distribution map of luciferase protein in hepatocellular carcinoma</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp10.webp" alt="eGFP drug, mRNA, and protein concentration time profiles"></image>
+          </div>
+          <div class="image-caption">Figure 10: eGFP drug, mRNA, and protein concentration time profiles.</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hhp/hhp11.webp" alt="Spatial distribution of eGFP protein in HCC"></image>
+          </div>
+          <div class="image-caption">Figure 11: Spatial distribution of eGFP protein in HCC.</div>
+          
+          <p class="textztbf">Table: Key PK Parameters by Tumor Zone</p>
+          
+          <table>
+              <thead>
+                  <tr>
+                      <th>Indicator Type</th>
+                      <th>Oxygen Zone</th>
+                      <th>mRNA Key Parameters</th>
+                      <th>Protein Key Parameters</th>
+                      <th>Core Differences Summary</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>eGFP (Reporter)</td>
+                      <td>A1</td>
+                      <td>Tmax≈10-15h, Cmax highest</td>
+                      <td>Tmax≈20-25h, Cmax highest</td>
+                      <td>Optimal mRNA uptake and protein translation efficiency in oxygen rich zone.</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td>A2</td>
+                      <td>Tmax≈15-20h, Cmax≈60% of A1</td>
+                      <td>Tmax≈25-30h, Cmax≈50% of A1</td>
+                      <td>Delayed peak, significantly reduced concentration in hypoxic zone.</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td>A3</td>
+                      <td>Tmax≈20-25h, Cmax≈20% of A1</td>
+                      <td>Tmax≈30-35h, Cmax≈10% of A1</td>
+                      <td>Minimal effective mRNA uptake and protein expression in necrotic zone.</td>
+                  </tr>
+                  <tr>
+                      <td>Luciferase (Reporter)</td>
+                      <td>A1</td>
+                      <td>Tmax≈10-15h, Cmax highest</td>
+                      <td>Tmax≈20-25h, Cmax highest</td>
+                      <td>Trend consistent with eGFP, validating reliability of characterization metrics.</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td>A2</td>
+                      <td>Tmax≈15-20h, Cmax≈55% of A1</td>
+                      <td>Tmax≈25-30h, Cmax≈45% of A1</td>
+                      <td>Consistent reduction in expression efficiency due to hypoxia.</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td>A3</td>
+                      <td>Tmax≈20-25h, Cmax≈15% of A1</td>
+                      <td>Tmax≈30-35h, Cmax≈8% of A1</td>
+                      <td>No functional output in necrotic zone.</td>
+                  </tr>
+                  <tr>
+                      <td>HNF4α (Target)</td>
+                      <td>A1</td>
+                      <td>Tmax≈12-18h, Cmax relatively high</td>
+                      <td>Tmax≈22-28h, Cmax relatively high</td>
+                      <td>Optimal target protein expression efficiency in oxygen rich zone.</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td>A2</td>
+                      <td>Tmax≈18-24h, Cmax≈50% of A1</td>
+                      <td>Tmax≈28-34h, Cmax≈40% of A1</td>
+                      <td>Delayed peak and reduced concentration in hypoxic zones.</td>
+                  </tr>
+                  <tr>
+                      <td></td>
+                      <td>A3</td>
+                      <td>Tmax≈24-30h, Cmax≈10% of A1</td>
+                      <td>Effective concentrations barely detectable</td>
+                      <td>Therapeutic expression of target protein not achievable in necrotic zones.</td>
+                  </tr>
+              </tbody>
+          </table>
+          
+          <p class="textztbf">Analysis of the curves provides an intuitive understanding of how the hypoxic HCC environment impacts mRNA drug behavior. Based on these results, we developed guidance for in vitro experiments and in vivo dosing.</p>
+          <h3>In Vitro Experiment Guidance</h3>
+          <p class="textztbf">The core lies in ensuring the efficiency and reliability of drug development strategies through two key validation experiments.</p>
+          <p class="textztbf">1. Surrogate Biomarker Validation: Simultaneously monitor the concentration dynamics of eGFP/Luciferase and HNF4α protein. Assess trend consistency using Pearson correlation coefficients (target r ≥ 0.8). Transfer eGFP PK parameters (e.g., clearance) to predict HNF4α Cmax, aiming for error ≤ 15%. This approach reduces reliance on direct HNF4α detection, streamlines experimental procedures, and accelerates early stage screening and iterative optimization.</p>
+          <p class="textztbf">2. HNF4α Functional Validation: Combine in vitro and in vivo experiments.</p>
+          <p class="textztbf">In vitro: Establish the Minimum Effective Concentration (MEC) of HNF4α (≥ 5 ng/mL) using HCC models (e.g., HepG2 cells under simulated hypoxia), based on its biological effects like inducing apoptosis and suppressing AFP expression.</p>
+          <p class="textztbf">In vivo: Quantify the increase in target gene CYP3A4 expression (≥ 2 fold) within the peak time window (22-28 hours) and observe changes in the tumor necrotic area. This directly links the HNF4α concentration threshold in Zone A2 (≥ 8 ng/mL) to therapeutic efficacy.</p>
+          <p class="textztbf">This integrated validation framework enhances understanding of hypoxic zonation effects, provides a solid experimental basis for optimizing dosing regimens, improves overall validation efficiency, and reduces development costs.</p>
+          
+          <h3>In Vivo Dosing Guidance</h3>
+          <p class="textztbf">We synthesized published literature on pharmacokinetic dosing principles to support the following analysis.</p>
+          <p class="textztbf"><strong>Dosage Strategy:</strong></p>
+          <p class="textztbf">Guided by the effective concentration coverage principle and considering the zonal concentration curves and toxicological characteristics, we determined potential human trial doses. The curves show that the mRNA peak concentration (Cmax) in Zone A2 (chronic hypoxia zone, the key therapeutic target) is only 50% 60% of that in Zone A1 (oxygen rich zone), and the protein Cmax is about 40% of A1. Zone A3 (necrotic zone) shows negligible drug uptake. The dose must bridge the effective concentration gap in Zone A2. Referencing common efficacy thresholds (AUC ≥ 1000 ng·h/mL, Cmax ≥ 100 ng/mL), preliminary calculations suggest a baseline human dose of 1.2 – 1.8 mg/kg is required to ensure adequate concentration in Zone A2.</p>
+          <p class="textztbf">· Safety: This baseline dose must remain below the maximum safe dose threshold to avoid systemic immune overactivation, indicated by elevated serum inflammatory cytokines.</p>
+          <p class="textztbf">· <strong>Adjustments:</strong></p>
+          <p class="textztbf">For patients with hepatic or renal impairment (30%-50% reduction in mRNA metabolic rate), reduce the dose by 20%-30% to prevent accumulation in normal liver tissue and associated toxicity.</p>
+          <p class="textztbf">If the patient's A2 zone proportion exceeds 40% (indicating tumor progression), increase the baseline dose by 20% to cover the concentration gap, while monitoring inflammatory cytokine levels to prevent additive toxicity.</p>
+          <p class="textztbf"><strong>Dosing Interval Design:</strong></p>
+          <p class="textztbf">Based on the principle of sustained concentration coverage and considering the curve characteristics and PK toxicity correlations, we designed a dosing interval for human trials. Curve results indicate a protein Tmax in Zone A2 of 28-34 hours, with effective concentrations (≥ 50% of the therapeutic threshold) lasting about 48 hours. The short mRNA half life (t₁/₂ ≈ 6-8 hours) risks rapid concentration decline. The interval must balance "sustained effective concentration" and "toxicity avoidance."</p>
+          <p class="textztbf">An "Initial Loading Dose + Maintenance Dose" regimen is proposed:</p>
+          <p class="textztbf">· Loading Phase (Weeks 1-2): To rapidly elevate A2 zone concentration into the therapeutic window.</p>
+          <p class="textztbf">Day 1: 1.8 mg/kg</p>
+          <p class="textztbf">Day 4: 1.2 mg/kg</p>
+          <p class="textztbf">This prevents the concentration from falling below the threshold on days 3-4, as indicated by the curve. Modeling suggests this phase reduces the probability of severe adverse reactions (< 5%).</p>
+          <p class="textztbf">· Maintenance Phase (Week 3 onwards): Based on the effective concentration duration and half life.</p>
+          <p class="textztbf">Dose: 1.0 – 1.2 mg/kg</p>
+          <p class="textztbf">Schedule: Once weekly</p>
+          <p class="textztbf">This interval minimizes drug accumulation (which can cause local inflammation) while maintaining the steady state trough concentration (Cmin,ss) in Zone A2 above the therapeutic threshold (approximately 30% of Cmax), without significant elevation of inflammatory markers (IL-6, TNF-α).</p>
+          <p class="textztbf"><strong>Adjustments:</strong></p>
+          <p class="textztbf">If A2 zone protein expression remains persistently subtherapeutic, consider 0.8 mg/kg every 5 days to reduce single dose toxicity risk.</p>
+          <p class="textztbf">If local inflammation occurs (e.g., injection site reaction), consider 1.5 mg/kg every 10 days ("high dose + long interval") to balance efficacy and toxicity.</p>
+          <p class="textztbf">In summary, this regimen uses the hypoxic zonal concentration curves as the core reference to establish equilibrium between "effective concentration coverage" and "toxicity control." The dosage focuses on filling the A2 zone concentration gap while avoiding systemic immune overactivation and tissue accumulation toxicity. The dosing interval aligns with the concentration persistence profile, preventing insufficient efficacy and cumulative toxicity due to the short half life. This provides scientific and safe dosing guidance for human trials of mRNA therapeutics.</p>
+      </section>
+
+      <section id="discussion" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Discussion</h2>
+          <p class="textztbf">The dosing analysis in this study is based on a core principle: intratumoral hypoxic heterogeneity dictates spatial pharmacokinetic variations, necessitating corresponding optimization of delivery strategies. Instead of relying on conventional systemic PK parameters, we focused on drug exposure levels within the critical therapeutic target zone, the moderately hypoxic A2 region. Analysis indicates that to ensure effective therapeutic concentrations are achieved and maintained in Zone A2, systemic doses must be dynamically adjusted based on the proportion of this region. Concurrently, given the hypoxic microenvironment's characteristic of delayed protein expression coupled with accelerated degradation, dosing intervals should be appropriately extended to prevent trough concentrations from falling below therapeutic thresholds.</p>
+          <p class="textztbf">The validity of these findings stems from the model's structural design. By integrating a classical compartmental model with physics based hypoxic spatial functions, the simulated PK curves reflect underlying biological mechanisms rather than mere parameter fitting. This mechanism driven architecture ensures consistency with established tumor biology, providing theoretical justification for this novel approach beyond conventional pharmacokinetics. Future refinement hinges on clinical translation: linking model parameters like "hypoxic region fraction" to clinically accessible radiomics or biomarkers to generate personalized dosing regimens for each patient. Ultimately, prospective clinical studies will validate the model's predictive accuracy, evolving it from a research tool into a practical decision support system guiding individualized mRNA drug administration.</p>
+      </section>
+
+      <section id="conclusion" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Conclusion</h2>
+          <p class="textztbf">This study aimed to develop a hypoxic microenvironment pharmacokinetic model as an alternative to animal testing. By quantifying hypoxia related indicators and mechanisms, the model enables simple and precise prediction of drug distribution and metabolic behavior within hypoxic tumor regions without animal experimentation, providing theoretical support for future experimental strategy optimization.</p>
+          <p class="textztbf">Currently focused on simulating local tumor pharmacokinetics, future improvements will center on clinical translation: linking model parameters like "hypoxic region proportion" to clinically accessible radiomics or biomarkers to generate personalized dosing regimens for each patient. Ultimately, prospective clinical studies will validate the model's predictive accuracy, evolving it from a research tool into a practical decision support system guiding personalized mRNA drug administration. The ultimate goal is to establish a completely animal-free pharmacokinetic assessment platform that can save the costs of animal experiments at the computational level.</p>
+      </section>
+
+      <section id="references" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">References</h2>
+          <p class="textztbf">1. M W Dewhirst, E T Ong, R D Braun, et al. Quantification of longitudinal tissue pO2 gradients in window chamber tumors: impact on tumor hypoxia. British Journal of Cancer volume 79, pages 1717–1722 (1999).</p>
+          <p class="textztbf">2. Roland N. Pittman, Regulation of Tissue Oxygenation</p>
+          <p class="textztbf">3. Larissa A. Shimoda and Gregg L. Semenza, HIF and the Lung: Role of Hypoxia-Inducible Factors in Pulmonary Development and Disease</p>
+          <p class="textztbf">4. Edurne Berra, Amandine Ginouvès, and Jacques Pouysségur, The hypoxia-inducible-factor hydroxylases bring fresh air into hypoxia signaling</p>
+          <p class="textztbf">5. Sonia A Patel 1, Monique B Nilsson, et al. Molecular Mechanisms and Future Implications of VEGF/VEGFR in Cancer Therapy</p>
+          <p class="textztbf">6. Anuja Gajanan Magar, Vivek Kumar Morya, et al. A Molecular Perspective on HIF-1α and Angiogenic Stimulator Networks and Their Role in Solid Tumors: An Update</p>
+          <p class="textztbf">7. Kevin D Courtney 1, Jeffrey R Infante, et al. Phase I Dose-Escalation Trial of PT2385, a First-in-Class Hypoxia-Inducible Factor-2α Antagonist in Patients With Previously Treated Advanced Clear Cell Renal Cell Carcinoma</p>
+          <p class="textztbf">8. Caroli Genis, Katherine H Sippel, et al. Design of a Carbonic Anhydrase IX Active-Site Mimic to Screen Inhibitors for Possible Anti-Cancer Properties</p>
+          <p class="textztbf">9. Giuseppina De Simone, Claudiu T. Supuran. Carbonic Anhydrase IX: Biochemical and Crystallographic Characterization of a Novel Antitumor Target</p>
+          <p class="textztbf">10. Thuy V T, G P B, D G L, et al. Step-by-step comparison of ordinary differential equation and agent-based approaches to pharmacokinetic-pharmacodynamic models. [J]. CPT: Pharmacometrics & Systems Pharmacology, 2021, 11(2):133-148.</p>
+          <p class="textztbf">11. Sandelius, Å., Naseer, H., Lindqvist, J., Wilson, A., & Henderson, N. (2024). Biodistribution of lipid nanoparticle, eGFP mRNA and translated protein following subcutaneous administration in mouse. Bioanalysis, 16(14), 721–733.</p>
+          <p class="textztbf">12. Dietmair B, Humphries J, Mercer R T, et al. Targeted mRNA delivery with bispecific antibodies that tether LNPs to cell surface markers. Molecular Therapy. Nucleic Acids, 2025, 36(2):102520.</p>
+          <p class="textztbf">13. Y. Zhang, L. Chen, X. Wang, et al. Glypican-3-targeted lipid nanoparticles for enhanced mRNA delivery to hepatocellular carcinoma.</p>
+          <p class="textztbf">14. H. Li, M. Zhao, J. Liu, et al. Galactose-functionalized lipid nanoparticles for liver-specific mRNA delivery and protein expression</p>
+          <p class="textztbf">15. R. Kumar, S. Patel, E. Davis, et al. Chimeric Antigen Receptor-Engineered Cell Membrane-Coated Nanoparticles Promote Dual Targeted mRNA-Based Cancer Gene Therapy</p>
+          <p class="textztbf">16. T. Suzuki, A. Miyazaki, K. Endo, et al. Membrane protein extract-incorporated lipid nanoparticles enhance mRNA delivery efficiency to hepatocellular carcinoma</p>
+          <p class="textztbf">17. J. Wang, S. Li, Y. Zhang, et al. Acid-triggered hydrolysis of ionizable lipids in LNPs limits mRNA delivery efficiency in hypoxic tumors. Journal of Controlled Release</p>
+          <p class="textztbf">18. L. Wei, P. Zhao, H. Zhang, et al. HIF-1α-mediated downregulation of endocytic receptors reduces LNP uptake in hypoxic HCC. Molecular Pharmaceutics</p>
+          <p class="textztbf">19. Y. Xu, M. Tanaka, K. Yamamoto, et al. Hypoxia enhances lysosomal activity to degrade mRNA-LNPs in hepatocellular carcinoma. Advanced Drug Delivery Reviews</p>
+          <p class="textztbf">20. Q. Wang, Z. Liu, J. Li, et al. YTHDF2 destabilizes m6A-modified RNA and directs the degradation of tumor-suppressive mRNAs to promote HCC progression</p>
+          <p class="textztbf">21. L. Yang, H. Xia, Y. Feng, et al. ALKBH5-mediated m6A demethylation of FOXO1 mRNA promotes hypoxia-induced HCC metastasis</p>
+          <p class="textztbf">22. C. M. Klinge. Estrogen regulation of microRNA expression. Biochimica et Biophysica Acta (BBA) - Gene Regulatory Mechanisms 1809, 700–714 (2011)</p>
+          <p class="textztbf">23. X. Hou, T. Zaks, R. Langer, Y. Dong. Lipid nanoparticles for mRNA delivery. Nature Reviews Materials 6, 1078–1094 (2021)</p>
+          <p class="textztbf">24. S. Liu, Q. Cheng, T. Wei, et al. Membrane-destabilizing ionizable phospholipids for organ-selective mRNA delivery and CRISPR–Cas gene editing. Nature Materials 20, 701–710 (2022)</p>
+          <p class="textztbf">25. X. Zhu, L. Yin, M. Theisen, et al. Systemic mRNA Delivery to the Lungs by Functionalized Lipid Nanoparticles for Prevention of Allergic Asthma. Molecular Therapy 29, 2054–2067 (2021)</p>
+          <p class="textztbf">26. X. Li, X. Zhao, Y. Fang, et al. Generation of destabilized green fluorescent protein as a transcription reporter. Molecular and Cellular Biology 18, 2981–2989 (1998)</p>
+          <p class="textztbf">27. H. R. B. Pelham, R. J. Jackson. An efficient mRNA-dependent translation system from reticulocyte lysates. Proceedings of the National Academy of Sciences of the United States of America 73, 4350–4353 (1976)</p>
+          <p class="textztbf">28. J. F. Thompson, et al. Modulation of firefly luciferase stability and impact on studies of gene regulation. Gene 103, 171–177 (1991)</p>
+          <p class="textztbf">29. H. Yeh, H. Tian, V. Gazit. SUMOylation of HNF4α regulates protein stability and hepatocyte function. Journal of Biological Chemistry 284, 19888–19897 (2009)</p>
+          <p class="textztbf">30. M. Zhao, et al. Induction of HIV-1 Gag Specific Immune Responses by Cationic Micelles Mediated Delivery of Gag mRNA. Journal of Controlled Release 172, 169–176 (2013)</p>
+          <p class="textztbf">31. Pardi, N., Hogan, M., Porter, F. et al. mRNA vaccines — a new era in vaccinology. Nat Rev Drug Discov 17, 261–279 (2018).</p>
+      </section>
+       
+      <section id="user" class="wz-content-section">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">7. User Manual</h2>
+        <embed 
+              src="https://static.igem.wiki/teams/5844/pages/hhp/pkpd-model-manual.pdf" 
+              type="application/pdf" 
+              style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 4px;"
+              title="hhp">
+          <!-- 备用提示（若浏览器不支持直接渲染） -->
+          <p style="text-align: center; color: #666; font-size: 0.9rem;">
+              <a href="https://static.igem.wiki/teams/5844/pages/hhp/pkpd-model-manual.pdf" target="_blank" style="color: #ffcf66;">Click to Download</a>
+          </p>
+
+          <!-- 1. 参数表 PDF 链接（直接打开） -->
+          <p class="textztbf">
+            <a href="https://static.igem.wiki/teams/5844/pages/hhp/parameter-table.pdf" 
+            target="_blank" rel="noopener noreferrer" title="parameter-table.pdf" style="color: #66CCFF;">Parameter Table</a>
+          </p>
+
+          <!-- 2. 缺氧微环境公式 PDF 链接（直接打开） -->
+          <p class="textztbf">
+            <a href="https://static.igem.wiki/teams/5844/pages/hhp/hypoxic-microenvironment-formula.pdf" 
+            target="_blank" rel="noopener noreferrer" title="hypoxic-microenvironment-formula.pdf" style="color: #42b8f4;">Hypoxic Microenvironment Formula</a>
+          </p>
+      </section>
+  </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应Background&Motivation
+        document.getElementById('text-2'),  // 对应Problem Discovery
+        document.getElementById('text-3'),  // 对应Genetic Algorithm Engine
+        document.getElementById('text-4'),  // 对应Iterative Optimization
+        document.getElementById('text-5'),  // 对应Computational Validation
+        document.getElementById('text-6'),  // 对应Future Roadmap
+        document.getElementById('text-7')   // 对应user
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('background'),  // 对应text-1
+        document.getElementById('problem'),       // 对应text-2
+        document.getElementById('genetic'),       // 对应text-3
+        document.getElementById('optimization'),    // 对应text-4
+        document.getElementById('validation'),    // 对应text-5
+        document.getElementById('future') ,     // 对应text-6
+        document.getElementById('user')     // 对应text-7
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 500) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,671 @@
+{% extends "layout.html" %}
+  
+{% block title %}Hardware{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-hardware.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 23px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: nowrap;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 23px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1300px; /* 增加最大宽度 */
+    width: clamp(70%, 75vw, 80%); /* 增加宽度百分比 */
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(-7rem, -9vw, -9rem); /* 减少右边距，使内容框向右移动 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+/* 图片相关样式 */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 可展开内容样式 */
+.collapsible {
+    background-color: #f1f1f1;
+    color: #000;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: 2px solid #000;
+    text-align: left;
+    outline: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    transition: 0.4s;
+}
+
+.collapsible:after {
+    content: '\002B';
+    color: #000;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.collapsible.active:after {
+    content: "\2212";
+}
+
+.content {
+    padding: 0 18px;
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    border-left: 2px solid #000;
+    border-right: 2px solid #000;
+    border-bottom: 2px solid #000;
+    margin-bottom: 1rem;
+}
+
+/* 卡片样式 */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px; /* 卡片之间的间距 */
+    margin: 2rem 0;
+}
+
+.card {
+    width: 350px; /* 卡片宽度，可根据需求调整 */
+    padding: 20px;
+    border-radius: 8px; /* 圆角 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影增加立体感 */
+}
+
+.card h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.card p {
+    line-height: 1.6; /* 行高优化可读性 */
+    font-size: 15px;
+    text-indent: 2em;
+}
+
+/* 交替背景色 */
+.card-2, .card-3 {
+    background-color: #d8bfd8; /* 浅紫色 */
+}
+
+.card-1, .card-4 {
+    background-color: #e0ebeb; /* 浅蓝色 */
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏（垂直文字导航）添加了动画相关样式 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#overview" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">Overview</span>
+    </a>
+    
+    <a href="#background" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">Background</span>
+    </a>
+    
+    <a href="#design-rationale" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">Design Rationale</span>
+    </a>
+    
+    <a href="#iteration" class="wz-nav-link wz-nav-item">
+        <span id="text-7" class="wz-nav-text">Equipment Iteration</span>
+    </a>
+    
+    <a href="#comparison" class="wz-nav-link wz-nav-item">
+        <span id="text-12" class="wz-nav-text">Parameter Comparison</span>
+    </a>
+    
+    <a href="#reference" class="wz-nav-link wz-nav-item">
+        <span id="text-15" class="wz-nav-text">Reference</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="overview" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Overview</h2>
+          <p class="textztbf">In our project, we focus on precise treatment of liver cancer and have designed a modular mRNA therapy platform targeting liver cancer.</p>
+          <p class="textztbf">As a key part of this research, our team has developed a hardware solution aimed at advancing precise liver cancer treatment. As we learned from our research and own wet experiments, there are deficiencies in the accuracy and stability of drug delivery in current liver cancer treatment, which is an area urgently needing breakthroughs. We aim to create a tool that can enable our wet experiments to achieve higher protein expression levels, and more importantly, help realize efficient and precise delivery of RNA drugs to liver cancer cells, making the treatment more targeted and effective.</p>
+          <p class="textztbf">To achieve this goal, we have designed a microfluidic injection system that can precisely control the flow rates and mixing process of lipid phase and nucleic acid aqueous phase, thereby stably preparing and efficiently collecting high-quality lipid nanoparticle (LNP) carriers.</p>
+          <p class="textztbf">Meanwhile, combined with dynamic light scattering instrument and fluorescence spectrophotometer, we evaluate the particle size of LNPs and the fluorescence intensity of LNPs encapsulating fluorescently labeled nucleic acids respectively to verify the delivery effect of LNPs to cells.</p>
+      </section>
+
+      <section id="background" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Background</h2>
+          <p class="textztbf">In the clinical and research fields of liver cancer treatment, RNA drugs have emerged as a crucial driver for advancing precise liver cancer therapy, thanks to their unique advantages such as precise regulation of abnormal gene expression in liver cancer cells and low toxic side effects. However, RNA molecules themselves have inherent characteristics: they are easily degraded by nucleases, highly hydrophilic, and hard to penetrate cell membranes. Without efficient delivery carriers, their therapeutic potential cannot be fully unleashed. Lipid nanoparticles (LNPs), by contrast, possess excellent biocompatibility, flexibly adjustable particle size, and tunable surface properties. They can effectively encapsulate RNA molecules to protect them from degradation, while enabling targeted delivery to liver cancer cells through surface modification. Therefore, the stable and efficient preparation of high-quality LNPs has become a core prerequisite for unlocking the application value of RNA drugs in liver cancer treatment, as well as a key breakthrough area urgently needed in the current research on precise liver cancer therapy.</p>
+          <p class="textztbf">Yet, from the perspective of the practical application of current LNP preparation technologies, two core issues severely hinder the progress of related research. On one hand, the traditional manual mixing method relies entirely on manual operation, making it impossible to precisely control the mixing ratio and rate of the lipid phase and nucleic acid aqueous phase. This leads to LNPs with a wide particle size distribution, significant fluctuations in the polydispersity index (PDI), and a high tendency for particle agglomeration, all of which fail to meet the strict requirements for LNP uniformity and stability in RNA drug delivery. On the other hand, commercial microfluidic platforms capable of high-quality LNP preparation on the market typically cost as much as <strong>$100,000</strong>, due to the integration of complex precision control modules, patented technologies, and supporting services. This exorbitant price creates an insurmountable barrier for academic laboratories and small research teams with limited funding, directly restricting in-depth exploration by numerous research teams in key areas such as LNP carrier optimization and RNA drug delivery efficiency improvement.</p>
+      </section>
+
+      <section id="design-rationale" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Design Rationale</h2>
+          <p class="textztbf">In the team's early wet experiments, the aforementioned issues were more specific: preparing LNPs required operating two independent single-channel microfluidic syringe pumps (one for lipid phase, the other for nucleic acid aqueous phase) simultaneously. Operators had to switch between devices to adjust parameters like flow volume/rate separately and repeat synchronous calibration—making operations cumbersome and time-consuming. Worse, manual calibration often caused parameter asynchrony, leading to two-phase mixing ratio deviations that affected LNP particle size and encapsulation efficiency. Additionally, traditional microfluidic chips with simple channels failed to mix the two phases quickly and uniformly, worsening low LNP preparation efficiency and unstable quality; single experiments often needed repetitions to get qualified samples, increasing time and reagent costs.</p>
+          <p class="textztbf">Drawing on LNPs' core value in liver cancer precision therapy, industry pain points in current LNP preparation, and research teams' urgent need for low-cost, high-efficiency tools, the team developed an "integrated microfluidic injection system"—named PREMA (Precise Injection for Microfluidic LNP Assay). Integrating dual-channel syringe pump functions and a visual UI interface, PREMA enables centralized setting and synchronous adjustment of two-phase flow, eliminating device switching and ensuring parameter consistency. A custom microfluidic mixing chip (with optimized channels) was also developed for PREMA to boost mixing efficiency. The final PREMA not only solved wet experiment pain points (cumbersome operation, unstable quality) but also controlled costs to <strong>$100</strong>, only <strong>1‰</strong> of commercial equipment prices—by optimizing core components and simplifying non-essential modules.</p>
+          <p class="textztbf">This low-cost, high-performance system delivers significant research value: it breaks the "high-quality LNP preparation relies on expensive equipment" barrier, allowing cash-strapped teams to access stable LNP tools for cutting-edge research. Its user-friendly design also lowers microfluidic technology thresholds, even less experienced researchers can master it quickly, reducing operation-induced errors. This provides reliable hardware support for LNP-related research and drives efficiency and innovation in liver cancer precision therapy.</p>
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw1.webp" alt="SolidWorks Modeling Diagram of the Device"></image>
+          </div>
+          <div class="image-caption">Figure 1.1: SolidWorks Modeling Diagram of the Device</div>
+          <div class="container">
+              <!-- 卡片1: Cost-Effectiveness -->
+              <div class="card card-1">
+                  <h2>Cost-Effectiveness</h2>
+                  <p>To make high-quality LNP preparation equipment accessible to more teams especially academic or small-scale labs with limited funding PREMA optimizes components and uses cost-controllable manufacturing like 3D printing. This keeps its cost at <strong>100$</strong> with stable performance. Similar commercial microfluidic LNP platforms typically cost <strong>100,000$</strong>. The large cost reduction lowers the threshold for advanced technology and supports more teams in related work.</p>
+              </div>
+
+              <!-- 卡片2: User-friendliness -->
+              <div class="card card-2">
+                  <h2>User-friendliness</h2>
+                  <p>With user-friendliness as core design PREMA is easy to operate even for researchers with limited microfluidic experience. Its integrated dual-channel UI shows parameters clearly and allows intuitive adjustments. The simplified setup cuts complex steps boosting convenience and letting operators focus on LNP preparation instead of cumbersome equipment operation.</p>
+              </div>
+
+              <!-- 卡片3: Stability -->
+              <div class="card card-3">
+                  <h2>Stability</h2>
+                  <p>Backed by reliable mechanics stable circuits and optimized mixing PREMA performs well in stability tests. It runs continuously for <strong>48 hours</strong> with lipid and aqueous phase flow fluctuation within <strong>±1%</strong> no interruption or leakage. Verified via 200 repeated experiments key parameters and LNP quality stay stable with particle size deviation <strong>≤5 nm</strong> PDI fluctuation <strong>&lt;0.03</strong> and no equipment-caused data drift ensuring reproducible reliable conditions and preventing experimental errors.</p>
+              </div>
+
+              <!-- 卡片4: High Performance -->
+              <div class="card card-4">
+                  <h2>High Performance</h2>
+                  <p>PREMA meets leading standards for high-precision LNP preparation. It has excellent flow control accuracy with <strong>±1%</strong> error for different lipid and aqueous concentrations ensuring precise mixing. Optimized chip channels and injection synchronization deliver high efficiency with LNP particle size <strong>50-150</strong> nm PDI <strong>&lt;0.3</strong> and no obvious agglomeration. It offers strong expandability supporting chip replacement and compatibility with various lipids and buffers for scenarios like mRNA delivery and drug carrier development.</p>
+              </div>
+          </div>
+
+          <h3>Mechanical Part of the Syringe Pump</h3>
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw2.webp" alt="3D Model Diagram of the Mechanical Part"></image>
+          </div>
+          <div class="image-caption">Figure 2.1: 3D Model Diagram of the Mechanical Part</div>
+          
+          <p class="textztbf">All structural components of the PREMA's mechanical part are 3D-printed using PETG-CF, a material with excellent properties such as high strength, high rigidity, and fatigue resistance. The device uses an open-loop stepper motor as its power source, which drives the propulsion block via a lead screw and optical axis to achieve micron-level displacement control. Equipped with various fixing fixtures, it is compatible with syringes of different sizes, adapts to diverse microfluidic scenarios, and provides hardware support for the LNP preparation process.</p>
+          
+          <h3>Circuit Part of the Syringe Pump</h3>
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw3.webp" alt="Wiring Diagram of the Circuit Part"></image>
+          </div>
+          <div class="image-caption">Figure 3.1: Wiring Diagram of the Circuit Part</div>
+          
+          <strong>Power Supply Section</strong>
+          <p class="textztbf">An external power source connects via the power input interface, processed to power the entire circuit system. A power indicator light visually shows proper power connection and device startup, letting operators quickly check power status.</p>
+          
+          <strong>WiFi Module</strong>
+          <p class="textztbf">The WiFi module enables wireless communication with external devices and receives control commands from the browser UI interface, allowing remote and convenient control of the syringe pump.</p>
+          
+          <strong>Motor Drive Modules</strong>
+          <p class="textztbf">Two stepper motor drive modules precisely control their respective stepper motors, enabling accurate adjustment of fluid flow rate, volume and other parameters in the syringe pump's dual channels to meet the demand for precise two-phase mixing control during LNP preparation.</p>
+          
+          <strong>Limit Switches</strong>
+          <p class="textztbf">These provide stroke limitation, preventing excessive movement of stepper motor-driven components. They protect the mechanical structure, avoid device damage from over-travel operation and ensure long-term stable operation of the syringe pump.</p>
+      </section>
+
+      <section id="iteration" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Equipment Iteration</h2>
+          
+          <button class="collapsible">Syringe Pump 1.0</button>
+          <div class="content">
+              <div class="image-container">
+                  <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw4.webp" alt="Syringe Pump Version 1.0"></image>
+              </div>
+              <div class="image-caption">Figure 4.1: Syringe Pump Version 1.0</div>
+              
+              <p class="textztbf">Considering that the dual-channel design requires addressing the dual challenges of synchronized dual mechanical transmission and precise dual-parameter control, we prioritized the single-channel version to reduce development difficulty and ensure core function reliability. On one hand, the single-channel structure allowed repeated testing and optimization of the transmission accuracy of the stepper motor and lead screw-optical axis, verification of the adaptability of 3D-printed structural components, and confirmation of a stable mechanical link. On the other hand, we simultaneously debugged the control code to verify the accuracy of core programs such as flow rate adjustment and operating status feedback.</p>
+          </div>
+          
+          <button class="collapsible">Syringe Pump 2.0</button>
+          <div class="content">
+              <div class="image-container">
+                  <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw5.webp" alt="Syringe Pump Version 2.0"></image>
+              </div>
+              <div class="image-caption">Figure 4.2: Syringe Pump Version 2.0</div>
+              
+              <p class="textztbf">Building on the full verification of mechanical structure stability and code reliability from the single-channel device, we focused on key aspects during the subsequent development of the dual-channel version—including synchronized control of dual-channel parameters, and dual-channel parameter display and adjustment on the UI interface. Ultimately, we efficiently developed a dual-channel microfluidic syringe pump that meets experimental needs, ensuring stable and controllable performance across the entire chain from mechanics to control.</p>
+          </div>
+
+          <h3>Microfluidic Chip Section</h3>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw6.webp" alt="Design Diagram of the Microfluidic Chip"></image>
+          </div>
+          <div class="image-caption">Figure 5.1: Design Diagram of the Microfluidic Chip</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw7.webp" alt="Physical Image of the Microfluidic Chip"></image>
+          </div>
+          <div class="image-caption">Figure 5.2: Physical Image of the Microfluidic Chip</div>
+          
+          <p class="textztbf">We independently completed the design and fabrication of the microfluidic chip. The process involves multiple strictly controlled steps: first, silicon wafer modification—cleaning with AB glue and treating with trimethylchlorosilane to create a high-quality substrate for subsequent PDMS molding; second, precisely preparing AB glue at a 10:1 mass ratio, fully stirring it, then performing glue pouring, bubble removal, and curing to form a stable AB glue structure; next, peeling, cutting, accurately drilling holes, and removing impurities; finally, bonding two PDMS sheets after plasma treatment and encapsulating them with high-temperature reinforcement.</p>
+          <p class="textztbf">The resulting microfluidic chip, when used with the self-developed syringe pump, enables efficient and uniform mixing of lipid and aqueous phases, providing strong support for high-quality LNP preparation.</p>
+         
+          <h3>Collection Device</h3>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw8.webp" alt="3D Model Diagram of the Collection Device"></image>
+          </div>
+          <div class="image-caption">Figure 6.1: 3D Model Diagram of the Collection Device</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw9.webp" alt="3D-Printed Image of the Collection Device"></image>
+          </div>
+          <div class="image-caption">Figure 6.2: 3D-Printed Image of the Collection Device</div>
+          
+          <p class="textztbf">We independently designed an integrated fixture to achieve efficient integration of the microfluidic chip and centrifuge tubes. Two clamping walls are arranged at the rear of the fixture: one for accurately collecting waste liquid during the preparation process, and the other for collecting the final prepared LNP product. This realizes an integrated "preparation-separation-collection" process, which not only simplifies operation steps but also avoids sample loss during transfer, improving the efficiency and integrity of LNP preparation. In addition, we customized the <strong>"DUT-China"</strong> team logo on the fixture surface via 3D printing. This design enhances the team recognition of the device and endows it with distinct team-specific characteristics.</p>
+          
+          <h3>Device Budget</h3>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/hwdb.webp" alt="Device Budget"></image>
+          </div>
+          <div class="image-caption">Figure 7.1: Device Budget</div>
+          
+          <h3>Operation Method</h3>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw10.webp" alt="UI Operation Interface Diagram"></image>
+          </div>
+          <div class="image-caption">Figure 8.1: UI Operation Interface Diagram</div>
+          
+          <p class="textztbf">In terms of operation and control design, the PREMA breaks through traditional limitations and subverts the mechanical control mode that relies on knobs and buttons. Equipped with a built-in WiFi module, the device eliminates the need for operators to connect additional dedicated controllers or install complex software. Instead, operators only need to connect any electronic device (such as a mobile phone, tablet, or computer) to the device's exclusive WiFi, then enter a specific domain name in the browser to quickly access the intuitive UI operation interface.</p>
+          <p class="textztbf">This interface allows direct setting of key parameters such as dual-channel flow rate, total volume, and operating time, while also displaying the pump's working status and data in real time—making the entire operation process simple and efficient, and significantly lowering the usage threshold. Compared with the cumbersome operation of traditional syringe pumps (which require close-range manual knob adjustment and repeated parameter calibration), this wireless, web-based control design not only makes operation more flexible and convenient, but also better adapts to laboratory scenarios such as multi-device collaboration and remote monitoring, further improving the operational efficiency and flexibility of the LNP preparation process.</p>
+      </section>
+
+      <section id="comparison" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Parameter Comparison</h2>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw11.webp" alt="Parameter Comparison Diagram"></image>
+          </div>
+          <div class="image-caption">Figure 9.1: Parameter Comparison Diagram</div>
+          
+          <p class="textztbf">To further verify the performance of the PREMA, we selected the Longer LSP01 - 3A syringe pump as a control.</p>
+        
+          <h3>Testing</h3>
+          <p class="textztbf">To comprehensively evaluate the actual performance of the PREMA in lipid nanoparticle (LNP) preparation, we conducted rigorous comparative experiments where the Longer syringe pump and the traditional manual mixing method were selected as controls, with analysis focused on two key indicators: particle size and fluorescence intensity; during the experiments, we strictly followed standardized operating procedures to ensure consistent conditions across the three groups, including lipid material formulation, nucleic acid concentration, and reaction temperature, and a dynamic light scattering (DLS) instrument was used for accurate measurement of LNP particle size while a fluorescence spectrophotometer determined the fluorescence intensity of LNPs encapsulating fluorescently labeled nucleic acids.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw12.webp" alt="Particle Size Distribution of Self-developed Syringe Pump"></image>
+          </div>
+          <div class="image-caption">Figure 10.1: Particle Size Distribution of Self-developed Syringe Pump</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw13.webp" alt="Particle Size Distribution of Longer Syringe Pump"></image>
+          </div>
+          <div class="image-caption">Figure 10.2: Particle Size Distribution of Longer Syringe Pump</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw14.webp" alt="Particle Size Distribution of Manual Mixing"></image>
+          </div>
+          <div class="image-caption">Figure 10.3: Particle Size Distribution of Manual Mixing</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw15.webp" alt="Key DLS Detection Data of PREMA"></image>
+          </div>
+          <div class="image-caption">Figure 10.4: Key DLS Detection Data of PREMA</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw16.webp" alt="Key DLS Detection Data of Longer Syringe Pump"></image>
+          </div>
+          <div class="image-caption">Figure 10.5: Key DLS Detection Data of Longer Syringe Pump</div>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw17.webp" alt="Key DLS Detection Data of Manual Mixing"></image>
+          </div>
+          <div class="image-caption">Figure 10.6: Key DLS Detection Data of Manual Mixing</div>
+          
+          <p class="textztbf">For the evaluation of LNP quality based on particle size and polydispersity index (PDI), LNPs prepared by the self-developed and Longer syringe pumps showed relatively concentrated particle size ranges and good uniformity, while LNPs from manual mixing had a wide, irregular particle size distribution with significant size differences; in terms of PDI, while the PDI of LNPs from the self-developed and Longer pumps fluctuated slightly, their overall particle size distribution remained consistent, and LNPs from manual mixing exhibited extreme PDI fluctuations, resulting in highly unstable particle size uniformity. In summary, both the self-developed and Longer syringe pumps stably produce LNPs with particle sizes of 50-150nm and good uniformity, but the manual method leads to large particle size errors, obvious particle agglomeration, and uneven sizes; although the self-developed pump lags slightly behind the Longer pump in PDI, it has advantages in functions like dual-channel continuous preparation, and LNP uniformity can be further improved by optimizing processes.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/hardware/dut-china-hw18.webp" alt="Fluorescence Intensity Comparison Diagram"></image>
+          </div>
+          <div class="image-caption">Figure 10.7: Fluorescence Intensity Comparison Diagram</div>
+          
+          <p class="textztbf">For fluorescence intensity analysis, LNPs prepared by the self-developed and Longer syringe pumps showed similar, high fluorescence intensities, indicating effective encapsulation of fluorescently labeled nucleic acids, while the manual mixing method produced LNPs with significantly lower fluorescence intensity, meaning a large amount of nucleic acid remained unencapsulated (in a free state)—this would greatly reduce the delivery efficiency of nucleic acid drugs in subsequent LNP applications. Combining the above results, the self-developed microfluidic dual-channel syringe pump demonstrates performance comparable to the mature Longer brand in LNP preparation, enabling stable, efficient production of high-quality LNPs at a lower cost, and the traditional manual mixing method performs poorly in key LNP preparation indicators, failing to meet precise, efficient requirements—further highlighting the application value and potential of the PREMA in LNP preparation;</p>
+      
+          <strong>Future Outlook:</strong>
+          <p class="textztbf">Currently, the microfluidic injection system can only complete one round of LNP preparation with a single syringe loading, and manual refilling is required for subsequent batches; looking ahead, we aim to upgrade the device to a continuous production system, which will involve optimizing the fluid supply module to enable automatic, continuous liquid replenishment, eliminating the need for manual intervention between preparation cycles; by achieving continuous liquid feeding and LNP preparation, we can significantly improve LNP production efficiency, making the system more suitable for large-scale or high-throughput LNP preparation scenarios and further expanding its application potential in biomedical research and related fields.</p>
+          <div style="display: flex; justify-content: center; margin: 2rem 0;">
+            <iframe title="LNP Preparation Showdown" 
+                    width="672" 
+                    height="378" 
+                    src="https://video.igem.org/videos/embed/8tyKFzMWVsc9mGASxSjJMm" 
+                    allow="fullscreen" 
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
+                    style="border: 0px; max-width: 100%;">
+            </iframe>
+          </div>
+        </section>
+
+      <section id="reference" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Reference</h2>
+          <p class="textztbf">[1] Hou X, Zaks T, Langer R, Dong Y. Lipid nanoparticles for mRNA delivery. Nat Rev Mater. 2021;6(12):1078-1094. doi: 10.1038/s41578-021-00358-0. Epub 2021 Aug 10. PMID: 34394960; PMCID: PMC8353930.</p>
+          <p class="textztbf">[2] Kaczmarek JC, Kowalski PS, Anderson DG. Advances in the delivery of RNA therapeutics: from concept to clinical reality. Genome Med. 2017 Jun 27;9(1):60. doi: 10.1186/s13073-017-0450-0. PMID: 28655327; PMCID: PMC5485616.</p>
+          <p class="textztbf">[3] Chen MC, Lake JR, Heyde KC, Ruder WC. Three-dimensional Printing of Thermoplastic Materials to Create Automated Syringe Pumps with Feedback Control for Microfluidic Applications. J Vis Exp. 2018 Aug 30;(138):57532. doi: 10.3791/57532. PMID: 30222163; PMCID: PMC6235068.</p>
+          <p class="textztbf">[4] Li Z, Mak SY, Sauret A, Shum HC. Syringe-pump-induced fluctuation in all-aqueous microfluidic system implications for flow rate accuracy. Lab Chip. 2014 Feb 21;14(4):744-9. doi: 10.1039/c3lc51176f. Epub 2014 Jan 2. PMID: 24382584.</p>
+          <div style="margin: 3rem 0; display: flex; justify-content: center; flex-direction: column; gap: 1rem;">
+            <!-- PDF嵌入核心标签：width100%避免超出文本框，height足够阅读 -->
+            <embed 
+                src="https://static.igem.wiki/teams/5844/pages/hardware/modeling-diagram-and-code.pdf" 
+                type="application/pdf" 
+                style="width: 100%; height: 720px; border: 1px solid rgba(218, 153, 228, 0.94); border-radius: 4px;"
+                title="activity-plan.pdf">
+            <!-- 备用提示（若浏览器不支持直接渲染） -->
+            <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                <a href="https://static.igem.wiki/teams/5844/pages/hardware/modeling-diagram-and-code.pdf" target="_blank" style="color: #3fffe2fe;">Click to Download</a>
+            </p>
+          </div>
+        </section>
+  </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 1. 修复：只保留与导航链接对应的texts（共6个，与导航数量一致）
+    const texts = [
+        document.getElementById('text-1'),  // 对应Overview
+        document.getElementById('text-2'),  // 对应Background
+        document.getElementById('text-3'),  // 对应Design Rationale
+        document.getElementById('text-7'),  // 对应Equipment Iteration
+        document.getElementById('text-12'), // 对应Parameter Comparison
+        document.getElementById('text-15')  // 对应Reference
+    ];
+    
+    // 2. 修复：只保留HTML中实际存在的section（共6个，与导航数量一致）
+    const sections = [
+        document.getElementById('overview'),        // 对应text-1
+        document.getElementById('background'),       // 对应text-2
+        document.getElementById('design-rationale'), // 对应text-3
+        document.getElementById('iteration'),        // 对应text-7
+        document.getElementById('comparison'),       // 对应text-12
+        document.getElementById('reference')         // 对应text-15
+    ];
+    
+    // 3. 获取导航链接和容器（确保选择器正确）
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 4. 可折叠内容功能（保留原逻辑）
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 5. 导航栏显示/隐藏控制（优化：降低触发阈值，让用户更快看到导航）
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        // 修复：滚动超过500px就显示
+        if (scrollPosition > 500) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 6. 导航链接点击事件（修复：只处理有效索引，避免报错）
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            // 容错：如果index超出sections范围，不执行
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 7. 更新激活的导航项（修复：只处理有效section）
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        // 遍历所有有效section，找到当前可视的section
+        sections.forEach((section, index) => {
+            if (!section) return; // 跳过不存在的section
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            // 判断section是否在当前视口范围内
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        // 更新text的active状态
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 8. 监听滚动，更新导航状态（保留原逻辑）
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    // 9. 初始化：页面加载时立即执行一次，确保初始状态正确
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

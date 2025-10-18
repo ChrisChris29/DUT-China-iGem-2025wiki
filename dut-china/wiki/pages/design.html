@@ -1,0 +1,548 @@
+{% extends "layout.html" %}
+  
+{% block title %}Design{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-design2.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 20px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: normal;
+    max-width: 200px;
+}
+
+.wz-nav-text.summary {
+    font-size: 18px;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px; /* 增加最大宽度 */
+    width: clamp(70%, 75vw, 80%); /* 增加宽度百分比 */
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem); /* 减少右边距，使内容框向右移动 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(120, 0, 120, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    font-size: 1.86rem;
+}
+
+h3 {
+    font-size: 1.26rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+.figure-caption {
+    font-style: italic;
+    margin: 1em 0 2em 0;
+    text-align: center;
+    color: rgba(75, 85, 99, 0.92);
+}
+
+.figure-image {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 1em;
+    display: block;
+}
+
+/* 新增的文本框样式 */
+.box-container {
+    display: flex;
+    gap: 0.8rem; /* 减小文本框之间的间距 */
+    margin-top: 2rem;
+    padding: 0 0.5rem; /* 减小容器左右内边距 */
+}
+
+.info-box {
+    flex: 1;
+    padding: 1.2rem; /* 适当减小内边距 */
+    border-radius: 12px;
+    text-align: center; /* 标题保持居中 */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+.info-box:hover {
+    transform: translateY(-5px);
+}
+
+.box-purple {
+    background-color: #f3e5f5; /* 浅紫色 */
+}
+
+.box-pink {
+    background-color: #fce4ec; /* 浅粉色 */
+}
+
+.box-blue {
+    background-color: #e3f2fd; /* 浅蓝色 */
+}
+
+.box-title {
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+}
+
+.box-content {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-align: left; /* 正文左对齐 */
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#summary" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text summary">Summary</span>
+    </a>
+    
+    <a href="#drug-molecule-design" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">1. Drug molecule design</span>
+    </a>
+    
+    <a href="#delivery-carrier-design" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">2. Delivery carrier design</span>
+    </a>
+    
+    <a href="#target-application-design" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">3. Target application design</span>
+    </a>
+    
+    <a href="#references" class="wz-nav-link wz-nav-item">
+        <span id="text-5" class="wz-nav-text">References</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="summary" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Summary</h2>
+          <p class="textztbf">This project designed a modular mRNA therapy platform for hepatocellular carcinoma, the core of which is a bifunctional mRNA construct, which can simultaneously express PROTAC molecules targeting the degradation of the oncogenic protein TGF-β and supplement the tumor suppressor protein HNF4α, and synergistically reverse the tumor malignant phenotype through "one drop and one liter". The platform integrates optimized 5’UTR sequences to improve drug efficacy and designs miR-21-responsive intelligent molecular switches to improve treatment safety, indeedspecificity and high efficiency of protein expression; At the same time, an engineered GPC3 antibody-modified lipid nanoparticle delivery system is used to achieve precise targeting of liver cancer cells. Through multi-level regulation, the design constructs an integrated treatment system with efficient output and controllable safety while overcoming tumor heterogeneous drug resistance.</p>
+          <p class="textztbf">Our design modules are mainly divided into the following three parts, click to learn more </p>
+          <!-- 新增的三个文本框 -->
+          <div class="box-container">
+              <a href="#drug-molecule-design" class="info-box box-purple">
+                  <div class="box-title">Drug molecule design</div>
+                  <div class="box-content">This design module consists of two modules: 5′UTR optimization and RNA molecular switching. The 5′UTR module is systematically designed and screened to maximize the translation efficiency of the target protein. At the same time, we have developed two types of RNA switches, exCAG and Toehold, which are triggered by miR-21, aiming to achieve specific protein expression in high miR-21 environments such as tumor cells, thereby improving the overall expression level and effectively enhancing the safety of treatment. An efficient and safe mRNA drug expression platform has been constructed for HCC treatment.</div>
+              </a>
+              
+              <a href="#delivery-carrier-design" class="info-box box-pink">
+                  <div class="box-title">Delivery carrier design</div>
+                  <div class="box-content">This design module aims to engineer lipid nanoparticles (LNPs) to compensate for the leaked expression of RNA switches by conjugating GPC3, a specific target highly expressed on the surface of hepatocellular carcinoma cells, to its surface to give them active targeting capabilities. The core technology path is to construct a hybrid vector for LNP-EVs: first, the Escherichia coli Lpp-OmpA display system is used to present GPC3 single-chain antibodies on the surface of extracellular vesicles (EVs) , and then they are hybridized with LNPs, and finally a new targeted delivery system that can specifically identify hepatocellular carcinoma cells is obtained.</div>
+              </a>
+              
+              <a href="#target-application-design" class="info-box box-blue">
+                  <div class="box-title">Target application design</div>
+                  <div class="box-content">This design module designs protein regulatory elements. The element is based on mRNA technology, which connects two functional modules in series through P2A peptides in an open reading frame: one module uses the m-PROTAC strategy to induce degradation by expressing chimeric fusion proteins targeting TGF-β; the other module is used to supplement the expression of the tumor suppressor protein HNF4α. This combined strategy aims to synergistically reverse the malignant phenotype of tumors by utilizing the potential antagonistic relationship between the two, and to verify the feasibility and regulation of the target through preliminary siRNA and mRNA conversion experiments.</div>
+              </a>
+          </div>
+      </section>
+
+      <section id="drug-molecule-design" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">1. Drug molecule design</h2>
+          
+          <h3>1.1 5’UTR Optimized Design</h3>
+          <p class="textztbf">The 5′ untranslated region (5′UTR) plays a key role in ribosomal recruitment, regulation of translation initiation, and maintenance of mRNA stability. Factors such as length, GC content, free energy of secondary structure, and the presence of upstream AUG (uAUG) or upstream open reading frame (uORF) can affect the assembly efficiency of ribosomal scanning and 43S pre-initiation complex (PIC) . To improve the protein expression level of the construct element, we tried to optimize the 5′ UTR sequence. We selected luciferase as the reporter protein and designed an RNA capable of expressing luciferase (luc-UTR RNA) to evaluate the regulatory efficiency of different 5′ UTR variants.</p>
+          <p class="textztbf">We used the pUC57 plasmid as a vector to construct an expression vector for evaluating the efficiency of 5′UTR. The luciferase coding sequence was inserted into the plasmid as a reporter gene, and the T7 promoter was integrated to achieve in vitro transcriptional synthesis of luc-UTR RNA.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design1.webp" class="figure-image" alt="luc-UTR RNA Demonstration Platform">
+          <p class="figure-caption">Figure 1. luc-UTR RNA Demonstration Platform</p>
+          
+          <p class="textztbf">The optimized 5′UTR sequence is derived from the dry experimental optimization model. Specific primers were designed for different sequences, plasmids containing different 5′UTRs were obtained by PCR amplification, and RNA was transcribed in vitro for cell delivery experiments. By comparing the fluorescence intensity after transfection, the regulatory efficiency of each 5′UTR was evaluated, and finally the sequence that achieved the highest protein expression was selected to be integrated into the drug platform to improve the stability and efficacy of the system.</p>
+          
+          <h3>1.2 Molecular switch design</h3>
+          <p class="textztbf">While mRNA therapeutics have shown promise in vivo and in vitro experiments, they still face several challenges, particularly off-target effects and insufficient specificity. In order to avoid cytotoxicity caused by protein regulatory modules in normal cells and to solve the above key problems, we designed and optimized two types of RNA molecular switches: exCAG sequence-based switches and Toehold switches, both of which use miR-21 as the trigger RNA, and verified their regulatory ability on gene expression.</p>
+          <p class="textztbf">The exCAG switch consists of a miR-21 binding region and a repressive sequence, located downstream of the mRNA polyA tail. The repression region consists of repeated CAG sequences that silence the ORF region by inducing RNA gelation. When the concentration of miR-21 in cells is high, its complementary region pairs with miR-21 and recruits the RISC complex to cleave the inhibitory sequence, thereby degelating RNA, allowing ORF to be expressed normally and achieving cell selectivity.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design2.webp" class="figure-image" alt="Regulatory Mechanism of the exCAG Switch">
+          <p class="figure-caption">Figure 2. Regulatory Mechanism of the exCAG Switch</p>
+          
+          <p class="textztbf">We designed and compared different switches with 3, 10 and 30 CAG repetitions to explore the optimal number of repetitions and improve selectivity.</p>
+          <p class="textztbf">The Toehold switch is an artificially designed RNA riboswitch that hides the translation initiation region in the mRNA secondary structure and initiates translation only when a specific trigger RNA is present. At present, Toehold switches have been extensively studied in prokaryotic systems, but there are still deficiencies in eukaryotic systems. In this study, a series of eukaryotic Toehold switches were constructed and validated based on existing data, with luciferase as the reporter gene. The regulatory ability of different switches was evaluated by comparing the fluorescence intensity with and without miR-21.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design3.webp" class="figure-image" alt="Regulatory Mechanism of the Toehold Switch">
+          <p class="figure-caption">Figure 3. Regulatory Mechanism of the Toehold Switch</p>
+          
+          <p class="textztbf">The purpose of this study was to evaluate the regulatory effect of two types of switches on protein expression under different designs, and to select the optimal scheme to further improve the safety of the drug platform.</p>
+      </section>
+
+      <section id="delivery-carrier-design" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">2. Delivery carrier design</h2>
+          <p class="textztbf">Although both RNA molecular switches can regulate gene expression to a certain extent, leakage expression cannot be completely avoided. To further improve the safety of drug systems, we will shift our research focus to delivery vectors, hoping to give them tumor-specific targeting capabilities through engineering design.</p>
+          <p class="textztbf">Lipid nanoparticles (LNPs) are the core delivery system of current nucleic acid drugs, which can effectively overcome the multiple barriers of mRNA in vivo and in vitro, and have the advantages of low immunogenicity, high encapsulation efficiency, organ targeting, and efficient intracellular delivery. LNP is widely used in anti-tumor therapy and vaccine research and development, and some have entered clinical use. Notably, LNPs have a natural affinity for hepatocytes, making them ideal for the delivery of liver cancer-related drugs.</p>
+          <p class="textztbf">Based on the literature review, we selected GPC3, a member of the glycosaminoglycan family, as a potential delivery recognition molecule. GPC3 is a glycoprotein associated with liver cancer, which can regulate multiple signaling pathways such as Wnt, Hedgehog, FGF-2 and BMPs, and plays an important role in cell growth and differentiation. Studies have shown that GPC3 is expressed at high levels in 70–80% of patients with hepatocellular carcinoma, especially in poorly differentiated tumors, and almost no expression in normal adult liver tissue.</p>
+          <p class="textztbf">Based on this, we intend to confer the specific recognition ability of HCC cells by conjugating GPC3 antibody on the surface of LNP. The specific strategy consists of three steps: (i) presentation of GPC3 antibodies using the Lpp-OmpA Presentation System in E.coli; (ii) preparation of extracellular vesicles (EVs) that surface present GPC3 antibodies; (iii) It was hybridized with LNPs to prepare LNP-EV hybrid vectors carrying GPC3 antibodies on the surface.</p>
+          <p class="textztbf">The Lpp-OmpA display system consists of three parts: E.coli major outer membrane lipoprotein (Lpp) , outer membrane protein A (OmpA) , and the target protein to be displayed. The principle is to fuse the signal peptide and the first nine amino acids of Lpp with the 46–159 amino acids of OmpA. This region folds into five transmembrane β-chains with the C-terminus exposed to the cell surface, thereby anchoring the fusion protein. This system has been shown to be effective in translocating and fixing the target protein to the outer membrane of E.coli.</p>
+          <p class="textztbf">Our ultimate goal is to integrate three technologies: Lpp-OmpA presentation, EVs preparation, and EV-LNP hybrid, to obtain a hybrid delivery system for surface-presenting GPC3 single-chain antibodies.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design4.webp" class="figure-image" alt="Demonstration of the mechanism of the hybrid delivery system for GPC3 single-stranded antibody presented on the surface">
+          <p class="figure-caption">Figure 4. Demonstration of the mechanism of the hybrid delivery system for GPC3 single-stranded antibody presented on the surface</p>
+          
+          <p class="textztbf">As a confirmatory experiment, we first constructed a pET-28a(+) plasmid encoding the Lpp-OmpA-eGFP fusion protein to express it on the surface of E.coli, and then prepared EVs and measured protein expression levels to verify design feasibility.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design5.webp" class="figure-image" alt="eGFP surface display expression vector">
+          <p class="figure-caption">Figure 5. eGFP surface display expression vector</p>
+          
+          <p class="textztbf">We performed DID staining of BL21-derived EVs and coumarin C6 staining of LNPs, and achieved heterozygosity of the two by freeze-thaw method, and detected the hybrid efficiency by nanoflow cytometry.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design6a.webp" class="figure-image" alt="Hybrid fluorescence characterization of EVs-LNP">
+          <p class="figure-caption">Figure 6. Hybrid fluorescence characterization of EVs-LNP</p>
+          
+          <p class="textztbf">Based on this, we further constructed an expression plasmid encoding the Lpp-OmpA-GPC3 single-stranded antibody, prepared EVs that presented the antibody on the surface, and evaluated the protein expression.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design7.webp" class="figure-image" alt="GPC3 single-stranded antibody surface display expression vector">
+          <p class="figure-caption">Figure 7. GPC3 single-stranded antibody surface display expression vector</p>
+      </section>
+
+      <section id="target-application-design" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">3. Target application design</h2>
+          
+          <h3>3.1 Protein regulation module design</h3>
+          <p class="textztbf">Currently, first-line targeted therapy for advanced hepatocellular carcinoma (HCC) generally faces the problem of primary and acquired resistance, which is mainly driven by tumor heterogeneity and clonal evolution. The root cause of drug resistance is that existing drugs mainly act on upstream oncoproteins, allowing tumor cells to adapt through compensation of signaling pathways, resulting in drug resistance.</p>
+          <p class="textztbf">Proteolytic targeted chimera (PROTAC) technology can directly degrade disease-causing proteins, showing unique advantages in protein therapy. The mRNA PROTAC (m-PROTAC) strategy developed in recent years combines peptide-based PROTAC (p-PROTAC) with in vitro transcription mRNA technology , taking advantage of the characteristics of efficient delivery of mRNA and no risk of genome integration, p-PROTAC overcomes the shortcomings of large molecular weight, poor stability, and low cell penetration, so as to achieve continuous and efficient protein degradation.</p>
+          <p class="textztbf">Here, we designed our protein regulatory element based on the existing m-PROTAC strategy, which consists of three modules, namely the Trim21 protein, the ligation peptide, and a short peptide that can specifically bind to the target protein. The common fusion protein of these three modules can specifically bind to the target protein and reduce the content of related oncogenic proteins in hepatocellular carcinoma cells by mediating the ubiquitination degradation pathway, thereby inhibiting cancer.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design8.webp" class="figure-image" alt="Protein-targeted degradation mechanism based on m-PROTAC">
+          <p class="figure-caption">Figure 8. Protein-targeted degradation mechanism based on m-PROTAC</p>
+          
+          <p class="textztbf">At the same time, hepatocellular carcinoma (HCC) is a highly heterogeneous and complex malignant tumor, and its occurrence and development involves abnormal activation of multiple signaling pathways, making it difficult for any single-target drug to achieve durable and effective tumor control. The multi-target combination drug strategy can attack tumors more comprehensively by intervening in multiple pathogenic links at the same time, so as to overcome the drug resistance problem caused by heterogeneity to a certain extent.</p>
+          <p class="textztbf">Based on this, we added protein expression elements to the protein regulation module, which are connected with protein degradation elements through P2A peptides. It is hoped that the expression of tumor suppressor gene-related proteins can be improved while degrading the proteins expressed by the original oncogene in hepatocellular carcinoma cells, thereby improving the anti-cancer effect of drugs.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design9.webp" class="figure-image" alt="Mechanism of the Protein Co-regulation Module">
+          <p class="figure-caption">Figure 9. Mechanism of the Protein Co-regulation Module</p>
+          
+          <p class="textztbf">After extensive literature review, we decided to select TGF-β protein as our protein degradation target and HNF4α protein as our protein expression target.</p>
+          <p class="textztbf">Transforming growth factor-β (TGF-β) is a pleiotropic cytokine that plays a complex dual role in liver physiology and pathology. In hepatocellular carcinoma (HCC) , TGF-β protein inhibits tumors in the early stages and strongly promotes their malignant progression in the advanced stages. In particular, by driving EMT, the migration, invasion, and metastasis of tumor cells to distant organs is enhanced, and ultimately resistance to apoptosis stimuli and chemotherapy is enhanced. Therefore, targeting TGF-β has become a very promising strategy. Reducing the expression of this protein can not only inhibit tumor invasion and metastasis in multiple dimensions, but also reverse the immunosuppressive state, thereby creating a synergistic effect with existing therapies.</p>
+          <p class="textztbf">Hepatocyte nuclear factor 4α (HNF4α) is a lonenuclear receptor in the nuclear receptor superfamily, a zinc finger protein, and a major regulator of hepatocyte identity. HNF4α participates in Wnt/β-catenin, NF-κB, STAT3, TGF-β and other pathways, and can alleviate or reverse tumor lesions by inhibiting the invasion, metastasis, and promoting differentiation of cancer cells. The expression of HNF4α was reduced in hepatocellular carcinoma tissues.</p>
+          <p class="textztbf">Notably, TGF-β plays a leading role in inhibiting the function of HNF4α through transcriptional repression and post-translational modification, and there is a potential antagonistic relationship between the two in the occurrence and development of liver cancer. Based on this, our strategy aims to synergistically reverse the malignant phenotype of tumors by degrading TGF-β to uninhibit HNF4α inhibition and improve the microenvironment, while exogenously supplementing HNF4α to inhibit cancer cell invasion, metastasis, and promote differentiation.</p>
+          <p class="textztbf">To validate the feasibility and effectiveness of our protein regulatory elements, we designed and conducted the following experiments:</p>
+          <p class="textztbf">First, in order to verify that the expression of TGF-β protein in hepatocellular carcinoma cells can be artificially regulated, we designed siRNAs targeting the 48th, 339th and 642nd bases of TGF-β protein mRNA, respectively, hoping to knock down the expression of TGF-β protein genes at the RNA level. The changes of TGF-β protein content and mRNA content in hepatocellular carcinoma cells after transfection with siRNA were detected by q RT-PCR and Western Blot assays, which verified the feasibility of our protein degradation target selection.</p>
+          <p class="textztbf">In order to verify the necessity of improving HNF4α protein expression, we designed a Western blot assay to compare the differences in HNF4α protein content in hepatocellular carcinoma cells and other cells, and demonstrated that the expression of HNF4α was reduced in hepatocellular carcinoma tissues, verifying the feasibility of our protein expression target selection.</p>
+          <p class="textztbf">Based on the above experiments, we designed mRNA with protein expression module expressing HNF4α protein (HNF4α RNA) and mRNA with protein degradation module to degrade TGF-β(TGF-β RNA) to verify the effectiveness of our design.</p>
+          <p class="textztbf">We used the pUC 57 plasmid as a vector to design expression plasmids capable of characterizing both RNAs. For TGF-β RNA plasmids, the target sequences include: short peptide + ligation peptide + trim21 sequence targeting TGF-β protein; For the HNF4α RNA plasmid, the target sequence is the HNF4α sequence. We also integrate the T7 promoter into plasmids for in vitro transcriptional synthesis of RNA.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design10.webp" class="figure-image" alt="a: TGF-β RNA display platform   b: HNF4α RNA display platform">
+          <p class="figure-caption">Figure 10. a: TGF-β RNA display platform   b: HNF4α RNA display platform</p>
+          
+          <p class="textztbf">To validate the feasibility of upregulating and downregulating two different target proteins simultaneously, we designed siRNAs targeting eGFP fluorescent proteins (eGFP siRNAs) and stable expression of eGFP/Luciferase, respectively mRNA (eGFP mRNA and luc mRNA) . The eGFP mRNA is transfected into the cells first, and then the eGFP siRNA and luc mRNA are delivered to the cells. The feasibility of this strategy was verified by detecting changes in fluorescence intensity before and after cell transfection.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design11.webp" class="figure-image" alt="eGFP siRNA and luc mRNA co-delivery experiments">
+          <p class="figure-caption">Figure 11. eGFP siRNA and luc mRNA co-delivery experiments</p>
+          
+          <p class="textztbf">In future work, we plan to integrate the degradation and expression modules into a single RNA construct, transfect them into HCC cells, and evaluate protein level changes to further confirm therapeutic effects.</p>
+          
+          <h3>3.2 Future application design</h3>
+          <p class="textztbf">So far, we have basically built a liver cancer targeted drug platform that takes into account both safety and efficacy.</p>
+          <p class="textztbf">To evaluate the application potential of the drug, we designed siRNAs (eGFP siRNA and luc) targeting eGFP fluorescent protein/Luciferase, respectively mRNA) and mRNA (eGFP mRNA and luc mRNA) that stably express eGFP/Luciferase, respectively. The eGFP mRNA and luc mRNA were transfected into the cells first, and then the eGFP siRNA was combined with lucsiRNA was co-delivered into the cells to validate the feasibility of this strategy by detecting changes in fluorescence intensity before and after cell transfection.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-design12.webp" class="figure-image" alt="eGFP siRNA and luc siRNA were co-delivered for degradation experiments">
+          <p class="figure-caption">Figure 12. eGFP siRNA and luc siRNA were co-delivered for degradation experiments</p>
+          
+          <p class="textztbf">We expect this drug to complement as a molecularly targeted drug in combination therapy and to have a synergistic effect with immunotherapy drugs. At the same time, we emphasize modular construction in the design, dividing the system into different functional areas to achieve the replaceability and controllability of components, thereby giving it broader transformation and clinical application prospects.</p>
+          <p class="textztbf">In future research, this platform can further integrate AI-based target screening systems with multi-omics data (such as genome, transcriptome, and proteome) of hepatocellular carcinoma to achieve more accurate identification and verification of key disease-causing proteins. Based on this, this modular mRNA therapy strategy can be combined with PROTAC-mediated protein degradation, CRISPR/Cas13-mediated RNA editing, siRNA interference technology and so on, and further expanded into a combination therapy system equipped with multiple regulatory elements at the same time. Through multi-mechanism synergy, it accurately intervenes in the key pathway network of tumorigenesis and development, thereby greatly improving the breadth and durability of treatment for hepatocellular carcinoma and promoting the clinical transformation of individualized mRNA drugs.</p>
+      </section>
+
+      <section id="references" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">References</h2>
+          <ol style="padding-left: 4em; line-height: 1.6;">
+              <li>HUANG A, YANG X-R, CHUNG W-Y, et al. Targeted therapy for hepatocellular carcinoma [J]. Signal Transduction and Targeted Therapy, 2020, 5(1): 146.</li>
+              <li>AN S, FU L. Small-molecule PROTACs: An emerging and promising approach for the development of targeted therapy drugs [J]. EBioMedicine, 2018, 36: 553-62.</li>
+              <li>XUE X, ZHANG C, LI X, et al. mRNA PROTACs: engineering PROTACs for high-efficiency targeted protein degradation [J]. 2024, 5(2): e478.</li>
+              <li>VOGEL A, MEYER T, SAPISOCHIN G, et al. Hepatocellular carcinoma [J]. The Lancet, 2022, 400(10360): 1345-62.</li>
+              <li>Lv, DD., Zhou, LY. & Tang, H. Hepatocyte nuclear factor 4α and cancer-related cell signaling pathways: a promising insight into cancer treatment. Exp Mol Med 53, 8–18 (2021). https://doi.org/10.1038/s12276-020-00551-1</li>
+              <li>YANG T, POENISCH M, KHANAL R, et al. Therapeutic HNF4A mRNA attenuates liver fibrosis in a preclinical model [J]. Journal of Hepatology, 2021, 75(6): 1420-33.</li>
+              <li>Wu, SH., Xiao, MC., Liu, F. et al. Cell-permeated peptide P-T3H2 inhibits malignancy on hepatocellular carcinoma through stabilizing HNF4α protein. Discov Onc 15, 752 (2024). https://doi.org/10.1007/s12672-024-01661-2</li>
+              <li>MitchellHo,HeungnamKim,Glypican-3: A new target for cance immunotherapy,European Journal of Cancer.Volume47,lssue 3,2011,Pages 333-338,ISSN 0959-8049,</li>
+              <li>BELAIR D G, LEE J S, KELLNER A V, et al. Receptor mimicking TGF-β1 binding peptide for targeting TGF-β1 signaling [J]. Biomaterials Science, 2021, 9(3): 645-52.</li>
+              <li>PAN Y, LU J, FENG X, et al. Gelation of cytoplasmic expanded CAG RNA repeats suppresses global protein synthesis [J]. Nature Chemical Biology, 2023, 19(11): 1372-83.</li>
+              <li>FUJITA Y, HIROSAWA M, HAYASHI K, et al. A versatile and robust cell purification system with an RNA-only circuit composed of microRNA-responsive ON and OFF switches [J]. Science Advances, 8(1): eabj1793.</li>
+              <li>SHI H, WEN SU W. Display of green fluorescent protein on Escherichia coli cell surface [J]. Enzyme and microbial technology, 2001, 28(1): 25-34.</li>
+              <li>ALTER C L, LOTTER C, PULIGILLA R D, et al. Nano Plasma Membrane Vesicle-Lipid Nanoparticle Hybrids for Enhanced Gene Delivery and Expression [J]. 2025, 14(1): 2401888.</li>
+              <li>WANG S, EMERY N J, LIU A P. A Novel Synthetic Toehold Switch for MicroRNA Detection in Mammalian Cells [J]. ACS Synthetic Biology, 2019, 8(5): 1079-88.</li>
+          </ol>
+      </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应Summary
+        document.getElementById('text-2'),  // 对应Drug molecule design
+        document.getElementById('text-3'),  // 对应Delivery carrier design
+        document.getElementById('text-4'),  // 对应Target application design
+        document.getElementById('text-5')   // 对应References
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('summary'),                // 对应text-1
+        document.getElementById('drug-molecule-design'),   // 对应text-2
+        document.getElementById('delivery-carrier-design'),// 对应text-3
+        document.getElementById('target-application-design'),// 对应text-4
+        document.getElementById('references')              // 对应text-5
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 1020) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}
+    

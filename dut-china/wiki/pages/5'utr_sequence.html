@@ -1,0 +1,630 @@
+{% extends "layout.html" %}
+  
+{% block title %}5'UTR Sequence{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/5-utr.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 23px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: nowrap;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 23px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1150px; /* 增加最大宽度 */
+    width: clamp(70%, 75vw, 80%); /* 增加宽度百分比 */
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem); /* 减少右边距，使内容框向右移动 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* 图片相关样式 */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 表格样式 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5rem 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* 第一个表格序列列左对齐 */
+.sequence-table td:first-child {
+    text-align: left;
+    padding-left: 12px;
+}
+
+/* 响应式表格处理 */
+@media (max-width: 768px) {
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 4px;
+    }
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#introduction" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">Introduction</span>
+    </a>
+    
+    <a href="#methods-results" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">Methods and Results</span>
+    </a>
+    
+    <a href="#discussion" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">Discussion</span>
+    </a>
+    
+    <a href="#summary" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">Summary</span>
+    </a>
+    
+    <a href="#user" class="wz-nav-link wz-nav-item">
+        <span id="text-5" class="wz-nav-text">User Manual</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="introduction" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">1. Introduction</h2>
+          <p class="textztbf">In this iGEM project, our team proposes achieving precision treatment for liver cancer through modular mRNA regulation of key protein expression. To enable efficient and stable protein expression, we designed and optimized the 5'UTR through dry experiments. We aim to ensure the mRNA drug maintains high expression and low degradation within the liver cancer microenvironment through dry experiment simulations and wet experiment validation.</p>
+          <p class="textztbf">Conventional computational methods for 5'UTR sequence design and optimization face limitations such as restricted search spaces, delayed functional prediction, and difficulties in handling variable-length sequences, making it challenging to efficiently obtain sequences with high expression and stability. UTRGAN and UTR-Insight are two core models introduced specifically to address these issues. Using these models as a starting point, we conducted a series of studies. Combined with validation and feedback from wet experiments, we ultimately established a complete workflow and developed a web platform.</p>
+      </section>
+
+      <section id="methods-results" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">2. Methods and Results</h2>
+          <p class="textztbf">UTRGAN employs generative adversarial networks to generate sequences with natural structures and functional optimization potential in low-dimensional space. UTR-Insight precisely predicts sequence translation efficiency (MRL), supporting variable-length inputs and multi-metric evaluation. Their synergistic operation not only significantly enhances sequence design efficiency but also provides reliable technical support for sequence property prediction.</p>
+          
+          <p class="textztbf">We conducted three iterative optimizations based on these two models. First, we replicated the models, using existing tools to design sequences for wet-lab validation. To simplify the workflow and reduce computational time, we designed a fusion model and optimized it based on wet-lab feedback, leading to the design of a second batch of sequences for validation. After receiving feedback from the second batch of wet-lab results, we revisited our entire approach, decided to shift strategies, redesigned the workflow, and developed a web platform. The final batch of wet-lab validation yielded excellent results.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/5utr/5utr1.webp" alt="Experimental Iteration Process">
+          </div>
+          <div class="image-caption">
+              Figure 1. Experimental Iteration Process: Model replication based on UTRGAN and UTR-Insight; generation of the first sequence batch using existing tools followed by wet lab validation; feedback-driven construction of a fusion model that reduces computational overhead and simplifies workflow while producing a second sequence batch for re-validation; workflow restructuring and web platform development based on second-batch feedback to enable parallel design and execution; The third round of wet experiments demonstrated that the platformized workflow significantly enhanced the expression levels of the designed sequences.
+          </div>
+          
+          <h3>（1） First Iteration</h3>
+          <p class="textztbf">During the first iteration, we established a technical environment supporting independent operation of both UTRGAN and UTR-Insight. Considering their characteristics and operational requirements, we adopted a virtual environment isolation strategy, deploying each model in a separate virtual environment to ensure stable, functionally independent operation through granular control.</p>
+          
+          <p class="textztbf">Building upon the independently replicated models, we advanced the experimental workflow: After autonomously generating the first batch of sequences, we performed prediction and screening using the UTR-Insight model. Selected sequences were then forwarded to wet-lab validation, accumulating critical experimental data for subsequent iterations.</p>
+          
+          <p class="textztbf">Our initial wet lab results were disappointing, showing no significant improvement in protein expression levels. We analyzed the sequences themselves. Sequence characteristics revealed excessively high GC content and low minimum free energy(MFE) values, which may lead to the formation of overly stable secondary structures (such as hairpin structures). These structures could hinder ribosome binding and scanning, increasing the risk of mRNA degradation.</p>
+          
+          <div style="overflow-x: auto; margin: 1.5rem 0;">
+              <table class="sequence-table">
+                  <thead>
+                      <tr>
+                          <th>Sequence</th>
+                          <th>GC Content %</th>
+                          <th>MFE kcal/mol</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">AGTGCGTGAGCTTGAGTGGGCTTTCAGGTGTCATGGTTCTGGGAAAAGCTGAGGGCTAAAGGCCCTGTAGAGACCGCCGTACGAACCCTCAA</td>
+                          <td>55</td>
+                          <td>-29.8</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">ACCCCGCGACCTCTTACCGACCCCCCCGCGTGGGTCCCCCGCGGGAGCGGCGGCTGCGCGCAGTCTCAGGC</td>
+                          <td>79</td>
+                          <td>-23.7</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">GGTGCGCCGCGGCCAGAGGCGCACCCGGCGGGGCTCCACGCCGCGCCAGGGTGAGTGGCTGGCAGCGGTGGCGGCTTCTCGGCCCCGGGAG</td>
+                          <td>81</td>
+                          <td>-52.5</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">CAGGAGTCCGCCCGGTTTTTTCTGTGGCACTTGAGCTACAAGGGGGCCTGTTCCCTGCACCTGGCTG CAGGTG</td>
+                          <td>63</td>
+                          <td>-26.0</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">CCGGCGCCAGGAAGCTTGGGGTGGCTTCCGGGCACCCCGGATTCCTGCGGCTTCGGGGCCGAAACCGGGGGCTCCTTTGGTG</td>
+                          <td>72</td>
+                          <td>-42.0</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">TCGGACCGACTGAGCCTCCCGTCGGCGCCTCCACTTGGAGACTGGTGCAGGGAGAGATGCCCGGCCCGTTGGATGGGCCACC</td>
+                          <td>70</td>
+                          <td>-33.3</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">TGGTGAGGGCAGGGGAGATGCACGCGGAGGCCCTTCGCACTACCTCCGGCCTCCTCCGAGGTCGATTC</td>
+                          <td>67</td>
+                          <td>-23.7</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">GCTTCCTCGCCCGGGCGCTGTCTCCTGGATTGGCCCGCGCCGTCCCCAAAGGGCCCTTTGTGGACGCGAGTACGGGATGATGTGTGAAGACAGG</td>
+                          <td>67</td>
+                          <td>-39.2</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">AGTCCCGATGCTTGAAGTCTGAGTCCACTGCGGCGCTCGCCGCCTCCTCAGGGACAGCACTTACA</td>
+                          <td>61</td>
+                          <td>-12.7</td>
+                      </tr>
+                      <tr>
+                          <td style="white-space: normal; word-break: break-all;">CGGAGGACATGCCTTGTGAGAGGAAAGCGTCCCCAGGATAGGCGCTTGACTTGCCGAATCGCAAGTCACCGGGGGACACA</td>
+                          <td>61</td>
+                          <td>-27.9</td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          <div class="image-caption">
+              Table 1. First batch of sequences Among the first batch of experimentally validated sequences, the average GC content reached 67.6%; the average minimum free energy value attained -32.8 kcal/mol.
+          </div>
+          
+          <p class="textztbf">We also analyzed the model design perspective, noting that the model imposes no restrictions on GC content. UTRGAN is a generative model based on generative adversarial networks (GANs), characterized by a competitive process between a generator and a discriminator. To evade the discriminator's "penalty," the generator strives to design sequences resembling natural 5'UTRs. Since natural sequences are typically stable with high GC content, this leads to excessively high GC content in the model-generated sequences. Additionally, the model lacks a minimum free energy prediction function; incorporating this feature would further enhance our model.</p>
+          
+          <p class="textztbf">The first-generation models operated independently, creating significant challenges. We needed to set up two separate environments to accommodate both models. Furthermore, their inputs differed: UTRGAN's output could not be directly fed into UTR-Insight for property prediction, requiring additional data processing. Beyond these hurdles, time consumption was another major concern. Generating a batch of sequences (500 entries) for UTRGAN takes approximately three and a half hours. Following this, data processing and property prediction with UTR-Insight are required, extending the entire workflow to at least eight hours. Reducing computational time and accelerating processing are critical priorities for advancing the project.</p>
+          
+          <p class="textztbf">To address these issues, we iterated the model to achieve improved results.</p>
+          
+          <h3>（2） Second Iteration</h3>
+          <p class="textztbf">We addressed the limitations of the first-generation model through enhancements. First, to resolve issues like environment setup and data misalignment in the phased workflow, we designed a fusion model integrating UTRGAN and UTR-Insight. The goal was to build a fully integrated end-to-end model, achieving a closed-loop process from sequence generation to property prediction. Second, we added a GC content control module that dynamically adjusts base generation probabilities to prevent excessively high GC content at the source.</p>
+          
+          <p class="textztbf">To address sequence stability imbalances reported in initial wet-lab experiments, we implemented targeted enhancements across core functionality and optimization logic: At the core functionality level, we integrated minimum free energy prediction capabilities, systematically incorporating mRNA stability ， a critical regulatory dimension ， into the core constraint framework of sequence design. Regarding optimization logic enhancement, we introduced a gradient optimization mechanism. Building upon UTRGAN's original generation logic, this mechanism dynamically guides the parameter space of sequence generation through gradient optimization algorithms, further improving the functional adaptability and experimental validity of generated sequences.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/5utr/5utr2-1.webp" alt="Fusion model mechanism">
+          </div>
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/5utr/5utr2-2.webp" alt="Fusion model mechanism">
+          </div>
+          <div class="image-caption">
+              Figure 2. Fusion model mechanism. a) Trained Generator module. Sampling vectors from a 25-dimensional latent space, the generator produces 128 nt monothermic-encoded 5'UTR sequences; through adversarial training between generator and discriminator, the generator ultimately outputs natural-like structural sequences. b) 5'UTR design workflow integrating UTR-Insight. The trained generator produces initial sequences, which undergo MRL/TE prediction via the UTR-Insight model. The generator input vector is then optimized through gradient-ascending backpropagation until high MRL/TE targets are achieved, yielding the optimized sequence.
+          </div>
+          
+          <p class="textztbf">We restructured six code modules across both models. In the integrated new model, we added a GC content control module to regulate sequence GC content; incorporated a minimum free energy prediction module to quantify mRNA secondary structure stability during sequence generation; We modified the property prediction module of UTR-Insight, which replaces the original property prediction function of the UTRGAN model to achieve more accurate predictions. By restructuring the input and output modules, the distinct functions of the two models are executed sequentially, eliminating the need for manual data alignment. For computational modules, we enhanced computational performance and reduced computation time through lightweight strategies such as deeply separable convolutions, attention mechanisms, and inference acceleration.</p>
+          
+          <table>
+              <thead>
+                  <tr>
+                      <th>Scheme</th>
+                      <th>Design Sequences (500) Time Consumed/h</th>
+                      <th>Complete Workflow Time Required/h</th>
+                      <th>Can be Controlled GC content</th>
+                      <th>Can it be performed Minimum Free Energy Predictable</th>
+                      <th>Is it necessary to Manual Data alignment</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>Original Model</td>
+                      <td>3.5</td>
+                      <td>8</td>
+                      <td>No</td>
+                      <td>No</td>
+                      <td>Yes</td>
+                  </tr>
+                  <tr>
+                      <td>After iteration Model</td>
+                      <td>1.5</td>
+                      <td>3</td>
+                      <td>Yes</td>
+                      <td>Yes</td>
+                      <td>No</td>
+                  </tr>
+              </tbody>
+          </table>
+          <div class="image-caption">
+              Table 2. Comparative Properties of Two-Generation Models
+          </div>
+          
+          <p class="textztbf">Using the newly designed fusion model, we conducted a second round of sequence design and performed wet-lab validation, with high expectations for the results. However, the outcomes of the second round of wet experiments revealed that our designed sequence representations performed poorly, yielding results even worse than the first round of validation. At this point, we found ourselves in a predicament, as the fusion model failed to deliver the expected performance.</p>
+          
+          <p class="textztbf">We began re-examining our work to pinpoint the model's issues. During the model reproduction phase, we had omitted pre-training ， a critical factor for enhancing model performance. In the actual reproduction of UTR-Insight, we skipped key pre-training steps, directly incorporating a randomly initialized Transformer encoder into the main model training. This omission prevented the encoder from effectively capturing hierarchical biological features within sequences, creating a gap with the original model's design logic. Consequently, the reproduced model's prediction accuracy failed to match the levels reported in the literature. For the fusion model, we lacked sufficient data for training, and some code modules underwent restructuring. Compared to the original paper, the model's inherent performance could not be guaranteed.</p>
+          
+          <p class="textztbf">During sequence selection, we relied solely on model prediction values without establishing a reference standard. Consequently, we cannot confirm whether the selected sequences achieve optimal protein expression outcomes.</p>
+          
+          <p class="textztbf">Although the second-generation model did not yield satisfactory results, it provided valuable insights and allowed us to accumulate significant experience. To enhance model performance and increase the reliability of experimental outcomes, we decided to change our strategy and redesign our model.</p>
+          
+          <h3>（3） Third Iteration</h3>
+          <p class="textztbf">Following discussions and analysis, we altered our original strategy and decided to design a workflow integrating several components. We first pre-trained the model, achieving accuracy comparable to the original literature.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/5utr/5utr3.webp" alt="Training Accuracy vs Literature Target">
+          </div>
+          <div class="image-caption">
+              Figure 3. Training Accuracy vs Literature Target. Top-1 training accuracy of our reproduction (dashed) closely matches the reference implementation (solid) and remains within the literature accuracy band (center ±0.5 percentage points) for most of training. Final gap at the last epoch is 0.00 pp, with a tail mean absolute difference of 0.00 pp over the last 10 epochs. Note: "pp" denotes percentage points.
+          </div>
+          
+          <p class="textztbf">To minimize modifications to the original model, we designed an automated workflow enabling parallel operation of both models for sequence design optimization and property prediction. We first established a compatible environment where both models functioned correctly. Building upon this foundation, we developed a scripted tool to integrate the two models. The workflow incorporates previous best practices, including standardized data formats, GC content constraints, and minimum free energy predictions. To address the lack of reference standards, we selected two natural sequences from the literature for comparison. We calculated their MRL values and minimum free energies, using these metrics as benchmarks to screen for sequences with higher MRL values and comparable minimum free energies.</p>
+          
+          <p class="textztbf">We generated a third batch of sequences using the new model and selected a subset for wet-lab validation.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/5utr/5utr4.webp" alt="Comparison of model output quality">
+          </div>
+          <div class="image-caption">
+              Figure 4. Comparison of model output quality across three batches of 5'UTR designs
+          </div>
+          
+          <p class="textztbf">The design quality of the third batch of 5'UTRs improved compared to the first two batches. Notably, the regulatory efficacy of sequence 37 surpassed that of two naturally occurring highly expressed 5'UTRs, demonstrating application potential. This marks a significant milestone in the iterative refinement of our UTR optimization model.</p>
+          
+          <p class="textztbf">Following the workflow design, we focused on developing an interactive web platform to provide an effective tool for sequence design optimization.</p>
+          
+          <div style="display: flex; justify-content: center; margin: 2rem 0;">
+            <iframe title="The 5′UTR Sequence Optimization Platform" 
+                    width="672" 
+                    height="378" 
+                    src="https://video.igem.org/videos/embed/ehk18EfFN87vJgzGrQfuWL" 
+                    allow="fullscreen" 
+                    sandbox="allow-same-origin allow-scripts allow-popups allow-forms" 
+                    style="border: 0px; max-width: 100%;">
+            </iframe>
+          </div>
+          <div class="image-caption">
+              Video 1. Web Platform Demonstration
+          </div>
+          
+          <p class="textztbf">This platform enables users to upload sequences or parameters, automatically invoking our new model for sequence design and property prediction. Users can visually observe how different 5'UTR sequences impact translation efficiency and stability within cellular environments. This not only significantly lowers the technical barrier for 5'UTR design but also provides a powerful tool for mRNA therapy research and development.</p>
+      </section>
+
+      <section id="discussion" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">3. Discussion</h2>
+          <p class="textztbf">Our work underwent three iterative rounds of 5'UTR sequence design, forming a complete closed-loop practice. The ultimately developed interactive web platform transforms technical achievements into low-barrier tools, laying the foundation for subsequent applications while identifying issues in existing workflows: disconnect between generation and functional requirements, delayed stability assessment, and insufficient multi-objective coordination.</p>
+          
+          <p class="textztbf">Building on these practical insights, we propose a reverse generation strategy beyond initial forward screening attempts to enhance sequence design efficiency and reliability. This model first generates sequences by combining random noise with key target gene information, actively adjusting nucleotide composition during generation to maintain reasonable ranges while ensuring structural integrity and translation efficiency through multi-objective constraints. Next, it comprehensively evaluates generated sequences across dimensions including structural similarity, translational potential, stability, and rational base composition, retaining only sequences meeting all criteria. Finally, it refines qualified sequences to enhance translational efficiency while correcting stability deviations and preventing base composition shifts, ultimately selecting conflict-free sequences with optimal translational efficiency and stability. This effectively resolves the efficiency and reliability issues of traditional workflows.</p>
+          
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/5utr/5utr.webp" alt="Flowchart Online Link">
+          </div>
+          <div class="image-caption">
+              Figure 4. Flowchart Online Link (solid line): Input target gene information and random noise undergoes conditional generation, with the GC control module dynamically adjusting base probabilities during generation to maintain GC content between 40–60%. Subsequently enters a multidimensional discriminator, scoring and weighting four dimensions: structural similarity (k-mer/secondary structure), translation potential (MRL prediction), stability (MFE range), and base composition (GC%). Only sequences meeting all four criteria pass the gate; Constrained multi-objective optimization is applied to qualifying sequences (enhancing MRL, correcting MFE, stabilizing GC), with non-dominated solutions selected via the Pareto criterion as final outputs. Offline Training (dashed line): Utilizing UTRdb as the baseline, UTRGAN as the generated set, and a high-expression reference set as data sources, a two-stage training approach employs a multi-objective loss function comprising WGAN-GP, MRL loss, MFE interval loss, and GC interval loss. Phase 2: MRL + MFE Synergy), dynamically calibrating weights λ on a high-quality validation set. This workflow significantly enhances design efficiency and expression performance while ensuring reliability.
+          </div>
+      </section>
+
+      <section id="summary" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">4. Summary</h2>
+          <p class="textztbf">This study centers on dry-lab experiments for 5′UTR sequence optimization, focusing on applying two existing models and designing a novel one. Through three rounds of dry-wet experiment iterative refinement, we developed an integrated 5′UTR design model combining the UTRGAN generative model and UTR-insight property prediction model. This incorporates GC content control and minimum free energy prediction to achieve multi-objective optimization. We also developed a web platform for sequence design , significantly lowering the technical barrier for 5′UTR design. Addressing limitations in existing workflows, we proposed a reverse-design model that combines a multi-objective generator, multi-dimensional discriminator, and multi-objective optimizer to directly output highly expressible and stable 5′UTR sequences, effectively overcoming shortcomings in traditional approaches.</p>
+          
+          <p class="textztbf">Moving forward, we plan to broaden the model's applicability by integrating multi-omics data mining mechanisms to enhance design precision, advancing clinical translation to accelerate the transition from laboratory to medical applications. Concurrently, we will combine cross-disciplinary technologies such as gene editing to further elevate the model's application value and innovation potential, providing robust support for subsequent research and development in mRNA therapeutics.</p>
+          
+          <h3>References:</h3>
+          <p class="textztbf">[1] Barazandeh et al. Bioinformatics Advances, 2025 https://doi.org/10.1093/bioadv/vbaf134</p>
+          <p class="textztbf">[2] Pan et al. BMC Genomics (2025) 26:107 https://doi.org/10.1186/s12864-025-11269-7</p>
+            
+      </section>
+      <section id="user" class="wz-content-section">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">5. User Manual</h2>
+        <div style="margin: 3rem 0; display: flex; justify-content: center; flex-direction: column; gap: 1rem;">
+            <!-- PDF嵌入核心标签：width100%避免超出文本框，height足够阅读 -->
+            <embed 
+                src="https://static.igem.wiki/teams/5844/pages/5utr/5-utr-design-model-manual.pdf" 
+                type="application/pdf" 
+                style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 4px;"
+                title="5-utr-design-model-manual">
+            <!-- 备用提示（若浏览器不支持直接渲染） -->
+            <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                <a href="https://static.igem.wiki/teams/5844/pages/5utr/5-utr-design-model-manual.pdf" target="_blank" style="color: #66CCFF;">Click to Download</a>
+            </p>
+        </div>
+      </section>
+  </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航文本元素
+    const texts = [
+        document.getElementById('text-1'),  // Introduction
+        document.getElementById('text-2'),  // Methods and Results
+        document.getElementById('text-3'),  // Discussion
+        document.getElementById('text-4'),   // Summary
+        document.getElementById('text-5')   // user
+    ];
+    
+    // 内容区块
+    const sections = [
+        document.getElementById('introduction'),  // Introduction
+        document.getElementById('methods-results'),  // Methods and Results
+        document.getElementById('discussion'),  // Discussion
+        document.getElementById('summary') ,  // Summary
+        document.getElementById('user')   // user
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return;
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 500) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 更新active状态
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应区块
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动事件
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

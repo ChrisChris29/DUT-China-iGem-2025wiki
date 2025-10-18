@@ -1,0 +1,527 @@
+{% extends "layout.html" %}
+  
+{% block title %}Results{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-7973.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 20px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: nowrap;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 20px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px; /* 增加最大宽度 */
+    width: clamp(70%, 75vw, 80%); /* 增加宽度百分比 */
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem); /* 减少右边距，使内容框向右移动 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+.image-container.two-images {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2em 0;
+    margin-bottom: 1em;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.image-container.two-images img {
+    max-width: 48%;
+    margin-bottom: 1rem;
+}
+
+.figure-container {
+    margin: 2em 0;
+    text-align: center; /* 让图片说明文字也居中 */
+}
+
+.figure-image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1em;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.figure-caption {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    text-align: left; /* 保持说明文字左对齐 */
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(75, 85, 99, 0.92);
+    font-style: italic; /* 图片注释改为斜体 */
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#abstract" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">Abstract</span>
+    </a>
+    
+    <a href="#drug-platform" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">Drug Platform</span>
+    </a>
+    
+    <a href="#delivery-carrier" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">Delivery Carrier</span>
+    </a>
+    
+    <a href="#target-application" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">Target Application</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="abstract" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Abstract</h2>
+          <p class="textztbf">This project successfully constructed a modular mRNA drug platform for hepatocellular carcinoma: In terms of platform construction, we generated efficient artificial 5'UTR sequences through multiple rounds of model iterative optimization, and screened out 30× exCAG-based sequences Molecular switching of repeats to achieve tumor-specific expression regulation; In terms of delivery system, we successfully exhibited GPC3 antibodies on the surface of artificially prepared bacterial outer vesicles and performed heterozygous characterization of EVs and LNPs by fluorescence staining technology, achieving a heterozygous efficiency of about 80%; Finally, we verified the "dual regulation" strategy at the core of the platform at the functional level, that is, the siRNA was used to successfully degrade the proto-oncoprotein TGF-β (efficiency >70%), and confirmed the feasibility of "up-regulating detoxification protein and down-regulating proto-oncoprotein at the same time" through a dual fluorescence reporting system. The platform integrates efficient expression, precise targeting, and synergistic regulation, laying a solid foundation for the development of next-generation mRNA therapeutics.</p>
+      </section>
+
+      <section id="drug-platform" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">1. Drug platform design module</h2>
+          
+          <h3>1.1 5’UTR Optimization Module</h3>
+          <p class="textztbf">The 5′ untranslated region (5′UTR) plays a key role in ribosomal recruitment, regulation of translation initiation, and maintenance of mRNA stability. In order to obtain the manually optimized design of the 5’UTR sequences, we selected two models, UTRGAN and UTR-Insight, and iteratively optimized them based on the model characteristics and operating requirements. A total of 39 sequences were output in three batches, and 35 were verified.</p>
+          <p class="textztbf">In terms of characterization, we selected luciferase as the reporter protein and designed luciferase-expressing RNA (Luc-UTR RNA) to evaluate the regulatory efficiency of different 5′UTR variants.</p>
+          <p class="textztbf">In order to further characterize our 5’UTR effect, we collected the NCA-7d-5'UTR sequence, which is a highly expressed endogenous 5’UTR, and the Albumin-5'UTR sequence, which is an albumin gene-derived 5’UTR, both are naturally occurring 5’UTR sequences in nature and have been used in mRNA therapy research. We want to compare it with the regulation effect of our self-designed 5’UTR to better evaluate our optimization results.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result1.webp" class="figure-image" alt="Characterization of Regulatory Efficiency for the First Set of 5'UTR Sequences">
+              <p class="figure-caption"><strong>Figure 1. Characterization of Regulatory Efficiency for the First Set of 5'UTR Sequences</strong>    Sequence numbers 1–10 represent nine differently designed 5'UTR sequences. The PC group uses Pfizer's publicly available artificially optimized 5'UTR sequence, while NC serves as a blank control without transfection of RNA. Luciferase activity was measured and is presented as Relative Light Units (RLU).</p>
+          </div>
+          
+          <!-- 两张图片一行布局 -->
+          <div class="image-container two-images">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result2a.webp" alt="CCIC event photo 1">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result2b.webp" alt="CCIC event photo 2">
+              <p class="figure-caption"><strong>Figure 2. Efficiency Characterization of the Second Set of 5'UTR Sequences</strong>    Sequence numbers 11-24 represent 14 differently designed 5'UTR sequences. The PC group uses Pfizer's publicly available artificially optimized 5'UTR sequence, while NC serves as a blank control without transfection of RNA. Luciferase activity was measured and is presented as Relative Light Units (RLU).</p>
+            </div>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result3a.webp" class="figure-image" alt="The third batch of 5'UTR sequence regulatory efficiency characterization">
+              <p class="figure-caption"><strong>Figure 3. The third batch of 5'UTR sequence regulatory efficiency characterization.</strong>    Numbers 26-39 represent 14 differently designed 5'UTR sequences. The PC group uses Pfizer's publicly available artificially optimized sequence, the NCA group uses the NCA-7d-5'UTR sequence, the Alb group uses the Albumin-5'UTR sequence, and NC serves as the blank control without transfection of RNA. Luciferase activity was measured and is presented as Relative Light Units (RLU).</p>
+          </div>
+          
+          <p class="textztbf">To further compare the regulatory effects of three batches of 5'UTR to evaluate our model optimization results, we normalized the fluorescence data for each batch according to the PC group.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result4a.webp" class="figure-image" alt="Comparative Characterization of Regulatory Efficiency Among Three Batches of 5'UTR Sequences">
+              <p class="figure-caption"><strong>Figure 4. Comparative Characterization of Regulatory Efficiency Among Three Batches of 5'UTR Sequences.</strong>   Numbers 1–39 denote 34 differently designed 5'UTR sequences. The PC group uses Pfizer's publicly available artificially optimized 5'UTR sequence, the NCA group uses the NCA-7d-5'UTR sequence, the Alb group uses the Albumin-5'UTR sequence, and NC represents the blank control without transfection of RNA. Fluorescence intensity data were measured at 560 nm wavelength using a microplate reader. The vertical axis represents the ratio of fluorescence intensity in the experimental group to that in the PC group.</p>
+          </div>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result5a.webp" class="figure-image" alt="Comparison of Output Quality Among Three Batches of 5'UTR Models">
+              <p class="figure-caption"><strong>Figure 5. Comparison of Output Quality Among Three Batches of 5'UTR Models</strong>    Fluorescence intensity data were measured at 560 nm wavelength using a microplate reader. The vertical axis represents the ratio of fluorescence intensity in the experimental group to that in the PC group.</p>
+          </div>
+          
+          <p class="textztbf">According to the analysis of experimental data, the design quality of the third batch of 5'UTR is improved compared with the previous two batches, and the regulatory effect of the No. 37 5'UTR sequence is better than that of the two high in nature Expressing 5'UTR, it has application potential. So far, the iteration of our UTR optimization model has achieved certain results.</p>
+          
+          <h3>1.2 Molecular switch design module</h3>
+          <p class="textztbf">While mRNA therapeutics have shown promise in vitro and in vitro experiments, they still face several challenges, particularly off-target effects and insufficient specificity. In order to avoid the cytotoxicity that protein regulatory modules may cause in normal cells and to solve the above key problems, we design and optimize two types of RNA molecular switches: exCAG sequence-based switches and Toehold switches.</p>
+          <p class="textztbf">The Toehold switch is an artificially designed RNA riboswitch that hides the translation initiation region in the mRNA secondary structure and initiates translation only when a specific trigger RNA is present. At present, Toehold switches have been extensively studied in prokaryotic systems, but there are still deficiencies in eukaryotic systems. In this study, a series of eukaryotic Toehold switches were constructed and validated based on existing data, with luciferase as the reporter gene. The regulatory ability of different switches was evaluated by comparing the fluorescence intensity with and without miR-21.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result6.webp" class="figure-image" alt="Validation of the self-designed toehold sequence for regulating protein expression">
+              <p class="figure-caption"><strong>Figure 6. Validation of the self-designed toehold sequence for regulating protein expression.</strong>    Luciferase activity was measured and presented as Relative Light Units (RLU). Groups C1, E1, I1, K1, and T1 were transfected with mRNA containing only the toehold switch sequence and luciferase sequence. Groups C2, E2, I2, K2, and T2 were transfected with mRNA and miR-21 mimics. Groups C3, E3, I3, K3, and T3 were transfected with mRNA and miR-21 inhibitors. The PC group was transfected with mRNA expressing luciferase without the switch sequence, while the NC group received no transfection. Statistical significance was assessed using ANOVA with Bonferroni-corrected multiple comparisons (*p < 0.05; **p < 0.01; ***p < 0.001; ****p < 0.0001; mean ± standard deviation).</p>
+          </div>
+          
+          <p class="textztbf">The experimental results show that the toehold switch from the literature source has a lower opening level, while the toehold switch generated by the model has a higher leakage expression and poor regulatory effect. Therefore, we decided to continue to optimize the Toehold switch generation model from the dry experimental dimension, and explore other feasible molecular switch designs.</p>
+          <p class="textztbf">The exCAG switch consists of a miR-21 binding region and a repressive sequence, located downstream of the mRNA polyA tail. The repression region consists of repeated CAG sequences that silence the ORF region by inducing RNA gelation. When the concentration of miR-21 in cells is high, its complementary region pairs with miR-21 and recruits the RISC complex to cleave the inhibitory sequence, thereby degelating RNA, allowing ORF to be expressed normally and achieving cell selectivity.</p>
+          <p class="textztbf">We designed three mRNAs with mcherry sequences as reporters (CAG30 mRNA, CAG10 mRNA, CAG3 mRNA), in The posterior insertion of the polyA tail of the three RNAs adds the miR-21 binding sequence, and the CAG sequence with different repeat numbers is inserted as the repression sequence (30×, 10×, 3×). to explore the optimal exCAG repetitions and improve switch selectivity.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result7.webp" class="figure-image" alt="Fluorescence detection results of protein expression regulation by 30xCAG, 10xCAG, and 3xCAG sequences">
+              <p class="figure-caption"><strong>Figure 7. Fluorescence detection results of protein expression regulation by 30xCAG, 10xCAG, and 3xCAG sequences.</strong>  mCherry fluorescence was detected by flow cytometry and presented as Mean Fluorescence Intensity (MFI). The NC group was not transfected with any RNA. Statistical significance was assessed using ANOVA combined with Bonferroni's multiple comparison test (*p < 0.05; **p < 0.01; ***p < 0.001; ****p < 0.0001; mean ± standard deviation).</p>
+          </div>
+          
+          <p class="textztbf">The experimental results showed that the control group transfected with CAG10 mRNA and the experimental group transfected with CAG10 mRNA and miR-21 mimic were detected by flow cytometry using B610 channels. There was no significant difference in mCherry fluorescence intensity (p>0.05). However, the control group transfected with CAG3 mRNA and the experimental group transfected with CAG3 mRNA and miR-21 mimic showed a significant difference in fluorescence intensity (p<0.01). Similarly, the control group transfected with CAG30 mRNA and the experimental group transfected with CAG30 mRNA and miR-21 mimic also showed a significant difference in fluorescence intensity (p<0.001). Based on the experimental results, we guessed that the better CAG repeat number might be around or above 30. As for the regulatory effect of CAG3 mRNA, it may be caused by other mechanisms, which needs to be further explored.</p>
+          <p class="textztbf">In order to further evaluate the regulatory effect of the two types of switches on protein expression under different designs, and to screen out the optimal scheme, we compared the induction folds of the above switch designs.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result8a.webp" class="figure-image" alt="Induction ratio for different switch designs" style="height: 500px; width: auto;">
+              <p class="figure-caption"><strong>Figure 8. Induction ratio for different switch designs</strong>   Induction ratio = (Fluorescence intensity measured with mRNA + triggerRNA / Fluorescence intensity measured with mRNA alone)</p>
+          </div>
+          
+          <p class="textztbf">Comparing the induction folds and switch levels of the above five switches, we will select a molecular switch based on the 30xexCAG sequence as part of our molecular platform design, thereby improving the safety of our drugs.</p>
+      </section>
+
+      <section id="delivery-carrier" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">2. Delivery carrier design</h2>
+          <p class="textztbf">Lipid nanoparticles (LNPs) are the core delivery system of current nucleic acid drugs, which can effectively overcome the multiple barriers of mRNA in vitro and vitro, and have the advantages of low immunogenicity, high encapsulation efficiency, organ targeting, and efficient intracellular delivery. GPC3 is a glycoprotein associated with liver cancer that is highly expressed in 70–80% of patients with hepatocellular carcinoma, especially in poorly differentiated tumors, and almost non-existent in normal adult liver tissue.</p>
+          <p class="textztbf">Based on this, we intend to confer the specific recognition ability of HCC cells by conjugating GPC3 antibody on the surface of LNP. The specific strategy consists of three steps: (i) presentation of GPC3 antibodies using the Lpp-OmpA Presentation System in E.coli; (ii) preparation of extracellular vesicles (EVs) that surface present GPC3 antibodies; (iii) It was hybridized with LNPs to prepare LNP-EV hybridized vectors carrying GPC3 antibodies on the surface.</p>
+          <p class="textztbf">In terms of protein presentation, we successfully demonstrated eGFP and GPC3 single-stranded antibodies on the surface of BL21 E.coli, respectively, and characterized them by nanoflow cytometry and Western blot experiments.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result9.webp" class="figure-image" alt="Nanostream flow cytometry characterization of fluorescence intensity in eGFP-presenting EVs">
+              <p class="figure-caption"><strong>Figure9. Nanostream flow cytometry characterization of fluorescence intensity in eGFP-presenting EVs</strong>   a: Test sample: eGFP-presenting EVs b: Test sample: EVs derived from wild-type BL21.</p>
+          </div>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result10a.webp" class="figure-image" alt="Western blot results for EVs displaying eGFP and GPC3 monoclonal antibodies on their surfaces">
+              <p class="figure-caption"><strong>Figure 10. Western blot results for EVs displaying eGFP and GPC3 monoclonal antibodies on their surfaces.</strong>   Lane 1 shows EVs produced by wild-type BL21 as a negative control. Lanes 2 and 3 display EVs presenting eGFP protein on their surfaces. Lane 4 shows EVs presenting GPC3 monoclonal antibodies on their surfaces. The expected molecular weights for both the Lpp-OmpA-eGFP fusion protein and the Lpp-OmpA-GPC3 monoclonal antibody fusion protein are approximately 42 kDa. The protein loading amount was 5 ng.</p>
+          </div>
+          
+          <p class="textztbf">In terms of LNP-EVs hybridization, we performed DID staining of BL21-derived EVs and coumarin C6 staining of LNPs, realized the heterozygosity of the two by freeze-thaw method, and detected the hybridization efficiency by nanoflow cytometry.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result11.webp" class="figure-image" alt="Fluorescence Characterization of EVs-LNP Hybrids">
+              <p class="figure-caption"><strong>Figure11  Fluorescence Characterization of EVs-LNP Hybrids</strong>  a: BL21-derived EVs stained with DID; b: LNP stained with coumarin C6; c: EVs-LNP hybrid staining; d: Fluorescence intensity of unstained BL21-derived EVs</p>
+          </div>
+          
+          <p class="textztbf">The heterozygous effect was well characterized, and the fluorescence detection rate of hybrid vesicles could reach about 80%. The fluorescent labeling rate increased after hybridization, which may be caused by the migration of dye molecules during hybridization freeze-thawing.</p>
+      </section>
+
+      <section id="target-application" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">3. Target application design</h2>
+          <p class="textztbf">Based on the existing m-PROTAC strategy, we designed our protein regulatory element, which consists of three modules, namely the Trim21 protein, the ligation peptide, and a short peptide that can specifically bind to the target protein. The common fusion protein of these three modules can specifically bind to the target protein and reduce the content of related oncogenic proteins in hepatocellular carcinoma cells by mediating the ubiquitination degradation pathway, thereby inhibiting cancer.</p>
+          <p class="textztbf">At the same time, hepatocellular carcinoma (HCC) is a highly heterogeneous and complex malignant tumor, and its occurrence and development involves abnormal activation of multiple signaling pathways, making it difficult for any single-target drug to achieve durable and effective tumor control.</p>
+          <p class="textztbf">Based on this, we added protein expression elements to the protein regulation module. It is hoped that the expression of tumor suppressor gene-related proteins can be improved while degrading the proteins expressed by the original oncogene in hepatocellular carcinoma cells, thereby improving the anti-cancer effect of drugs. Here we select TGF-β protein as our protein degradation target and HNF4α protein as our protein expression target.</p>
+          <p class="textztbf">To verify the feasibility and effectiveness of our protein regulatory elements, we conducted the following experiments:</p>
+          <p class="textztbf">First, we designed siRNAs targeting bases 48, 339 and 642 of TGF-β protein mRNA to knock down TGF-β protein gene expression at the RNA level. The changes of TGF-β protein content and mRNA content in hepatocellular carcinoma cells after transfection with siRNA were detected by RT-qPCR and Western blot assays to verify the feasibility of our protein degradation target selection.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result12.webp" class="figure-image" alt="Analysis of RT-qPCR results from TGF-β gene siRNA silencing experiments">
+              <p class="figure-caption"><strong>Figure 12. Analysis of RT-qPCR results from TGF-β gene siRNA silencing experiments.</strong>  Data from three groups (siRNA1, siRNA2, siRNA3) were obtained from samples transfected with siRNAs targeting positions 642, 48, and 339 of the TGF-β mRNA, respectively. Quantitative PCR was performed on a real-time PCR system for data collection and analysis. All samples were prepared and replicated three times. The experiment was performed independently at least three times. To calculate relative concentrations, CT values were obtained for all samples. ΔCt represents a normalized, relative gene expression level. This normalization was achieved by standardizing the degradation effect of TGF-β siRNA. Normalized expression for each sample was obtained by subtracting the CT value of the internal reference gene (GAPDH) from the same sample, designated as ΔCt. Compare the ΔCt of the experimental group with the ΔCt of the control group.  Formula: ΔΔCt = ΔCt(siRNA) individual - ΔCt(siRNA) mean. Then convert this value to a comparative fold change by performing log(2 −(ΔΔCT)). Statistical significance was assessed using ANOVA with Bonferroni correction for multiple comparisons (*p < 0.05; **p < 0.01; ***p < 0.001; ****p < 0.0001; mean ± standard deviation).</p>
+          </div>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result13.webp" class="figure-image" alt="Western Blot results for TGFβ gene silencing by siRNA">
+              <p class="figure-caption"><strong>Figure 13. Western Blot results for TGFβ gene silencing by siRNA.</strong>   Lanes siRNA1, siRNA2, and siRNA3 correspond to samples transfected with siRNA targeting positions 642, 48, and 339 of TGFβ mRNA, respectively. Lanes Untreated1–Untreated3 on the right serve as blank controls. Cells were lysed and analyzed 48 hours after siRNA transfection. Protein loading was 20 μg.</p>
+          </div>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result14.webp" class="figure-image" alt="Western Blot Gray Value Analysis of TGFβ Gene Silencing by siRNA">
+              <p class="figure-caption"><strong>Figure 14. Western Blot Gray Value Analysis of TGFβ Gene Silencing by siRNA</strong>   Statistical significance was assessed using ANOVA with Bonferroni correction for multiple comparisons (*p < 0.05; **p < 0.01; ***p < 0.001; ****p < 0.0001; mean ± standard deviation).</p>
+          </div>
+          
+          <p class="textztbf">Based on the RT-qPCR experimental analysis, the degradation rate of siRNA of the three TGF-β reached 70% or more, and Western blot was also used Experimental grayscale analysis also showed that we successfully silenced the TGF-β gene. It was proved that the protein expression of this target could be artificially regulated.</p>
+          <p class="textztbf">To validate the necessity of enhancing HNF4α protein expression, we designed a Western blot assay to compare HNF4α protein levels between hepatocellular carcinoma cells and other cell types. Results demonstrated reduced HNF4α expression in hepatocellular carcinoma tissues, confirming the feasibility of selecting this protein expression target for our study.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result15.webp" class="figure-image" alt="Western Blot results for intracellular HNF4α protein expression">
+              <p class="figure-caption"><strong>Figure15. Western Blot results for intracellular HNF4α protein expression.</strong>    The left three lanes represent proteins extracted from 293T cells, while the right three lanes represent proteins extracted from HepG2 cells. Cells were lysed and analyzed 48 hours after siRNA transfection. Each sample contained 20μg of protein.</p>
+          </div>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result16.webp" class="figure-image" alt="Analysis of grayscale values in Western Blot for intracellular HNF4α protein content detection">
+              <p class="figure-caption"><strong>Figure16. Analysis of grayscale values in Western Blot for intracellular HNF4α protein content detection</strong>    Statistical significance was assessed using ANOVA with Bonferroni correction for multiple comparisons (*p < 0.05; **p < 0.01; ***p < 0.001; ****p < 0.0001; mean ± standard deviation).</p>
+          </div>
+          
+          <p class="textztbf">Results demonstrated reduced HNF4α expression in hepatocellular carcinoma tissues, confirming the feasibility of selecting this protein expression target for our study.</p>
+          <p class="textztbf">To verify the feasibility of upregulation and downregulation of two different target proteins at the same time, we designed siRNAs targeting eGFP fluorescent proteins (eGFP siRNAs) and those that can stably express eGFP/Luc, respectively iferase mRNA (eGFP mRNA and Luc mRNA). The feasibility of this strategy was verified by transfecting eGFP mRNA into cells first, and then co-delivering eGFP siRNA and Luc mRNA into cells.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result17a.webp" class="figure-image" alt="Fluorescence detection results of eGFP siRNA and luc mRNA co-delivery experiment">
+              <p class="figure-caption"><strong>Figure 17: Fluorescence detection results of eGFP siRNA and luc mRNA co-delivery experiment</strong>    a: EGFP fluorescence intensity detected by flow cytometry using the B525 channel, presented as Mean Fluorescence Intensity (MFI) b: Fluorescence intensity measured at 560 nm wavelength using a microplate reader, presented as Relative Light Units (RLU). Statistical significance was assessed using ANOVA with Bonferroni correction for multiple comparisons (*p < 0.05; **p < 0.01; ***p < 0.001; ****p < 0.0001; mean ± standard deviation).</p>
+          </div>
+          
+          <p class="textztbf">The experimental results showed that the green fluorescence intensity of the experimental group transfected with eGFP siRNA was significantly different from that of the control group without siRNA transfection (p<0.0001). Under the same experimental conditions, there was no significant difference in fluorescence intensity at 560 nm wavelength between the two groups (p>0.05). This indicates that we successfully expressed Luc while reducing eGFP expression using siRNA, demonstrating the feasibility of simultaneously upregulating and downregulating two different target proteins.</p>
+          <p class="textztbf">To evaluate the application potential of the drug, we designed siRNAs (eGFP siRNA and Luc mRNA) that target eGFP fluorescent proteins/Luc iferase, respectively , and those capable of stable expression of eGFP, respectively /Luciferase mRNA (eGFP mRNA and Luc mRNA). The feasibility of this strategy was verified by transfecting eGFP mRNA and Luc mRNA into cells first, and then delivering eGFP siRNA and Luc siRNA into cells.</p>
+          
+          <div class="figure-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/wetlab/dut-china-result18a.webp" class="figure-image" alt="Fluorescence detection results of eGFP siRNA and luc siRNA co-delivery degradation experiment">
+              <p class="figure-caption"><strong>Figure18. Fluorescence detection results of eGFP siRNA and luc siRNA co-delivery degradation experiment</strong>    a: EGFP fluorescence intensity detected by flow cytometry using the B525 channel, presented as Mean Fluorescence Intensity (MFI) b: Fluorescence intensity measured at 560 nm wavelength using a microplate reader, presented as Relative Light Units (RLU). Statistical significance was assessed using ANOVA with Bonferroni correction for multiple comparisons (*p < 0.05; **p < 0.01; ***p < 0.001; ****p < 0.0001; mean ± standard deviation).</p>
+          </div>
+          
+          <p class="textztbf">The experimental results showed that the green fluorescence intensity of the experimental group transfected with eGFP siRNA and Luc siRNA was significantly different from that of the control group without transfected siRNA (p<0.0001) , and under the same experimental treatment, there was a significant difference in fluorescence intensity between the two groups at 560nm wavelength (p<0.001), indicating that we used eGFP siRNA and Luc siRNA successfully reduced the expression of eGFP and Luciferase at the same time, proving the feasibility of our strategy of down-regulating the expression of multiple proteins at the same time, and laying the foundation for further experimental exploration.</p>
+          <p class="textztbf">In future work, we plan to integrate the degradation and expression modules into a single RNA construct, transfect them into HCC cells, and evaluate protein level changes to further confirm therapeutic effects. We expect this drug to complement as a molecularly targeted drug in combination therapy and to have a synergistic effect with immunotherapy drugs. At the same time, we emphasize modular construction in the design, dividing the system into different functional areas to achieve the replaceability and controllability of components, thereby giving it broader transformation and clinical application prospects.</p>
+      </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应Abstract
+        document.getElementById('text-2'),  // 对应Drug Platform
+        document.getElementById('text-3'),  // 对应Delivery Carrier
+        document.getElementById('text-4')   // 对应Target Application
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('abstract'),        // 对应text-1
+        document.getElementById('drug-platform'),   // 对应text-2
+        document.getElementById('delivery-carrier'),// 对应text-3
+        document.getElementById('target-application')// 对应text-4
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 560) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,189 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="height: 80px;"> <!-- 固定导航栏高度 -->
+  <div class="container">
+
+    <!-- 放大的LOGO图片（垂直居中） -->
+    <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+      <img src="https://static.igem.wiki/teams/5844/logo/dut-china-r-llogo.webp" alt="DUT-China Logo" style="height: 70px; width: auto; max-height: 100%;">
+    </a>
+
+    <!-- SMALL SCREEN MENU ICON -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto left-aligned align-items-center"> <!-- 菜单项垂直居中 -->
+
+        <!-- HOME -->
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        </li>
+
+
+        <!-- PROJECT -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbar-project" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Project
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbar-project">
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='description') }}">Description</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='engineering') }}">Engineering</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='contribution') }}">Contribution</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='safety') }}">Safety</a></li>
+          </ul>
+        </li>
+
+        <!-- WET LAB -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbar-wet-lab" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Wet Lab
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbar-wet-lab">
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='design') }}">Design</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='experiments') }}">Experiments</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='results') }}">Results</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='parts') }}">Parts</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='notebook') }}">Notebook</a></li>
+          </ul>
+        </li>
+
+        <!-- MODEL -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbar-model" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Model
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbar-model">
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='model') }}">Overview</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='5\'utr_sequence') }}">5'UTR Sequence</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='hhp_model') }}">HHP Model</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='toehold_switch') }}">Toehold Switch</a></li>
+          </ul>
+        </li>
+
+        <!-- HARDWARE -->
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('hardware') }}" >
+          Hardware
+          </a>
+        </li>
+
+        <!-- HP -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbar-wet-lab" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Human Practices
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbar-wet-lab">
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='human-practices') }}">iHP</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='public_communication') }}">Public Communication</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='team_collaboration') }}">Team Collaboration</a></li>
+          </ul>
+        </li>
+
+        <!-- TEAM -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbar-team" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Team
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbar-team">
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='members') }}">Members</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('pages', page='attributions') }}">Attributions</a></li>
+          </ul>
+        </li>
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // 下拉菜单交互
+    const dropdowns = document.querySelectorAll('.dropdown');
+    
+    dropdowns.forEach(dropdown => {
+        const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+        const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+        
+        let closeTimer;
+        
+        dropdown.addEventListener('mouseenter', function() {
+            clearTimeout(closeTimer);
+            dropdownToggle.setAttribute('aria-expanded', 'true');
+            dropdownMenu.classList.add('show');
+            dropdownMenu.style.opacity = '0';
+            dropdownMenu.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                dropdownMenu.style.opacity = '1';
+                dropdownMenu.style.transform = 'translateY(0)';
+            }, 10);
+        });
+        
+        dropdown.addEventListener('mouseleave', function() {
+            closeTimer = setTimeout(() => {
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.remove('show');
+            }, 300);
+        });
+        
+        dropdownMenu.addEventListener('mouseenter', function() {
+            clearTimeout(closeTimer);
+        });
+        
+        dropdownMenu.addEventListener('mouseleave', function() {
+            closeTimer = setTimeout(() => {
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                dropdownMenu.classList.remove('show');
+            }, 300);
+        });
+    });
+
+    // 平滑滚动到锚点
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                const navbarCollapse = document.querySelector('.navbar-collapse');
+                if (navbarCollapse.classList.contains('show')) {
+                    navbarCollapse.classList.remove('show');
+                }
+            }
+        });
+    });
+
+    // 移动端菜单切换动画
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    
+    navbarToggler.addEventListener('click', function() {
+        navbarCollapse.classList.toggle('animated');
+        
+        if (navbarCollapse.classList.contains('show')) {
+            navbarCollapse.style.maxHeight = '0';
+            setTimeout(() => {
+                navbarCollapse.style.overflow = 'hidden';
+            }, 0);
+        } else {
+            navbarCollapse.style.overflow = 'hidden';
+            navbarCollapse.style.maxHeight = navbarCollapse.scrollHeight + 'px';
+            setTimeout(() => {
+                navbarCollapse.style.maxHeight = '';
+                navbarCollapse.style.overflow = '';
+            }, 300);
+        }
+    });
+});    
+
+</script>

@@ -1,0 +1,462 @@
+{% extends "layout.html" %}
+  
+{% block title %}Description{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-description.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 18px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: nowrap;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 20px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1150px; /* 增加最大宽度 */
+    width: clamp(70%, 75vw, 80%); /* 增加宽度百分比 */
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem); /* 减少右边距，使内容框向右移动 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(227, 17, 227, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    font-size: 1.88rem;
+}
+
+h3 {
+    font-size: 1.32rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+.figure-caption {
+    font-style: italic;
+    text-align: center;
+    margin: 1em 0 2em 0;
+}
+
+.figure-image {
+    display: block;
+    margin: 0 auto 1em auto;
+    max-width: 100%;
+    height: auto;
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#background-research" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">I. Background Research</span>
+    </a>
+    
+    <a href="#project-rationale" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">II. Project Rationale</span>
+    </a>
+    
+    <a href="#target-selection" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">III. Target Selection</span>
+    </a>
+    
+    <a href="#technical-optimization" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">IV. Technical Optimization</span>
+    </a>
+    
+    <a href="#pharmacokinetic-modeling" class="wz-nav-link wz-nav-item">
+        <span id="text-5" class="wz-nav-text">V. Pharmacokinetic Modeling</span>
+    </a>
+    
+    <a href="#cost-control" class="wz-nav-link wz-nav-item">
+        <span id="text-6" class="wz-nav-text">VI. Industrialization</span>
+    </a>
+    
+    <a href="#public-engagement" class="wz-nav-link wz-nav-item">
+        <span id="text-7" class="wz-nav-text">VII. Human Practice</span>
+    </a>
+    
+    <a href="#safety-compliance" class="wz-nav-link wz-nav-item">
+        <span id="text-8" class="wz-nav-text">VIII. Safety</span>
+    </a>
+    
+    <a href="#references" class="wz-nav-link wz-nav-item">
+        <span id="text-9" class="wz-nav-text">References</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="background-research" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">I. Background Research</h2>
+          <p class="textztbf">Liver cancer, one of the most challenging cancers globally, poses a severe threat to human health, with China bearing a particularly heavy disease burden, <strong>nearly half of all global liver cancer diagnoses occur there</strong>, and most patients are diagnosed at advanced stages, missing the optimal treatment window. Faced with the common limitations of existing therapies, such as strong drug resistance and significant side effects, our R-Home team chose to tackle these challenges. We believe synthetic biology is not merely a laboratory tool but a potential means to rewrite life outcomes. Consequently, we are determined to redesign the logic of liver cancer treatment using an engineering mindset.By developing novel mRNA therapeutic strategies, we aim to offer patients longer survival times and improved quality of life, bringing a new ray of hope to countless families. <strong>This is why we named our team "R-Home"</strong>. The "R" stands for not only mRNA，but also Research, Remediation, and Resilience "Home" symbolizes the collaborative ecosystem we strive to create: much like a family, where innovative ideas are nurtured and every effort leads toward one goal – <strong>bringing patients back to their own warm homes</strong>.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/description/dut-china-ds1.webp" class="figure-image" alt="Age Standardized Rate of Primary Liver Cancer Incidence per 100,000 by Country/Region">
+          <p class="figure-caption">Figure 1. Age Standardized Rate of Primary Liver Cancer Incidence per 100,000 by Country/Region (WHO 2020).</p>
+      </section>
+
+      <section id="project-rationale" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">II. Project Rationale</h2>
+          <p class="textztbf">Interviews with clinicians revealed that existing drugs often lack strong target specificity, easily lead to drug resistance, and have limited efficacy [1]. Further discussions with pharmaceutical companies indicated that, due to considerations of universality, cost, and insurance coverage, there is a preference for developing "pan-targeted" drugs.</p>
+          <p class="textztbf">Additionally, through public engagement activities (e.g., " One-Day Doctor "), we found that the public's top three concerns are <strong>drug price, side effects, and efficacy</strong>. This reinforced our team's resolve to develop safe, effective, and accessible precision medicines for liver cancer.</p>
+      </section>
+
+      <section id="target-selection" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">III. Target Selection</h2>
+          <p class="textztbf">The core scientific question is how to achieve "precision therapy." Through consultations with various experts, the team defined the following strategy:</p>
+          <h3><strong>1. Selection of Targets with High Evidence Levels:</strong></h3>
+          <p class="textztbf">Through literature review and expert consultation, we identified HNF4α and TGF-β in the MET pathway. In liver cancer, <strong>HNF4α is typically downregulated, while TGF-β is upregulated</strong>. HNF4α is a core transcription factor maintaining hepatocyte maturity and function; its downregulation is closely associated with malignant progression of liver cancer [5]. Overactivation of TGF-β signaling potently induces Epithelial-Mesenchymal Transition (EMT), promoting tumor cell invasion and migration, inducing tumor microenvironment fibrosis, and suppressing the immune microenvironment, thereby facilitating tumor immune escape. Both targets are supported by substantial clinical evidence. Reviewing the clinical trial results of HNF4α siRNA from Shanghai Changzheng Hospital (Xie Weifen team) and the results of TGF-β-targeting drugs from Sirnaomics further solidified our confidence in targeting these two factors [6, 7].</p>
+          <h3><strong>2. Design of a Multi-Target Regulatory Mechanism:</strong></h3>
+          <p class="textztbf">We aim to use mRNA to simultaneously express PROTAC molecules that target and degrade the oncogenic protein TGF-β and supplement the tumor suppressor protein HNF4α [2, 3]. This "one-down, one-up" approach seeks to synergistically reverse the malignant phenotype of the tumor, achieving dual precision regulation: <strong>"restoring tumor suppressor function + clearing oncogenic protein."</strong> To further investigate feasibility, we also employed co-delivery of mRNA and siRNA, using fluorescent proteins for validation: this demonstrated that simultaneous expression and knockdown of multiple targets (HNF4α upregulation, TGF-β downregulation) is achievable. Co-delivery of two siRNAs, also validated with fluorescent proteins, showed that our design can simultaneously knock down multiple targets (e.g., TGF-β + PD-L1), indicating potential for combination with tumor immunotherapy.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/description/dut-china-ds2a.webp" class="figure-image" alt="Mechanism of Protein-Targeted Degradation and Expression">
+          <p class="figure-caption">Figure 2. Mechanism of Protein-Targeted Degradation and Expression.</p>
+      </section>
+
+      <section id="technical-optimization" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">IV. Technical Optimization</h2>
+          <h3><strong>1. mRNA Expression Efficiency Optimization</strong></h3>
+          <p class="textztbf">Initial wet-lab experiments showed low mRNA translation efficiency and suboptimal delivery performance.</p>
+          <p class="textztbf">To address low translation efficiency and enhance mRNA stability, we established a <strong>5' UTR optimization model</strong> [10, 11]. This model integrates criteria for evaluating secondary structure avoidance and free energy, generating batches of candidate sequences with potentially high translation initiation efficiency, ultimately improving protein expression. Our wet-lab team concurrently tested the properties of the computationally generated UTRs, aiming to screen for superior UTRs. We successfully identified UTRs that performed better than natural ones and developed a UTR optimization platform.</p>
+          <p class="textztbf">Addressing the delivery issue, we decided to develop hardware. Traditional manual pipette mixing leads to inhomogeneity, causing significant batch-to-batch variation in LNP size and instability. Therefore, we constructed a <strong>dual-channel microfluidic syringe pump</strong>, enabling stable preparation of mRNA-LNP mixtures with sizes ranging from 50-200 nm. We named it <strong>PREMA</strong>. Wet-lab validation through particle size data, PDI, and fluorescence results confirmed that the products from our hardware perform similarly to those from commercial microfluidic machines and are superior to manual mixing in terms of transfection efficiency and particle size.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/description/dut-china-ds3.webp" class="figure-image" alt="We Made a Hardware By Ourselves" style="width: 600px;">
+          <p class="figure-caption">Figure 3. We Made a Hardware By Ourselves</p>
+          
+          <h3><strong>2. Cell-Selective Design</strong></h3>
+          <p class="textztbf">To minimize off-target effects and enhance mRNA targeting specificity, our team employed <strong>cell switchs</strong> based on microRNA response elements: we inserted sequences complementary to microRNA-21 (highly expressed in liver cancer cells) and <strong>exCAG gelation sequences</strong> into the mRNA. In normal cells, the exCAG sequence causes mRNA gelation and inactivation. In liver cancer cells, microRNA-21 binds and cleaves the inhibitory sequence, allowing normal mRNA translation. Noting that the length of the CAG sequence affects switch performance, we further investigated the expression outcomes of CAG sequences of different lengths.</p>
+          <p class="textztbf">We also designed <strong>toehold switches for eukaryotic cells</strong> [9]. Observing that most existing toehold switches are designed for prokaryotes, we developed a model to generate toehold switch sequences compatible with eukaryotic cells. This model rationally integrates sensor domains that detect specific liver cancer miRNAs, enabling the design of personalized translation switches with high sensitivity and specificity. Preliminary work and debugging have yielded structurally correct sequences. We are committed to overcoming the limitation of existing Toehold switches being primarily used in prokaryotic systems and have preliminarily developed a design model for eukaryotic systems. We have <strong>opensourced the model architecture and code</strong>, inviting subsequent iGEM teams to collaborate on iterations to build a more comprehensive community tool.</p>
+          <h3><strong>3. Delivery System Design</strong></h3>
+          <p class="textztbf">Considering cell selectivity alone insufficient, the team utilizes LNP (Lipid Nanoparticles) as the carrier, leveraging their natural liver tropism. Furthermore, <strong>by displaying GPC3 (Glypican-3) targeting antibodies on the LNP surface</strong>, we aim to achieve active targeting of liver cancer cells [8]. We have completed validation of the delivery system based on eGFP, confirming vesicle membrane protein content at the fluorescence level, and validation of vesicles presenting GPC3 antibodies at the protein level, preliminarily demonstrating the feasibility of this approach.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/description/dut-china-ds4a.webp" class="figure-image" alt="Demonstration of GPC3 Antibody Surface Display">
+          <p class="figure-caption">Figure 4. Demonstration of GPC3 Antibody Surface Display.</p>
+      </section>
+
+      <section id="pharmacokinetic-modeling" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">V. Pharmacokinetic Modeling and Efficacy Validation</h2>
+          <p class="textztbf">To further quantify drug distribution and efficacy in vivo, the team constructed <strong>a hypoxic microenvironment model and a PK/PD model</strong>, incorporating liver cancer-specific parameters such as HIF-1α [12-14]. The Pharmacokinetic (PK) model integrates the hypoxic spatial model and mRNA-specific parameters to simulate the dynamic distribution and metabolism of the drug within the tumor. Final visual integration presents the entire process from the hypoxic environment to drug response and spatiotemporal distribution. These results can guide the dosing schedule of mRNA drugs. The simulation models the delivery, distribution, activation, and ultimate efficacy kinetics of modular RNA drugs in complex physiological environments, enabling prospective prediction and optimization of in vivo drug behavior. We also developed a visual interactive platform supporting free parameter adjustment.</p>
+      </section>
+
+      <section id="cost-control" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">VI. Cost Control and Industrialization</h2>
+          <p class="textztbf">Currently, our project is positioned as a complementary second-line treatment for liver cancer, intended for use in combination with immunotherapy, targeting the gap in the precision-targeted drug market. Globally, approved mRNA drugs are predominantly preventive products, such as COVID-19 and RSV vaccines. Therapeutic mRNA drugs, especially those targeting solid tumors like liver cancer, mostly remain in the clinical development stage, representing a significant market gap. There is an urgent need for precision-targeted therapies for liver cancer. China bears a heavy burden of liver cancer, accounting for nearly half of all global cases [4]. <strong>Based on the cost estimates of marketed mRNA vaccines, the projected cost of mRNA drugs is approximately $3 per 100 μg. Compared to other high-efficacy novel therapies like CAR-T, which is priced at around $150,000 per dose</strong>, our approach offers a substantially lower cost. Furthermore, our R-Home team employs a modular design strategy, breaking long sequences into spliceable modules to reduce synthesis costs. We also aim to introduce continuous microfluidic production processes, integrating microfluidic technology with dry and wet lab synergies to further compress production costs and enhance accessibility. <strong>Our hardware demonstrates significant price advantages over commercially available products</strong> and innovatively incorporates a mobile UI interface, allowing for more convenient machine control and parameter adjustment.</p>
+      </section>
+
+      <section id="public-engagement" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">VII. Public Engagement and Ethical Practice</h2>
+          <p class="textztbf">Our Human Practices (HP) team <strong>collected the concerns of patients and the public through various activities</strong> (e.g., nursing home health education, campus carnivals, podcast collaborations). Integrated Human Practices (iHP) followed the entire process, iteratively refining the project design to ensure it was "human-centered," ethical, and socially responsible. Throughout public engagement, we consistently adopted a human-centric approach, emphasizing the inclusion of diverse voices, extensively incorporating opinions from the public of different ages, educational backgrounds, professions, and even cultural environments, using these as crucial input for project optimization and activity iteration. Through continuous listening, timely feedback, and dynamic adjustment, we effectively enhanced the project's responsiveness and activity quality, achieving good practical results and receiving positive feedback for our iGEM project.</p>
+          
+          <img src="https://static.igem.wiki/teams/5844/pages/description/dut-china-ds5.webp" class="figure-image" alt="The HP Team Leading Liver-Protection Exercises with Elderly Residents" style="width: 680px;">
+          <p class="figure-caption">Figure 5. The HP Team Leading Liver-Protection Exercises with Elderly Residents.</p>
+      </section>
+
+      <section id="safety-compliance" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">VIII. Safety and Compliance Verification</h2>
+          <p class="textztbf">The team consulted drug regulatory authorities and industrial experts, clarifying the need to follow gene therapy product guidelines, focusing on controlling LNP parameters like particle size, dispersity, and endotoxin levels to ensure carrier safety and controllability. <strong>We conducted all laboratory activities in accordance with university safety regulations and protocols</strong>. Following established DUT laboratory protocols and safety guidelines, all participating students received safety training and passed laboratory safety assessments; those working with mammalian cell cultures also passed cell experiment safety assessments. We have standard microbiology laboratories equipped with 1 chemical fume hood, 1 BSC2 safety cabinet, and a mammalian cell culture room. Students who passed the cell experiment safety assessment are also authorized to use the biosafety cabinets. The university oversees overall waste management organization; waste collection and treatment are handled by professional companies licensed for waste disposal. Our team received comprehensive training on relevant waste disposal protocols and strictly adheres to them when working in DUT laboratories.</p>
+          <p class="textztbf">Starting from the clinical challenges in liver cancer treatment, we have built a modular mRNA therapy platform encompassing molecular design, intelligent regulation, targeted delivery, and efficacy prediction. We are not only committed to solving scientific challenges but also, through hardware development, model open-sourcing, and extensive public practice, aim to provide a valuable framework and tools for subsequent iGEM teams exploring precision medicine.</p>
+      </section>
+
+      <section id="references" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">References</h2>
+          <p class="textztbf" style="text-indent: 0;">[1] HUANG A, YANG X-R, CHUNG W-Y, et al. Targeted therapy for hepatocellular carcinoma [J]. Signal Transduction and Targeted Therapy, 2020, 5(1): 146.</p>
+          <p class="textztbf" style="text-indent: 0;">[2] AN S, FU L. Small-molecule PROTACs: An emerging and promising approach for the development of targeted therapy drugs [J]. EBioMedicine, 2018, 36: 553-62.</p>
+          <p class="textztbf" style="text-indent: 0;">[3] XUE X, ZHANG C, LI X, et al. mRNA PROTACs: engineering PROTACs for high-efficiency targeted protein degradation [J]. 2024, 5(2): e478.</p>
+          <p class="textztbf" style="text-indent: 0;">[4] VOGEL A, MEYER T, SAPISOCHIN G, et al. Hepatocellular carcinoma [J]. The Lancet, 2022, 400(10360): 1345-62.</p>
+          <p class="textztbf" style="text-indent: 0;">[5] Lv, DD., Zhou, LY. & Tang, H. Hepatocyte nuclear factor 4α and cancer-related cell signaling pathways: a promising insight into cancer treatment. Exp Mol Med 53, 8–18 (2021).</p>
+          <p class="textztbf" style="text-indent: 0;">[6] YANG T, POENISCH M, KHANAL R, et al. Therapeutic HNF4A mRNA attenuates liver fibrosis in a preclinical model [J]. Journal of Hepatology, 2021, 75(6): 1420-33.</p>
+          <p class="textztbf" style="text-indent: 0;">[7] Wu, SH., Xiao, MC., Liu, F. et al. Cell-permeated peptide P-T3H2 inhibits malignancy on hepatocellular carcinoma through stabilizing HNF4α protein. Discov Onc 15, 752 (2024)</p>
+          <p class="textztbf" style="text-indent: 0;">[8] Mitchell Ho, Heungnam Kim, Glypican-3: A new target for cancer immunotherapy, European Journal of Cancer, Volume 47, Issue 3, 2011, Pages 333-338, ISSN 0959-8049.</p>
+          <p class="textztbf" style="text-indent: 0;">[9] Yehuda Landau, Matan Arbel, Daniel Benarroch, et al. Computational design of toehold switches in eukaryotes and prokaryotes for efficient post-transcriptional control. bioRxiv, 2025.01.15.633215</p>
+          <p class="textztbf" style="text-indent: 0;">[10] Nicolaas M. Angenent-Mari, Alexander S. Garruss, Luis R. Soenksen, George Church & James J. Collins. (2020). A deep learning approach to programmable RNA switches. Nature communications, 11(1), 5057.</p>
+          <p class="textztbf" style="text-indent: 0;">[11] Wang Shue, Emery Nicholas J & Liu Allen P. (2019). A Novel Synthetic Toehold Switch for MicroRNA Detection in Mammalian Cells. ACS synthetic biology, 8(5), 1079-1088.</p>
+          <p class="textztbf" style="text-indent: 0;">[12] M W Dewhirst, E T Ong, R D Braun, et al. Quantification of longitudinal tissue pO2 gradients in window chamber tumours: impact on tumour hypoxia. British Journal of Cancer volume 79, pages1717–1722 (1999).</p>
+          <p class="textztbf" style="text-indent: 0;">[13] Roland N. Pittman, Regulation of Tissue Oxygenation.</p>
+          <p class="textztbf" style="text-indent: 0;">[14] Larissa A. Shimoda, and Gregg L. Semenza, HIF and the Lung: Role of Hypoxia-inducible Factors in Pulmonary Development and Disease.</p>
+          <p class="textztbf" style="text-indent: 0;">[15] Sonia A Patel, Monique B Nilsson, et al. Molecular Mechanisms and Future Implications of VEGF/VEGFR in Cancer Therapy.</p>
+      </section>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应Background Research
+        document.getElementById('text-2'),  // 对应Project Rationale
+        document.getElementById('text-3'),  // 对应Target Selection
+        document.getElementById('text-4'),  // 对应Technical Optimization
+        document.getElementById('text-5'),  // 对应Pharmacokinetic Modeling
+        document.getElementById('text-6'),  // 对应Cost Control
+        document.getElementById('text-7'),  // 对应Public Engagement
+        document.getElementById('text-8'),  // 对应Safety Compliance
+        document.getElementById('text-9')   // 对应References
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('background-research'),
+        document.getElementById('project-rationale'),
+        document.getElementById('target-selection'),
+        document.getElementById('technical-optimization'),
+        document.getElementById('pharmacokinetic-modeling'),
+        document.getElementById('cost-control'),
+        document.getElementById('public-engagement'),
+        document.getElementById('safety-compliance'),
+        document.getElementById('references')
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 560) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

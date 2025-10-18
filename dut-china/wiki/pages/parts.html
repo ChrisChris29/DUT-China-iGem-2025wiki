@@ -1,0 +1,933 @@
+{% extends "layout.html" %}
+  
+{% block title %}Parts{% endblock %}
+{% block lead %}
+    <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+        <img src="https://static.igem.wiki/teams/5844/lead/dut-china-parts.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+    </div>
+{% endblock %}
+
+{% block page_content %}
+
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1.5rem 1rem;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0 rgba(128, 0, 128, 0.4);
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+    padding: 0.5rem;
+    border-left: 4px solid transparent;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: nowrap;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(128, 0, 128, 1);
+    font-size: 18px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-item.active {
+    border-left: 4px solid rgba(128, 0, 128, 0.8);
+    background: rgba(128, 0, 128, 0.05);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px;
+    width: clamp(70%, 75vw, 80%);
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem);
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    color: rgba(128, 0, 128, 0.8);
+}
+
+/* Info box styles */
+.info-box {
+    background: #f0f4f8;
+    border: 2px solid #000;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 4px 4px 0 rgba(128, 0, 128, 0.3);
+}
+
+.info-box-title {
+    font-weight: bold;
+    color: rgba(128, 0, 128, 0.9);
+    margin-bottom: 0.5rem;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    border: 2px solid #000;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+    border: 1px solid #000;
+}
+
+th {
+    background: rgba(128, 0, 128, 0.1);
+    font-weight: bold;
+}
+
+tr:hover {
+    background: rgba(128, 0, 128, 0.05);
+}
+
+/* Link styles in tables */
+table a {
+    color: rgba(128, 0, 128, 0.9);
+    text-decoration: underline;
+}
+
+table a:hover {
+    color: rgba(128, 0, 128, 1);
+    font-weight: bold;
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+/* 添加到现有的 .info-box 样式后面 */
+.info-box:hover {
+    background: rgba(128, 0, 128, 0.05);
+    box-shadow: 6px 6px 0 rgba(128, 0, 128, 0.5);
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+
+a.info-box {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+</style>
+
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#section1" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">I. Artificially Designed 5' UTR</span>
+    </a>
+    
+    <a href="#section2" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">II. Naturally Occurring 5' UTR</span>
+    </a>
+    
+    <a href="#section3" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">III. miRNA-ON Switch</span>
+    </a>
+    
+    <a href="#section4" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">IV. Protein Regulation</span>
+    </a>
+    
+    <a href="#section5" class="wz-nav-link wz-nav-item">
+        <span id="text-5" class="wz-nav-text">V. Bacterial Surface Display</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <!-- Introduction Section -->
+      <section class="wz-content-section">
+          <h2>Wet-Lab Parts</h2>
+          <p class="textztbf">In the field of synthetic biology, the concept of modular design and the construction of standardized bio-components (BioBricks) form the foundation for efficiently developing complex genetic circuits. Modular design decomposes biological systems into independent units with well-defined functions and standardized interfaces, allowing researchers to flexibly combine components in a “plug-and-play” manner to rapidly assemble genetic systems with desired functions.</p>
+          
+          <p class="textztbf">In prior work, we constructed a modular mRNA therapeutic platform and designed a multi-layered regulatory system targeting hepatocellular carcinoma. This system integrates three core modules: drug molecule design, delivery vector design and target application design. Building upon this foundation and adhering to the BioBrick standardization principles advocated by the iGEM competition, we developed RNA-Tx Suite—a standardized component collection for mRNA therapeutic systems. This suite aims to provide subsequent teams with reusable, adaptable, and functionally distinct gene regulation components, thereby advancing the application of synthetic biology in gene therapy research.</p>
+         
+          <p class="textztbf">Specifically, our RNA-Tx Suite consists of the following five modules:</p>
+          <!-- Info Boxes for Navigation -->
+        <a href="#section1" class="info-box" style="display: block; text-decoration: none; color: inherit;">
+            <div class="info-box-title">Artificially Designed 5'UTR Collection:</div>
+            <p>Contains multiple 5' UTR sequences optimized through computational simulation and rational design, and validated by wet-lab experiments. These sequences are suitable for various mRNA constructs and can significantly enhance the translation efficiency of target proteins, providing universal regulatory elements for high-level expression.</p>
+        </a>
+
+        <a href="#section2" class="info-box" style="display: block; text-decoration: none; color: inherit;">
+            <div class="info-box-title">Naturally Occurring 5'UTR Collection:</div>
+            <p>Systematically compiles a variety of natural 5' UTR sequences derived from different organisms. This collection serves as a rich, authentic, and diverse biological dataset for subsequent teams to train machine learning models, derive design principles, and validate dry-lab prediction tools.</p>
+        </a>
+
+        <a href="#section3" class="info-box" style="display: block; text-decoration: none; color: inherit;">
+            <div class="info-box-title">miRNA-ON Switch Collection:</div>
+            <p>Includes two types of miRNA-ON switches for eukaryotic systems. The first is the exCAG conditional repression switch, featuring variants with 3×, 10×, and 30× CAG repeats, offering gradient repression capabilities suitable for precise translational control in eukaryotic systems. The second is a eukaryotic Toehold switch optimized for mammalian cells, which initiates translation upon the presence of a specific trigger RNA, enabling genetic expression regulation.</p>
+        </a>
+
+        <a href="#section4" class="info-box" style="display: block; text-decoration: none; color: inherit;">
+            <div class="info-box-title">Protein Regulation Collection:</div>
+            <p>We have assembled a series of highly effective siRNA sequences targeting common reporter genes and hepatocellular carcinoma-related molecular targets. This collection also includes m-PROTAC composite components designed for targeted degradation of TGFβ protein. It can be used to increase the complexity of genetic regulatory networks and supports the construction and functional validation of multi-target cooperative regulation systems.</p>
+        </a>
+
+        <a href="#section5" class="info-box" style="display: block; text-decoration: none; color: inherit;">
+            <div class="info-box-title">Bacterial Surface Display Scaffold Collection:</div>
+            <p>Integrates various protein scaffolds suitable for bacterial surface display and provides a wet-lab validated Lpp-OmpA-GPC3 single-chain antibody composite component. This offers iGEM teams diverse, ready-to-use display scheme options for presenting specific proteins or antibodies on bacterial surfaces.</p>
+        </a>
+
+
+          <p class="textztbf">This parts collection strictly adheres to iGEM standard assembly specifications, striving to provide global synthetic biology researchers with a set of structurally standardized, functionally defined, and flexibly combinable genetic regulatory elements. We expect this resource will empower subsequent iGEM teams working on genetic circuit design and mRNA therapeutic system development to achieve more efficient and controllable engineering builds, further advancing the innovation and application of synthetic biology technology in the biomedical field.</p>
+      </section>
+
+      <!-- Section 1: Artificially Designed 5' UTR Collection -->
+      <section id="section1" class="wz-content-section">
+          <h2>I. Artificially Designed 5' UTR Collection</h2>
+          <p class="textztbf">This is a collection of 5' UTR sequences that have been computationally optimized and experimentally validated. It is designed to enhance the protein translation efficiency of mRNA and is suitable for various constructs.</p>
+          
+          <table>
+              <thead>
+                  <tr>
+                      <th>Part Number</th>
+                      <th>Description</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25ogysnh">BBa_25OGYSNH</a></td>
+                      <td>An artificially designed 5'UTR sequence exhibiting a certain level of protein expression and good stability.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-258ur98j">BBa_258UR98J</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25qf3rsk">BBa_25QF3RSK</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25wu4znx">BBa_25WU4ZNX</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-259zuccz">BBa_259ZUCCZ</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25z06fta">BBa_25Z06FTA</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25iq0b7d">BBa_25IQ0B7D</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25ahbypl">BBa_25AHBYPL</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-254vqn32">BBa_254VQN32</a></td>
+                      <td>An artificially designed 5'UTR sequence exhibiting a certain level of protein expression and good stability.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-257p72el">BBa_257P72EL</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-251zvsyr">BBa_251ZVSYR</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25ebpauc">BBa_25EBPAUC</a></td>
+                      <td>An artificially designed 5'UTR sequence exhibiting a certain level of protein expression and good stability.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25wekq8d">BBa_25WEKQ8D</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25wuu636">BBa_25WUU636</a></td>
+                      <td>An artificially designed 5'UTR sequence exhibiting a certain level of protein expression and good stability.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25yn07ve">BBa_25YN07VE</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25lgys0d">BBa_25LGYS0D</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25os4o99">BBa_25OS4O99</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25tr0k39">BBa_25TR0K39</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25mvpacz">BBa_25MVPACZ</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-258l9h22">BBa_258L9H22</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-259gft5z">BBa_259GFT5Z</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25aojw26">BBa_25AOJW26</a></td>
+                      <td>An artificially designed 5'UTR sequence exhibiting a certain level of protein expression and good stability.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25fvmy8g">BBa_25FVMY8G</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25d2ej7r">BBa_25D2EJ7R</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-258sdw0e">BBa_258SDW0E</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25xzyem9">BBa_25XZYEM9</a></td>
+                      <td>An artificially designed 5'UTR sequence exhibiting a certain level of protein expression and good stability.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-250fj0jw">BBa_250FJ0JW</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-251uqapr">BBa_251UQAPR</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-256053m5">BBa_256053M5</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25h70uf7">BBa_25H70UF7</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25px7cqq">BBa_25PX7CQQ</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25bex7xy">BBa_25BEX7XY</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25nt5999">BBa_25NT5999</a></td>
+                      <td>An optimized 5'UTR sequence that combines high protein expression levels with good stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25sz7kdr">BBa_25SZ7KDR</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25sd7bgz">BBa_25SD7BGZ</a></td>
+                      <td>An artificially designed 5'UTR sequence for regulating protein expression and mRNA stability.</td>
+                  </tr>
+              </tbody>
+          </table>
+      </section>
+
+      <!-- Section 2: Naturally Occurring 5' UTR Collection -->
+      <section id="section2" class="wz-content-section">
+          <h2>II. Naturally Occurring 5' UTR Collection</h2>
+          <p class="textztbf">This is a collection of naturally sourced 5' UTR sequences, primarily serving as a standard dataset for training and validating computational models and design principles.</p>
+          
+          <table>
+              <thead>
+                  <tr>
+                      <th>Part Number</th>
+                      <th>Description</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25vj7het">BBa_25VJ7HET</a></td>
+                      <td>The 5'UTR sequence of NDRG2 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25b1qg0g">BBa_25B1QG0G</a></td>
+                      <td>The 5'UTR sequence of NDRG2 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25hb3kvu">BBa_25HB3KVU</a></td>
+                      <td>The 5'UTR sequence of SPARC gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-253c5qmz">BBa_253C5QMZ</a></td>
+                      <td>The 5'UTR sequence of SPARC gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25nhgi3z">BBa_25NHGI3Z</a></td>
+                      <td>The 5'UTR sequence of NDRG2 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25p0gq8r">BBa_25P0GQ8R</a></td>
+                      <td>The 5'UTR sequence of PAFAH1B2 gene derived from PC3 cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25ut44gs">BBa_25UT44GS</a></td>
+                      <td>The 5'UTR sequence of TNNC2 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25wm92b3">BBa_25WM92B3</a></td>
+                      <td>The 5'UTR sequence of TNNC2 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-250riqjk">BBa_250RIQJK</a></td>
+                      <td>The 5'UTR sequence of COX7A1 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25ocuwyz">BBa_25OCUWYZ</a></td>
+                      <td>The 5'UTR sequence of BSG gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25i97ki8">BBa_25I97KI8</a></td>
+                      <td>The 5'UTR sequence of LMCD1 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25ip20wg">BBa_25IP20WG</a></td>
+                      <td>The 5'UTR sequence of LMCD1 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25d4c3va">BBa_25D4C3VA</a></td>
+                      <td>The 5'UTR sequence of NDRG2 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25xwcxdk">BBa_25XWCXDK</a></td>
+                      <td>The 5'UTR sequence of NDRG2 gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25n8v3wu">BBa_25N8V3WU</a></td>
+                      <td>The 5'UTR sequence of B2M gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25ar5j1q">BBa_25AR5J1Q</a></td>
+                      <td>The 5'UTR sequence of B2M gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25pd2wtq">BBa_25PD2WTQ</a></td>
+                      <td>The 5'UTR sequence of B2M gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25qufk2z">BBa_25QUFK2Z</a></td>
+                      <td>The 5'UTR sequence of B2M gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25izreal">BBa_25IZREAL</a></td>
+                      <td>The 5'UTR sequence of B2M gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25e61u15">BBa_25E61U15</a></td>
+                      <td>The 5'UTR sequence of BSG gene derived from MUSCLE cells has the characteristics of both structural stability and high protein expression level.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25rdyaj6">BBa_25RDYAJ6</a></td>
+                      <td>A highly expressed endogenous gene 5'UTR with efficient translation initiation capability.</td>
+                  </tr>
+                  <tr>
+                      <td><a href="https://registry.igem.org/parts/bba-25v40bgz">BBa_25V40BGZ</a></td>
+                      <td>A highly expressed endogenous gene 5'UTR with efficient translation initiation capability.</td>
+                  </tr>
+              </tbody>
+          </table>
+      </section>
+
+      <!-- Section 3: miRNA-ON Switch Collection -->
+<section id="section3" class="wz-content-section">
+    <h2>III. miRNA-ON Switch Collection</h2>
+    <p class="textztbf">This module contains two types of RNA switches that function in eukaryotic systems: the exCAG switch, which provides gradient translational repression, and a eukaryotic Toehold switch that initiates translation upon triggering by miR-21.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Part Number</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-253ydqda">BBa_253YDQDA</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25sxeyz6">BBa_25SXEYZ6</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ycc8it">BBa_25YCC8IT</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25oum08r">BBa_25OUM08R</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25zj88jj">BBa_25ZJ88JJ</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-251j4ho5">BBa_251J4HO5</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-250wm0uz">BBa_250WM0UZ</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ow51fj">BBa_25OW51FJ</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-2587eoke">BBa_2587EOKE</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-258mdsts">BBa_258MDSTS</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25debaxz">BBa_25DEBAXZ</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25p6af9m">BBa_25P6AF9M</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25psg3yz">BBa_25PSG3YZ</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25l049ow">BBa_25L049OW</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25g6z4k8">BBa_25G6Z4K8</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-250dyivm">BBa_250DYIVM</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25560v60">BBa_25560V60</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ir3omx">BBa_25IR3OMX</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25poa2m2">BBa_25POA2M2</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25sc49ri">BBa_25SC49RI</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25hbbl0v">BBa_25HBBL0V</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-258b1ez1">BBa_258B1EZ1</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25higwcy">BBa_25HIGWCY</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25p4ygmm">BBa_25P4YGMM</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25m3fd3j">BBa_25M3FD3J</a></td>
+                <td>The toehold switch in the artificially designed eukaryotic system can regulate the expression of the coding region, and the trigger RNA is miR-21.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25awahv8">BBa_25AWAHV8</a></td>
+                <td>The artificially designed Toehold switch in the eukaryotic system from the literature source regulates the expression of the coding region, with miR-21 serving as the triggering RNA.</td>
+            </tr>
+            <tr>
+                <td><a href="https://parts.igem.org/Part:BBa_K5475002">BBa_K5475002</a></td>
+                <td>miR-21 antisense sequence</td>
+            </tr>
+            <tr>
+                <td><a href="https://parts.igem.org/Part:BBa_K5475003">BBa_K5475003</a></td>
+                <td>30xCAG sequence，This sequence inhibits the expression of the ORF region of the mRNA.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25y2jft9">BBa_25Y2JFT9</a></td>
+                <td>10xCAG sequence，This sequence inhibits the expression of the ORF region of the mRNA.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25p2u5yu">BBa_25P2U5YU</a></td>
+                <td>3xCAG sequence，This sequence inhibits the expression of the ORF region of the mRNA.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-k5475010">BBa_K5475010</a></td>
+                <td>This is a miRNA-ON switch based on a 30xCAG sequence, composed of a miR-21 antisense sequence and a 30xCAG sequence.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25zw1wcp">BBa_25ZW1WCP</a></td>
+                <td>This is a miRNA-ON switch based on a 10xCAG sequence, composed of a miR-21 antisense sequence and a 10xCAG sequence.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25b6zquw">BBa_25B6ZQUW</a></td>
+                <td>This is a miRNA-ON switch based on a 3xCAG sequence, composed of a miR-21 antisense sequence and a 3xCAG sequence.</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- Section 4: Protein Regulation Collection -->
+<section id="section4" class="wz-content-section">
+    <h2>IV. Protein Regulation Collection</h2>
+    <p class="textztbf">This collection provides two regulatory tools: siRNAs that target mRNA for degradation and m-PROTACs that target TGFβ protein for degradation. They are used for constructing complex multi-target cooperative regulation networks.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Part Number</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25qqtgpq">BBa_25QQTGPQ</a></td>
+                <td>Can be transcribed into anti-sense chain that can bind to the sense chain of anti-CD47 siRNA, and together form anti-CD47 siRNA that can specifically inhibit CD47 mRNA function.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ayss3t">BBa_25AYSS3T</a></td>
+                <td>It can translate into siRNA that specifically inhibits CD44 mRNA, preventing CD44 mRNA from expressing.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ouavso">BBa_25OUAVSO</a></td>
+                <td>It can be transcribed into an anti-sense chain that can bind to the sense chain of RFP siRNA, and together form RFP siRNA that can specifically inhibit RFP mRNA function.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ljsxvl">BBa_25LJSXVL</a></td>
+                <td>It can be transcribed into an anti-sense chain that can bind to the sense chain of RFP sc-siRNA, forming RFP sc-siRNA that can specifically inhibit the function of RFP mRNA. But it is not complementary to the RFP gene.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-252bpb3h">BBa_252BPB3H</a></td>
+                <td>It can be transcribed into an antisense chain that can bind to the sense chain of anti-GFP siRNA, forming anti-GFP siRNA that can specifically inhibit the function of GFP mRNA.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-252gn2vv">BBa_252GN2VV</a></td>
+                <td>It can be transcribed into an antisense chain that can bind to the sense chain of anti-GFP sc-siRNA, forming anti-GFP sc-siRNA that can specifically inhibit the function of GFP mRNA. But it is not complementary to the GFP gene.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25wzz0by">BBa_25WZZ0BY</a></td>
+                <td>Capable of specifically clearing RFP proteins expressed endogenously in Escherichia coli.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25yt2toj">BBa_25YT2TOJ</a></td>
+                <td>Can specifically reduce the endogenous expression of RFP protein in Escherichia coli.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25p999pr">BBa_25P999PR</a></td>
+                <td>Capable of specifically clearing RFP proteins expressed endogenously in Escherichia coli</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ek6l5k">BBa_25EK6L5K</a></td>
+                <td>Silencing eGFP in mammalian cells.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25emin4c">BBa_25EMIN4C</a></td>
+                <td>Specific knockdown of STAT3 expression in human prostate cancer cell lines.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25fhjinn">BBa_25FHJINN</a></td>
+                <td>Specific knockdown of STAT3 expression in mouse fibroblast cell lines.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25s0unjv">BBa_25S0UNJV</a></td>
+                <td>This sequence encodes a peptide that specifically binds to the TGFβ1 .</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25jkv7bl">BBa_25JKV7BL</a></td>
+                <td>This sequence can be transcribed and translated to express the HNF4α protein.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ocfyi1">BBa_25OCFYI1</a></td>
+                <td>The resulting fusion protein, produced through transcription and translation, can target TGFβ for degradation by mediating the ubiquitin-dependent degradation pathway.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25jbcxrg">BBa_25JBCXRG</a></td>
+                <td>Silencing eGFP in mammalian cells.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25abz5fd">BBa_25ABZ5FD</a></td>
+                <td>Silencing Luciferase in mammalian cells.</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- Section 5: Bacterial Surface Display Scaffold Collection -->
+<section id="section5" class="wz-content-section">
+    <h2>V. Bacterial Surface Display Scaffold Collection</h2>
+    <p class="textztbf">This module integrates protein scaffolds suitable for bacterial surface display and includes a validated single-chain antibody composite component, offering iGEM teams ready-to-use surface display solutions.</p>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Part Number</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-257rrjdt">BBa_257RRJDT</a></td>
+                <td>Can be translated into surface display of proteins on Escherichia coli called EspP that can be inserted at the N-terminal.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-259129vm">BBa_259129VM</a></td>
+                <td>Can be translated into surface display of proteins on Escherichia coli called PAL that can be inserted at the N-terminal.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-251nbjhb">BBa_251NBJHB</a></td>
+                <td>Can be translated into surface display of proteins on Escherichia coli called PgsA that can be inserted at the C-terminal.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25nx0i1l">BBa_25NX0I1L</a></td>
+                <td>Can be translated into surface display of proteins on Escherichia coli called OmpC that can be inserted at the C-terminal.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25ja15zo">BBa_25JA15ZO</a></td>
+                <td>The C-terminal region of this protein can bind to target proteins and present them on the surface of E. coli.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25gqedst">BBa_25GQEDST</a></td>
+                <td>GPC3 monoclonal antibodies specifically recognize and bind to the GPC3 protein through their single variable region domain, thereby exerting biological functions such as targeting, neutralization, or blocking.</td>
+            </tr>
+            <tr>
+                <td><a href="https://registry.igem.org/parts/bba-25p8yyde">BBa_25P8YYDE</a></td>
+                <td>This composite component can display GPC3 single-chain antibodies on the surface of Escherichia coli.</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navContainer = document.querySelector('.wz-nav-container');
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const sections = document.querySelectorAll('[id^="section"]');
+    const texts = document.querySelectorAll('.wz-nav-text');
+
+    const infoBoxLinks = document.querySelectorAll('a.info-box');
+    infoBoxLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    
+    // 控制导航栏显示/隐藏
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        const firstSectionTop = sections[0] ? sections[0].offsetTop : 0;
+        const windowHeight = window.innerHeight;
+        
+        if (scrollPosition > firstSectionTop - windowHeight / 2) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            navLinks.forEach(l => l.classList.remove('active'));
+            
+            if (texts[index]) texts[index].classList.add('active');
+            navLinks[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+        
+        navLinks.forEach((link, index) => {
+            if (!link) return;
+            link.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

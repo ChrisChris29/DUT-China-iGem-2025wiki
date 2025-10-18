@@ -1,0 +1,1182 @@
+{% extends "layout.html" %}
+  
+{% block title %}Experiments{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-experiment.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 20px;
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: nowrap;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 20px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px; /* 增加最大宽度 */
+    width: clamp(70%, 75vw, 80%); /* 增加宽度百分比 */
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem); /* 减少右边距，使内容框向右移动 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#overview" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">Overview</span>
+    </a>
+    
+    <a href="#rna-transcription" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">RNA Transcription</span>
+    </a>
+    
+    <a href="#mrna-switch-transfection" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">mRNA Switch Transfection</span>
+    </a>
+    
+    <a href="#mrna-utr-validation" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">5'-UTR Validation</span>
+    </a>
+    
+    <a href="#western-blot" class="wz-nav-link wz-nav-item">
+        <span id="text-5" class="wz-nav-text">Western Blot</span>
+    </a>
+    
+    <a href="#cell-passaging" class="wz-nav-link wz-nav-item">
+        <span id="text-6" class="wz-nav-text">Cell Passaging</span>
+    </a>
+    
+    <a href="#qpcr" class="wz-nav-link wz-nav-item">
+        <span id="text-7" class="wz-nav-text">qPCR</span>
+    </a>
+    
+    <a href="#sirna-transfection" class="wz-nav-link wz-nav-item">
+        <span id="text-8" class="wz-nav-text">siRNA Transfection</span>
+    </a>
+    
+    <a href="#delivery-vectors" class="wz-nav-link wz-nav-item">
+        <span id="text-9" class="wz-nav-text">Delivery Vectors</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="overview" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Overview</h2>
+          <p class="textztbf">This experiment section systematically presents the key experimental procedures and technical validations conducted by the iGEM DUT-China team. Starting with in vitro transcription and modification of RNA, we verified the switch mechanism and 5'-UTR functionality through mRNA cell transfection. We quantitatively analyzed expression outcomes at both protein and RNA levels using techniques such as Western Blot and qPCR. Additionally, we explored siRNA transfection conditions and developed a hybrid delivery system based on extracellular vesicles (EVs) and lipid nanoparticles (LNPs), which was thoroughly characterized. All experiments were designed rigorously with clear protocols, providing reliable data to support the functional validation of synthetic biological components and the optimization of delivery systems.</p>
+      </section>
+
+      <section id="rna-transcription" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">1. RNA in vitro transcription experiment</h2>
+          
+          <h3>Step1. PCR amplification of plasmid template</h3>
+          <p class="textztbf"><strong>Required reagents</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>2X PCR Mix Purple Enzyme: High-fidelity DNA polymerase, dNTPs (deoxyribonucleoside triphosphates), buffer mixture</li>
+              <li>Plasmid template (50 ng/μL)</li>
+              <li>Designed and ordered primers (10 μM)</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Calculate the system concentration to be configured in advance and take out the reagents and thaw them on ice in advance;</p>
+          <p class="textztbf">2. Thaw high-concentration (>36 ng/μL) and dry powder systems by flicking to mix thoroughly. Centrifuge briefly to remove primers and other components to the bottom of the tube.</p>
+          <p class="textztbf">3. Dilute the plasmid to 5 ng/μL (prepared with 100 μL) with sterile water;</p>
+          <p class="textztbf">4. Dilute the primer freeze-dried powder with sterile water to prepare a 10 μM (μmol/L) primer solution, then vortex to mix thoroughly.</p>
+          <p class="textztbf">5. Preheat the PCR instrument cover in advance</p>
+          <p class="textztbf">6. Add the following volumes of each component into a PCR tube (the smallest centrifuge tube) to prepare the PCR reaction solution (amplify 50 μL of system sample, prepare the sample on ice ).</p>
+          <p class="textztbf">Prepare PCR reaction system (50 μL) on ice</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>T plasmid DNA template (10 ng) 2 μL</li>
+              <li>Primer Forward, F forward (10μM) 2 μL</li>
+              <li>Primer Reserve, R reaction material (10μM) 2 μL</li>
+              <li>2× BeyoFusion ™ PCR Master Mix Purple 25 μL</li>
+              <li>ddH2O enzyme-free water Make up to 50 μL (19 μL)</li>
+          </ul>
+          <p class="textztbf">*Note: The order of adding samples is ddH2O, F, R, T, Mix (PCR Mix enzyme must be added last)</p>
+          <p class="textztbf">7. After adding the components, carefully mix the PCR reaction solution by flicking it with your fingers or turning it upside down. Centrifuge briefly to allow the PCR reaction solution to accumulate at the bottom of the tube. Keep the PCR reaction solution on ice if it is not used immediately.</p>
+          <p class="textztbf">8. Place the configured PCR reaction system on the PCR instrument, set the program and start the PCR reaction:</p>
+          <p class="textztbf">PCR instrument reaction parameter setting</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>1) Pre-denaturation 98℃ 30 s</li>
+              <li>2) transsexual 98℃ 10 s</li>
+              <li>3) annealing Annealing temperature* 5 s</li>
+              <li>4) extend 72℃ 5s/kb **</li>
+              <li>Steps 1 to 4 , cycle 30 times</li>
+              <li>5) Final extension 72℃ 1 min</li>
+          </ul>
+          <p class="textztbf">* The annealing temperature is set based on the contact part of the primers, generally between 52-61°C, 3-5°C below Tm.</p>
+          <p class="textztbf">Use a gradient method: pre-run the experiment first, then perform large-scale PCR. Divide the sample from one PCR tube into five tubes. Each column of samples in the PCR machine is set to the same temperature, while different columns are set to different temperatures. The optimal temperature is determined simultaneously.</p>
+          <p class="textztbf">The extension time is 5 seconds per kb, and the time can be extended appropriately based on this. The extension time is based on the longest sequence in the sample (the length of the sequence between the two primers to be P, including the plasmid). For example, if the sequence length is 4400 bp, 4.4*5=22 seconds. Based on this, the extension time can be extended by a few seconds, such as 25 seconds.</p>
+          <p class="textztbf">9. Load the sample and start the reaction. While waiting for the reaction, prepare the gel. After the reaction is complete, place the amplified product on a PCR tube rack for electrophoresis.</p>
+
+          <h3>Step2. Agarose electrophoresis verification</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>1% agarose gel</li>
+              <li>DNA Marker</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Preparation of gel: Weigh 0.4g of agarose using weighing paper and add it to a beaker. Then add 40ml of TAE solvent to the beaker, seal it with plastic wrap and a rubber band, and heat it in a microwave for a while. Remove the beaker and check if there are any small solid particles in the liquid. Heat it again until the agarose is completely dissolved and the liquid becomes transparent. After the liquid cools, add 4μL of nucleic acid dye and shake well.</p>
+          <p class="textztbf">2. Pour into the gel plate and wait for it to dry thoroughly (>30min);</p>
+          <p class="textztbf">3. Load the sample into the gel wells. Place one PCR product of each sequence (6 μL system, 1× buffer 5 μL + product 1 μL, or 6× buffer 1 μL + product 1 μL + enzyme-free water 4 μL) in one well, and place 5x DNA Marker (5 μL) in the next well.</p>
+          <p class="textztbf">4. Move the gel to the leftmost side of the container and align it. Run the gel at 180V for 22 minutes.</p>
+          <p class="textztbf">5. Use UV imager to observe whether the band size is consistent with the expected</p>
+          <p class="textztbf">6. Select the PCR product with the brightest color and lightest shadow corresponding to the temperature of the band and proceed to the next step</p>
+          <p class="textztbf">*Note: The results here can be stored for one day</p>
+          <p class="textztbf"><strong>Troubleshooting:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>No band: Check primer design/annealing temperature</li>
+              <li>Non-specific bands: Optimize annealing temperature or redesign primers</li>
+          </ul>
+
+          <h3>Step3. Kinase Domain Linker (KDL) connection</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>NEB KLD Enzyme Mix (10x)</li>
+              <li>KLD Reaction Buffer (2x)</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. First add 1 μL of PCR product, then add 1.25 μL of buffer, and finally add 0.25 μL of KLD enzyme;</p>
+          <p class="textztbf">Prepare the reaction system on ice (2.5 μL)</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>PCR products 1 μL</li>
+              <li>2× KLD Reaction Buffer 1.25 μL</li>
+              <li>10× KLD enzyme  0.25 μL</li>
+          </ul>
+          <p class="textztbf">*Note: The system can be expanded by 4 or 8 times as needed</p>
+          <p class="textztbf">2. Mix gently by flicking and react at room temperature for 10 min.</p>
+
+          <h3>Step4. E. coli transformation</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>DH5α competent cells (thawed on ice)</li>
+              <li>SOC medium (preheated to 37°C) in a 4°C refrigerator</li>
+              <li>LB plate (Kan antibody)</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Open a water bath (37°C, 42°C) in advance and thaw the competent cells on ice for 2-3 minutes (semi-solid, semi-liquid is sufficient).</p>
+          <p class="textztbf">2. Light the alcohol lamp and place 100 μL of competent cells in a 1.5 ml centrifuge tube (be careful not to shake the cells vigorously).</p>
+          <p class="textztbf">3. Add 2.5 μL of the KLD-ligated product to a 1.5 ml centrifuge tube and mix gently.</p>
+          <p class="textztbf">4. Place in an ice bath for 30 minutes, then quickly heat shock in a 42°C water bath for 45 seconds, then quickly transfer to ice and let stand for 2 minutes.</p>
+          <p class="textztbf">5. Light an alcohol burner and add 900 μL of SOC medium (pre-warmed at 37°C) to a 1.5 ml centrifuge tube.</p>
+          <p class="textztbf">6. Resuscitate at 37°C for 1 hour;</p>
+          <p class="textztbf">7. Concentration: Centrifuge at 5000 x g for 1 min (cells will settle at the bottom of the tube after centrifugation ). Aspirate and discard 850 μL of supernatant. Mix the remaining 100 μL by pipetting ( re-aspirate the liquid with a pipette and gently pipette to redisperse the cells . Avoid violent shaking to prevent cell damage). Ensure that the pellet is completely dispersed.</p>
+          <p class="textztbf">8. Spread 100 μL of bacterial solution on a 100 mg/L Kan resistance (same resistance as plasmid selection ) LB plate and incubate at 37°C until the bacterial solution is absorbed.</p>
+          <p class="textztbf">9. Place the plate upside down on a 37°C shaker at 10 rpm, press and hold the start button, and incubate for 12-16 hours (the specific time depends on the size of the colony);</p>
+          <p class="textztbf">If the time is not right, you can wrap the plate with sealing film and store it in a 4℃ refrigerator, and then pick out single bacteria later.</p>
+          <p class="textztbf">10. The next day, pick 3-4 single colonies from different areas of the plate and place them in 3-4 bottles. Add 4ml of liquid culture medium to each bottle. Heat the bottle neck and cap with an alcohol burner before capping. Do not cap the bottle neck too tightly, leaving enough air for bacterial growth. Incubate the plate in a 37°C shaker with full agitation for 12-16 hours (&lt;20 hours). After use, wrap the plate with sealing film and store it upside down in a 4°C refrigerator.</p>
+
+          <h3>Step5. Plasmid amplification</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>LB liquid medium (Kana resistance, self-made)</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Place 10-20 ml of LB medium (Kana resistance) into a sterilized 50 ml centrifuge tube.</p>
+          <p class="textztbf">2. Place the glycerol bacteria cryovial on ice and add 10-20 μL of the thawed glycerol bacteria to 5 ml of LB medium.</p>
+          <p class="textztbf">3. Place the test tube in an incubator at 37°C and 200 rpm for overnight culture (12-16 h).</p>
+
+          <h3>Step6. Plasmid extraction</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>FastPure EndoFree Plasmid Mini Plus Kit</li>
+          </ul>
+          <p class="textztbf">*Note: Buffer P2 is prone to precipitation at low temperatures (≤20°C). When the room temperature is ≤20°C, it needs to be heated at 37°C for 10 minutes to completely dissolve. Cool to room temperature and mix thoroughly before use.</p>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">*Note: Preheat enzyme-free water to 65°C in a metal bath in advance.</p>
+          <p class="textztbf">1. Take 5-15 ml of overnight culture and centrifuge at 12,000 rpm (13,400 × g) for 1 min to collect the bacteria. Aspirate as much of the remaining supernatant as possible (discard the supernatant).</p>
+          <p class="textztbf">2. Add 500 μl of Buffer P1 (stored in the second layer of a 4°C refrigerator. Please check whether RNase A Solution has been added first). Vortex until the cells are completely resuspended. Transfer the resuspended liquid to a 2 ml centrifuge tube.</p>
+          <p class="textztbf">3. Immediately add 500 μl of Buffer P2, mix gently by inverting up and down 8-10 times, and let it stand at room temperature for 3 minutes (timer).</p>
+          <p class="textztbf">*Note: This step should be mixed gently and do not shake violently to avoid genomic DNA contamination.</p>
+          <p class="textztbf">At this point, the solution should gradually change from a turbid, viscous blue to a clear, viscous blue, indicating complete lysis. The time should not exceed 5 minutes to avoid plasmid damage. When working with multiple samples simultaneously, mix each tube thoroughly and then time the reaction.</p>
+          <p class="textztbf">If the solution does not become clear, it may be due to excessive bacterial cells and incomplete lysis. The amount of bacterial cells should be reduced.</p>
+          <p class="textztbf">4. Add 500 μl of Buffer N3 and immediately and gently invert the tube 12-15 times until the blue color disappears completely and a white flocculent precipitate appears. Incubate at room temperature for 10 min and centrifuge at 12,000 rpm (13,400 × g) for 10 min.</p>
+          <p class="textztbf">*Note: Immediately after adding Buffer N3, gently invert the tube to mix thoroughly to avoid local precipitation. At this point, the solution will turn from blue to colorless, indicating complete neutralization. After centrifugation, the supernatant should be clear. If a small white precipitate appears on the surface of the supernatant, it will not affect subsequent operations. Wait 10 minutes before proceeding to the next step of column equilibration.</p>
+          <p class="textztbf">5. Column equilibration: Place the FastPure DNA Mini Columns III column in a 2 ml Collection Tube. Add 200 μl of Buffer QB to the FastPure DNA Mini Columns III column and centrifuge at 12,000 rpm (13,400 × g) for 1 min. Discard the filtrate and set aside.</p>
+          <p class="textztbf">*Note: The equilibration solution can activate the silica membrane. Please use the column that has been processed on the same day.</p>
+          <p class="textztbf">6. Transfer the supernatant (about 1.5 ml) to a 5 ml centrifuge tube (self-prepared), add 0.3 times the volume of supernatant (about 450 μl) of isopropanol, and mix thoroughly by inverting the tube 10-15 times.</p>
+          <p class="textztbf">*Note: Adding too much isopropanol can easily lead to RNA residue. Please add isopropanol according to the actual volume of the supernatant.</p>
+          <p class="textztbf">If you cannot aspirate all the supernatant, add a small amount of isopropanol, such as 435 or 440 μl.</p>
+          <p class="textztbf">7. Transfer the mixed solution from step 6 to the adsorption column, centrifuge at 12,000 rpm (13,400 × g) for 1 min, and discard the filtrate.</p>
+          <p class="textztbf">*Note: Allow to stand for 1 minute before centrifugation. The maximum volume of the adsorption column is 750 μl. If the mixture exceeds this volume, apply it to the column in multiple batches, adding a maximum of 700 μl each time.</p>
+          <p class="textztbf">8. Repeat step 7 until all the mixed solution is loaded onto the column.</p>
+          <p class="textztbf">9. Add 500 μl of Buffer PW1 to the adsorption column, centrifuge at 12,000 rpm (13,400 × g) for 1 min, and discard the filtrate.</p>
+          <p class="textztbf">10. Add 600 μl of Buffer PW2 (please check whether anhydrous ethanol has been added) to the adsorption column, centrifuge at 12,000 rpm (13,400 × g) for 1 min, and discard the filtrate.</p>
+          <p class="textztbf">11. Repeat step 10.</p>
+          <p class="textztbf">12. Place the adsorption column back into the collection tube and dry it by centrifugation at 12,000 rpm (13,400 × g) for 2 min.</p>
+          <p class="textztbf">*Note: After this step, you can open the lid and let it sit at room temperature for 3-5 minutes.</p>
+          <p class="textztbf">13. Place the column in a new 1.5 ml microcentrifuge tube and add 60–200 μl (100 μl) of 65°C preheated Endotoxin-free Elution Buffer (with ddH2O for subsequent sequencing or enzyme digestion) to the center of the column membrane. Incubate at room temperature for 1 minute. Centrifuge at 12,000 rpm (13,400 × g) for 1 minute and discard the column.</p>
+          <p class="textztbf">*Note: The recommended elution volume is no less than 60 μl. A smaller volume will reduce the elution efficiency.</p>
+          <p class="textztbf">*Note: If ddH2O is used for elution, the pH of ddH2O should be within the range of 7.0 - 8.5. A pH below 7.0 will reduce the elution efficiency.</p>
+          <p class="textztbf">*Note: To increase the elution efficiency of the plasmid, the elution buffer can be preheated at 65°C. To increase the elution yield, the centrifuge buffer can be loaded onto the column for a second elution.</p>
+          <p class="textztbf">14. Measure the concentration of the extracted plasmid. Wash the upper and lower wells twice with enzyme-free water, wipe dry the upper and lower wells, apply nucleic acid detection, apply DNA, use the liquid for eluting DNA (here is enzyme-free water in a metal bath at 65°C), apply blank calibration, wipe dry, and add the eluted DNA liquid.</p>
+          <p class="textztbf">15. The obtained plasmid DNA solution was stored at -20°C or used for subsequent experiments.</p>
+
+          <h3>Step7. DNA template linearization by single enzyme digestion</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>Restriction enzyme BspQI endonuclease (selected according to the multiple cloning site, placed on the left side of the -20°C refrigerator);</li>
+              <li>gel red</li>
+              <li>Marker</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Open a 50℃ water bath in advance.</p>
+          <p class="textztbf">2. Prepare the enzyme digestion system as follows (on ice):</p>
+          <p class="textztbf">Enzyme digestion system (120 μL)</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>plasmid DNA 100 μL</li>
+              <li>10x Buffer r3.1 12 μL</li>
+              <li>BspQI (10U/μL)* 2 μL</li>
+              <li>ddH2O 6 μL to make up to 120 μL</li>
+          </ul>
+          <p class="textztbf">*Mix the buffer, template, and water thoroughly before adding the endonuclease. Keep the endonuclease on ice when using .</p>
+          <p class="textztbf">*The enzyme digestion system can be flexibly scaled according to the concentration of plasmid DNA</p>
+          <p class="textztbf">3. Incubate in a 50°C water bath for 2 hours or longer;</p>
+          <p class="textztbf">4. 1% agarose gel electrophoresis to check whether the enzyme digestion is complete and the length is consistent with the expected. Sample system (6 μL)</p>
+          <p class="textztbf">Add 5ul to one 5× Marker well , one plasmid well (1× buffer 5μL + plasmid product 1ul, or 6× buffer 1μL + plasmid product 1ul + enzyme-free water 4ul), and one enzyme-digested product well (1× buffer 5μL + enzyme-digested product 1ul, or 6× buffer 1μL + enzyme-digested product 1ul + enzyme-free water 4ul).</p>
+
+          <h3>Step8. Purification of enzyme digestion products</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>Column-type PCR product purification kit (Shengong column-type)</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Prepare the enzyme digestion system as follows: Transfer the digestion reaction solution (centrifuge to remove water vapor) to a clean 1.5 mL centrifuge tube, add 5 times the volume of Buffer B3 (for binding), and mix thoroughly.</p>
+          <p class="textztbf">2. Transfer all the mixed liquid into the adsorption column and let it stand for a while to allow it to bind better. Centrifuge at 8000×g for 30 s and time for 1 min. Pour out the liquid in the collection tube and place the adsorption column into the same collection tube.</p>
+          <p class="textztbf">3. Add 500 μL of Wash Solution (rinsing) to the adsorption column, centrifuge at 9000 × g for 30 s and time 1 min, and discard the liquid in the collection tube.</p>
+          <p class="textztbf">4. Repeat step 3 once .</p>
+          <p class="textztbf">5. Leave the container open at room temperature for 10 min (to completely evaporate the ethanol).</p>
+          <p class="textztbf">6. The empty adsorption column and collection tube were centrifuged at 9000 × g for 1 min.</p>
+          <p class="textztbf">7. Place the adsorption column in a clean 1.5 mL centrifuge tube and add 15–40 μL (depending on subsequent requirements) of enzyme-free Elution Buffer (preheated at 65°C) to the center of the adsorption membrane. Note: To account for evaporation losses, do not add the exact amount, but add a little more. Incubate at 65°C for 1–2 minutes, then centrifuge at 9000 × g for 1 minute. Store the resulting plasmid DNA solution at -20°C or use it in subsequent experiments.</p>
+          <p class="textztbf">8. The concentration of the obtained DNA solution was measured on an ultramicro spectrophotometer.</p>
+
+          <h3>Step9. In vitro transcription and synthesis of mRNA</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>High Yield T7 RNA Synthesis Kit</li>
+              <li>Cap analogs</li>
+              <li>N1-Me-Pseudo UTP</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Prepare the reaction system in the following order (room temperature):</p>
+          <p class="textztbf">In vitro transcription system (20 μL)</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>Nuclease-free Water 20 μL</li>
+              <li>100mM ATP Solution 1.6 μL</li>
+              <li>100mM GTP Solution 1.6 μL</li>
+              <li>100mM CTP solution 1.6 μL</li>
+              <li>100mM N1-Me-Pseudo UTP solution 1.6 μL</li>
+              <li>100mM Cap Analog 1.6 μL</li>
+              <li>Template DNA X μL (1 μg)</li>
+              <li>5x/10x Reaction Buffer 4 μL/2 μL</li>
+              <li>Enzyme Mix 1.5 μL</li>
+          </ul>
+          <p class="textztbf">2. Gently invert the reaction system to mix well, and centrifuge briefly to allow the liquid to accumulate at the bottom;</p>
+          <p class="textztbf">3. Incubate at 37°C for 2 hours;</p>
+          <p class="textztbf">4. Add 1 U of DNase I, mix well, and incubate in a 37°C metal bath for 15 min.</p>
+
+          <h3>Step10. Purification of transcribed mRNA products</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>SteadyPure Universal RNA Extraction Kit II (AG)</li>
+          </ul>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Preparation steps: Preheat (100*n + appropriate amount) μL of enzyme-free water to 65°C. (If you have several tubes of product, preheat a few hundred μL, and preheat more to allow for evaporation losses)</p>
+          <p class="textztbf">2. Add enzyme-free water to the sample to make up to 100 μL and mix gently but thoroughly.</p>
+          <p class="textztbf">3. Add 400 μL of Buffer RLS to the sample and mix gently using a pipette .</p>
+          <p class="textztbf">4. Add 250 μL of absolute ethanol to the sample and mix gently using a pipette .</p>
+          <p class="textztbf">5. Transfer the sample to Universal RNA Mini Columns, centrifuge at 12,000 rpm for 1 min, and discard the waste liquid.</p>
+          <p class="textztbf">6. Add 600 μL of Buffer RWA, centrifuge at 12,000 rpm for 1 min, and discard the waste liquid.</p>
+          <p class="textztbf">7. Add 650 μL of Buffer RWB, centrifuge at 12,000 rpm for 1 min, and discard the waste liquid.</p>
+          <p class="textztbf">8. Add 650 μL of Buffer RWB, centrifuge at 12,000 rpm for 1 min, and discard the waste liquid.</p>
+          <p class="textztbf">9. The adsorption column was placed in a new collection tube and centrifuged at 12,000 rpm for 1 min.</p>
+          <p class="textztbf">10. Place the adsorption column in a new enzyme-free centrifuge tube, add 100 μL of enzyme-free water preheated at 65°C to the center of the column membrane , cover the tube, let it stand at room temperature for 1 min, centrifuge at 12,000 rpm for 1 min, and collect the eluate.</p>
+          <p class="textztbf">11. Measure the concentration of mRNA product.</p>
+      </section>
+
+      <section id="mrna-switch-transfection" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">2. mRNA cell transfection experiment for switch verification</h2>
+          
+          <h3>Step1. LNP solution preparation</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <p class="textztbf">LNP component of 1273 formulation</p>
+          <p class="textztbf">formula:</p>
+          <p class="textztbf">LNP components of formula 1273 , molar ratio: DOTAP: cholesterol :DSPC:PEG- lipid = 50:38.5:10:1.5</p>
+          <p class="textztbf">Liposome concentration ratio ( Formula 1273 )</p>
+          <table style="margin-left: 4em; margin-bottom: 1em; border-collapse: collapse; width: 80%;">
+              <tr style="border: 1px solid #000;">
+                  <th style="border: 1px solid #000; padding: 5px;">Components</th>
+                  <th style="border: 1px solid #000; padding: 5px;">content</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Mv</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Weigh the mass</th>
+                  <th style="border: 1px solid #000; padding: 5px;">concentration</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Weigh the volume</th>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">HUO</td>
+                  <td style="border: 1px solid #000; padding: 5px;">50%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">709</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.008863 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.1 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">88.63μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">D0PE</td>
+                  <td style="border: 1px solid #000; padding: 5px;">10%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">744.034</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.00186 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.1 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">18.60μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">cholesterol</td>
+                  <td style="border: 1px solid #000; padding: 5px;">37.5%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">386.65</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.003635 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.02 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">181.75μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">DSPEPEG2000</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2.5%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2000</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.001250 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.01 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">125μL</td>
+              </tr>
+          </table>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Calculate the required LNP volume based on the RNA quantity. For 23 mRNA sequences, each requiring 100 μg of mRNA, the total mRNA mass required is 23 * 100 = 2300 μg, or 2300,000 ng. The concentration of each mRNA is 170 ng/ μL . Therefore, the total mRNA volume required is 2300,000 ng ÷170 ng/ μL = 13529.4118 μL . Since the mRNA:LNP volume ratio is 3:1, the required LNP volume is 13529.4118 μL ÷ 3 = 4509.8039 μL , or 5 ml.</p>
+          <p class="textztbf">2. First, transfer 5ml of anhydrous ethanol to a centrifuge tube. HUO (SM-102) is a viscous liquid, so add 1ml of anhydrous ethanol to the HUO (SM-102) centrifuge tube. Then, use a precision balance to weigh each component and record the actual weight .</p>
+          <p class="textztbf">3. Liposome preparation (concentration of 12.5 mM): Use a micropipette to accurately weigh the corresponding volumes of cationic carrier, amphiphilic phospholipid bimolecule , cholesterol, and DSPE-PEG2000 into a 2 mL centrifuge tube, and add 100% ethanol to make up the system to 2 mL.</p>
+          <p class="textztbf">4. The fully dissolved liquid was dispensed into small centrifuge tubes, sealed with sealing strips and stored in a 4°C refrigerator.</p>
+
+          <h3>Step2. Reagent preparation</h3>
+          <p class="textztbf">1. DMEM complete medium: 90 mL DMEM basal medium + 10 mL special fetal bovine serum + 1 mL penicillin-streptomycin solution (100×), i.e. 10% serum + 1% double antibody;</p>
+          <p class="textztbf">2. Serum-free DMEM medium: 100 mL DMEM basal medium + 1 mL penicillin-streptomycin solution (100×);</p>
+          <p class="textztbf">3. Maintenance medium: serum-free medium + DMEM complete medium 1:1 mixture, i.e. 5% serum + 1% double antibody;</p>
+          <p class="textztbf">4. Trypsin cell digestion solution (0.5×): 10 mL trypsin cell digestion solution + 10 mL PBS (1×). The storage period is 1 month at 4°C. Prepare the appropriate amount according to the usage. 20 mL can be used about 15 times.</p>
+          <p class="textztbf">5. Other reagents:</p>
+          <table style="margin-left: 4em; margin-bottom: 1em; border-collapse: collapse; width: 60%;">
+              <tr style="border: 1px solid #000;">
+                  <th style="border: 1px solid #000; padding: 5px;">Name</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Brand</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Storage conditions</th>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">PBS buffer (1×)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Corning</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4℃</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">Citrate buffer (pH 4.0, 50 mM)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Self-configured</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4℃</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">LNPs</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Self-configured</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4℃</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">Firefly luciferase detection reagent</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Yisheng</td>
+                  <td style="border: 1px solid #000; padding: 5px;">-20℃</td>
+              </tr>
+          </table>
+
+          <h3>Step3. Cell seeding</h3>
+          <p class="textztbf">1. When the confluence of cells is 70-80%, discard the original culture medium and add appropriate amount of PBS (1×) to wash 2-3 times.</p>
+          <p class="textztbf">2. Add an appropriate amount of trypsin digestion solution (0.5×) (just enough to cover the bottom of the bottle), place the tube in a 37°C 5% CO2 incubator and incubate for 1 min. Observe under a microscope until the cells are about to become round. Immediately discard the trypsin and add 2-3 mL of DMEM complete medium. Pipette the cells off the bottle wall and mix thoroughly.</p>
+          <p class="textztbf">3. Transfer the cell suspension to a clean 15 mL centrifuge tube, centrifuge at 1000 rpm for 5 min, discard the supernatant, add about 5 mL of new DMEM complete medium, and mix thoroughly by pipetting.</p>
+          <p class="textztbf">4. Take about 10 μL of cell suspension and add it to the cell counting plate. Insert the side with the cell suspension inward into the cell counter, select the automatic mode, and read the concentration of the cell suspension.</p>
+          <p class="textztbf">5. After counting, the cell suspension was diluted to a concentration of 80,000-100,000 cells/mL.</p>
+          <p class="textztbf">6. Add 100 μL of cell suspension to each well of a 96-well plate (i.e., 8,000-10,000 cells per well).</p>
+          <p class="textztbf">*After adding each set of control wells, the cell suspension should be remixed to ensure that the difference in cell concentration is not large;</p>
+          <p class="textztbf">*PBS was added to the outermost circle of culture wells in the 96-well plate and evaporated;</p>
+          <p class="textztbf">*Do not let the gun tip touch the centrifuge tube mouth or other places. If it touches, replace the gun tip immediately.</p>
+          <p class="textztbf">7. Place in a 37°C 5% CO2 incubator and culture for 18-24 h.</p>
+
+          <h3>Step4. Cell transfection</h3>
+          <p class="textztbf">1. When the cell confluence in the plate reaches about 80%, transfection is performed.</p>
+          <p class="textztbf">2. Dilute the Toehold mRNA to be transfected to 170 ng/μL with citrate buffer (pH 4.0, 50 mM).</p>
+          <p class="textztbf">3. After mixing mRNA, miRNA, and miRNA inhibitors, mix mRNA:LNPs , miRNA inhibitors, or miRNA:LNPs at a ratio of 3:1 (6 μL mRNA + 3 μL miRNA + 3 μL LNPs) by pipetting and incubate at room temperature for 10 min.</p>
+          <p class="textztbf">4. While waiting for the incubation of mRNA and liposomes, process the cells: discard the original culture medium in the 96-well plate, add an appropriate amount of PBS (1×) to wash once, add 50 μL of DMEM complete culture medium to each well, and place in the incubator for 5 minutes.</p>
+          <p class="textztbf">5. Mix the "mRNA-miRNA-LNPs" mixed solution again, and add 49 μL of serum-free DMEM medium to every 1 μL of mRNA-miRNA-LNPs mixed solution (for example, add 392 μL of serum-free DMEM medium to 8 μL of mRNA-miRNA-LNPs mixed solution).</p>
+          <p class="textztbf">6. Add 50 μL of the "mRNA-miRNA-LNPs" mixed solution (added by adhering to the wall) to each well, shake gently to mix, and place in a cell culture incubator.</p>
+
+          <h3>Step5. Fluorescence detection</h3>
+          <p class="textztbf">When used for the first time, pour all the Firefly Luciferase Buffer into the Firefly Luciferase Substrate Bottle at once, mix thoroughly, and then divide according to the usage requirements. It is recommended to store it at -70℃ for a long time or at -20℃ for no more than one month. After the test reagents are divided and frozen, they need to be equilibrated to room temperature before each subsequent experiment. Note: The Firefly Luciferase Buffer can be thawed at room temperature or in a water bath, but the temperature should not exceed 25℃.</p>
+          <p class="textztbf"><strong>Operation steps</strong></p>
+          <p class="textztbf">1. Remove the culture plate containing mammalian cells from the cell culture incubator and allow to equilibrate to room temperature for 5-15 minutes.</p>
+          <p class="textztbf">2. Add detection reagent: Add an equal volume of detection reagent to the test cell culture medium and equilibrate to room temperature (for example, a 96-well plate usually adds 100 μl of culture medium and correspondingly adds 100 μl of detection reagent; a 384-well plate usually adds 30 μl of culture medium and correspondingly adds 30 μl of detection reagent).</p>
+          <p class="textztbf">3. Oscillating and mixing: To ensure sufficient cell lysis, it is recommended to mix on a horizontal shaker at room temperature for 5-10 minutes (Note: Do not use a pipette to mix, as bubbles will affect the luminescence detection reading. The mixing time can be adjusted appropriately according to the cell number to ensure sufficient cell lysis and obtain stable luminescence detection results).</p>
+          <p class="textztbf">4. Detection: Detect the luminescent signal on a chemiluminescence detector or a multifunctional microplate reader with a chemiluminescence module. Complete the detection within 2 hours after adding the detection reagent.</p>
+      </section>
+
+      <section id="mrna-utr-validation" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">3. mRNA Cell Transfection Experiment for 5- UTR Validation</h2>
+          
+          <h3>Step1. LNP solution preparation</h3>
+          <p class="textztbf"><strong>Required reagents:</strong></p>
+          <p class="textztbf">LNP component of 1273 formulation</p>
+          <p class="textztbf">formula:</p>
+          <p class="textztbf">LNP components of formula 1273 , molar ratio: DOTAP: cholesterol :DSPC:PEG- lipid = 50:38.5:10:1.5</p>
+          <p class="textztbf">Liposome concentration ratio ( Formula 1273 )</p>
+          <table style="margin-left: 4em; margin-bottom: 1em; border-collapse: collapse; width: 80%;">
+              <tr style="border: 1px solid #000;">
+                  <th style="border: 1px solid #000; padding: 5px;">Components</th>
+                  <th style="border: 1px solid #000; padding: 5px;">content</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Mv</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Weigh the mass</th>
+                  <th style="border: 1px solid #000; padding: 5px;">concentration</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Weigh the volume</th>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">HUO</td>
+                  <td style="border: 1px solid #000; padding: 5px;">50%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">709</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.008863 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.1 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">88.63μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">D0PE</td>
+                  <td style="border: 1px solid #000; padding: 5px;">10%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">744.034</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.00186 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.1 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">18.60μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">cholesterol</td>
+                  <td style="border: 1px solid #000; padding: 5px;">37.5%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">386.65</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.003635 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.02 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">181.75μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">DSPEPEG2000</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2.5%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2000</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.001250 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.01 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">125μL</td>
+              </tr>
+          </table>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. Calculate the required LNP volume based on the RNA quantity. For 23 mRNA sequences, each requiring 100 μg of mRNA, the total mRNA mass required is 23 * 100 = 2300 μg, or 2300,000 ng. The concentration of each mRNA is 170 ng/ μL . Therefore, the total mRNA volume required is 2300,000 ng ÷170 ng/ μL = 13529.4118 μL . Since the mRNA:LNP volume ratio is 3:1, the required LNP volume is 13529.4118 μL ÷3 = 4509.8039 μL , or 5 ml.</p>
+          <p class="textztbf">2. First, transfer 5ml of anhydrous ethanol to a centrifuge tube. HUO (SM-102) is a viscous liquid, so add 1ml of anhydrous ethanol to the HUO (SM-102) centrifuge tube. Then, use a precision balance to weigh each component and record the actual weight .</p>
+          <p class="textztbf">3. Liposome preparation (concentration of 12.5 mM): Use a micropipette to accurately weigh the corresponding volumes of cationic carrier, amphiphilic phospholipid bimolecule , cholesterol, and DSPE-PEG2000 into a 2 mL centrifuge tube, and add 100% ethanol to make up the system to 2 mL.</p>
+          <p class="textztbf">4. The fully dissolved liquid was dispensed into small centrifuge tubes, sealed with sealing strips and stored in a 4°C refrigerator.</p>
+
+          <h3>Step2. Reagent preparation</h3>
+          <p class="textztbf">1. DMEM complete medium: 90 mL DMEM basal medium + 10 mL special fetal bovine serum + 1 mL penicillin-streptomycin solution (100×), i.e. 10% serum + 1% double antibody;</p>
+          <p class="textztbf">2. Serum-free DMEM medium: 100 mL DMEM basal medium + 1 mL penicillin-streptomycin solution (100×);</p>
+          <p class="textztbf">3. Maintenance medium: serum-free medium + DMEM complete medium 1:1 mixture, i.e. 5% serum + 1% double antibody;</p>
+          <p class="textztbf">4. Trypsin cell digestion solution (0.5×): 10 mL trypsin cell digestion solution + 10 mL PBS (1×). The storage period is 1 month at 4°C. Prepare the appropriate amount according to the usage. 20 mL can be used about 15 times.</p>
+          <p class="textztbf">5. Other reagents:</p>
+          <table style="margin-left: 4em; margin-bottom: 1em; border-collapse: collapse; width: 60%;">
+              <tr style="border: 1px solid #000;">
+                  <th style="border: 1px solid #000; padding: 5px;">Name</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Brand</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Storage conditions</th>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">PBS buffer (1×)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Corning</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4℃</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">Citrate buffer (pH 4.0, 50 mM)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Self-configured</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4℃</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">LNPs</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Self-configured</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4℃</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">Firefly luciferase detection reagent</td>
+                  <td style="border: 1px solid #000; padding: 5px;">Yisheng</td>
+                  <td style="border: 1px solid #000; padding: 5px;">-20℃</td>
+              </tr>
+          </table>
+
+          <h3>Step3. Cell seeding</h3>
+          <p class="textztbf">1. When the confluence of cells is 70-80%, discard the original culture medium and add appropriate amount of PBS (1×) to wash 2-3 times.</p>
+          <p class="textztbf">2. Add an appropriate amount of trypsin digestion solution (0.5×) (just enough to cover the bottom of the bottle), place the tube in a 37°C 5% CO2 incubator and incubate for 1 min. Observe under a microscope until the cells are about to become round. Immediately discard the trypsin and add 2-3 mL of DMEM complete medium. Pipette the cells off the bottle wall and mix thoroughly.</p>
+          <p class="textztbf">3. Transfer the cell suspension to a clean 15 mL centrifuge tube, centrifuge at 1000 rpm for 5 min, discard the supernatant, add about 5 mL of new DMEM complete medium, and mix thoroughly by pipetting.</p>
+          <p class="textztbf">4. Take about 10 μL of cell suspension and add it to the cell counting plate. Insert the side with the cell suspension inward into the cell counter, select the automatic mode, and read the concentration of the cell suspension.</p>
+          <p class="textztbf">5. After counting, the cell suspension was diluted to a concentration of 80,000-100,000 cells/mL.</p>
+          <p class="textztbf">6. Add 100 μL of cell suspension to each well of a 96-well plate (i.e., 8,000-10,000 cells per well).</p>
+          <p class="textztbf">*After adding each set of control wells, the cell suspension should be remixed to ensure that the difference in cell concentration is not large;</p>
+          <p class="textztbf">*PBS was added to the outermost circle of culture wells in the 96-well plate and evaporated;</p>
+          <p class="textztbf">*Do not let the gun tip touch the centrifuge tube mouth or other places. If it touches, replace the gun tip immediately.</p>
+          <p class="textztbf">7. Place in a 37°C 5% CO2 incubator and culture for 18-24 h.</p>
+
+          <h3>Step4. Cell transfection</h3>
+          <p class="textztbf">1. Transfection can be performed only when the cell confluence reaches about 80%.</p>
+          <p class="textztbf">2. Dilute the mRNA to be transfected to 170 ng/μL with citrate buffer (pH 4.0, 50 mM).</p>
+          <p class="textztbf">3. Mix mRNA:LNPs at a ratio of 3:1 by pipetting (customary method: 6 μL mRNA + 2 μL LNPs mix) and incubate at room temperature for 10 min.</p>
+          <p class="textztbf">4. While waiting for the incubation of mRNA and liposomes, process the cells: discard the original culture medium in the 96-well plate, add an appropriate amount of PBS (1×) to wash once, add 50 μL of DMEM complete culture medium to each well, and place in the incubator for 5 minutes.</p>
+          <p class="textztbf">5. Mix the mRNA-LNPs mixed solution again, and add 49 μL of serum-free DMEM medium to every 1 μL of mRNA-LNPs mixed solution (for example, add 392 μL of serum-free DMEM medium to 8 μL of mRNA-LNPs mixed solution).</p>
+          <p class="textztbf">6. Add 50 μL of the "mRNA-LNPs-serum-free" mixed solution (added by adhering to the wall) to each well, vortex gently to mix, and place in a cell culture incubator.</p>
+
+          <h3>Step5. Fluorescence detection</h3>
+          <p class="textztbf">When used for the first time, pour all the Firefly Luciferase Buffer into the Firefly Luciferase Substrate Bottle at once, mix thoroughly, and then divide according to the usage requirements. It is recommended to store it at -70℃ for a long time or at -20℃ for no more than one month. After the test reagents are divided and frozen, they need to be equilibrated to room temperature before each subsequent experiment. Note: The Firefly Luciferase Buffer can be thawed at room temperature or in a water bath, but the temperature should not exceed 25℃.</p>
+          <p class="textztbf"><strong>Operation steps:</strong></p>
+          <p class="textztbf">1. Remove the culture plate containing mammalian cells from the cell culture incubator and allow to equilibrate to room temperature for 5-15 minutes.</p>
+          <p class="textztbf">2. Add detection reagent: Add an equal volume of detection reagent to the test cell culture medium and equilibrate to room temperature (for example, a 96-well plate usually adds 100 μl of culture medium and correspondingly adds 100 μl of detection reagent; a 384-well plate usually adds 30 μl of culture medium and correspondingly adds 30 μl of detection reagent).</p>
+          <p class="textztbf">3. Oscillating and mixing: To ensure sufficient cell lysis, it is recommended to mix on a horizontal shaker at room temperature for 5-10 minutes (Note: Do not use a pipette to mix, as bubbles will affect the luminescence detection reading. The mixing time can be adjusted appropriately according to the cell number to ensure sufficient cell lysis and obtain stable luminescence detection results).</p>
+          <p class="textztbf">4. Detection: Detect the luminescent signal on a chemiluminescence detector or a multifunctional microplate reader with a chemiluminescence module. Complete the detection within 2 hours after adding the detection reagent.</p>
+      </section>
+
+      <section id="western-blot" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">4. Western Blot</h2>
+          
+          <h3>Step1. Cell Lysis</h3>
+          <p class="textztbf">After washing with 1 mL of PBS, each well was added with 500 μL of trypsin for 2 min. After digestion was complete, 800 μL of DMEM medium was added to completely terminate the digestion.</p>
+          <p class="textztbf">The cells were blown off the 6-well plate, harvested into a 1.5 mL centrifuge tube, and centrifuged at 1000× g for 1 min. The cell pellet was resuspended in PBS and centrifuged at 1000× g for 1 min at 4°C.</p>
+          <p class="textztbf">Resuspend with lysis buffer and lyse on ice for 30 minutes. Centrifuge the lysate at 1200xg for 10 minutes at 4°C, and carefully aspirate the supernatant into a new 1.5 mL centrifuge tube.</p>
+
+          <h3>Step2. Protein Concentration Determination</h3>
+          <p class="textztbf">Prepare BCA standard (10ul BCA standard + 90ul PBS) and working solution ( BCA:Cu reagent = 50:1)</p>
+          <table style="margin-left: 4em; margin-bottom: 1em; border-collapse: collapse; width: 60%;">
+              <tr style="border: 1px solid #000;">
+                  <th style="border: 1px solid #000; padding: 5px;">Standard (ul)</th>
+                  <th style="border: 1px solid #000; padding: 5px;">0</th>
+                  <th style="border: 1px solid #000; padding: 5px;">2</th>
+                  <th style="border: 1px solid #000; padding: 5px;">4</th>
+                  <th style="border: 1px solid #000; padding: 5px;">6</th>
+                  <th style="border: 1px solid #000; padding: 5px;">8</th>
+                  <th style="border: 1px solid #000; padding: 5px;">12</th>
+                  <th style="border: 1px solid #000; padding: 5px;">16</th>
+                  <th style="border: 1px solid #000; padding: 5px;">20</th>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">PBS( ul)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">20</td>
+                  <td style="border: 1px solid #000; padding: 5px;">18</td>
+                  <td style="border: 1px solid #000; padding: 5px;">16</td>
+                  <td style="border: 1px solid #000; padding: 5px;">14</td>
+                  <td style="border: 1px solid #000; padding: 5px;">12</td>
+                  <td style="border: 1px solid #000; padding: 5px;">8</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0</td>
+              </tr>
+          </table>
+          <p class="textztbf">2ul sample + 18ul PBS (repeated 3 times)</p>
+          <p class="textztbf">Add 200ul of working solution to each well</p>
+          <p class="textztbf">Incubate at 37°C for 30 minutes.</p>
+          <p class="textztbf">Take out the sample and place it in the microplate reader. After measurement, use the standard to draw a standard curve.</p>
+          <p class="textztbf">The protein concentration of the samples was read using the standard curve.</p>
+          <p class="textztbf">The sample was added with 1/4 volume of 5× loading buffer and placed in a 100°C metal bath for 5 min, and then stored in a 4°C freezer.</p>
+
+          <h3>Step3. Protein Electrophoresis</h3>
+          <p class="textztbf">Prepare electrophoresis gel according to the instructions.</p>
+          <p class="textztbf">Ensure that the sample volume and protein amount are consistent.</p>
+          <p class="textztbf">First use 80V electrophoresis to run the stacking gel, and then use 120~140V electrophoresis to run the separation gel.</p>
+          <p class="textztbf">Take out the gel after electrophoresis, cut off the irrelevant part, measure the size and cut the appropriate membrane, soak it in methanol and membrane activation solution for 1 minute respectively, and then place the electrophoresis gel and membrane on the transfer instrument for transfer.</p>
+          <p class="textztbf">After the transfer, seal the membrane with 5% skim milk powder in TBSD and place it at 60 rpm for 1 hour.</p>
+
+          <h3>Step4. Incubation with Antibodies</h3>
+          <p class="textztbf">Prepare the primary and secondary antibodies according to the instructions . After sealing , add the primary antibody and incubate at 4°C overnight or at 100 rpm for 3 hours.</p>
+          <p class="textztbf">After incubation, wash three times with TBSD, each time for 10 min.</p>
+          <p class="textztbf">Then add the secondary antibody and incubate at 60 rpm for 1 h</p>
+          <p class="textztbf">After incubation, wash three times with TBSD, each time for 10 min.</p>
+          <p class="textztbf">Prepare the developer according to the instructions and proceed with development.</p>
+          <p class="textztbf">After development, add TBSD and store in a 4°C refrigerator.</p>
+
+          <h3>Step5. Internal Reference Incubation</h3>
+          <p class="textztbf">Prepare the internal reference primary and secondary antibodies according to the instructions .</p>
+          <p class="textztbf">Add primary antibody and incubate for 1 hour</p>
+          <p class="textztbf">After incubation, wash three times with TBSD, each time for 10 min.</p>
+          <p class="textztbf">Then add the secondary antibody and incubate at 60 rpm for 45 min.</p>
+          <p class="textztbf">After incubation, wash three times with TBSD, each time for 10 min.</p>
+          <p class="textztbf">Prepare the developer according to the instructions and proceed with development.</p>
+          <p class="textztbf">After development, add TBSD and store in a 4°C refrigerator.</p>
+      </section>
+
+      <section id="cell-passaging" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">5. Cell passaging</h2>
+          
+          <p class="textztbf">1. Observe the status of the Hela cells to be passaged under a microscope. Passage can only be performed when the cell confluence reaches more than 80%.</p>
+          <p class="textztbf">2. Wipe the clean bench with 75% alcohol and irradiate with UV light for 15-30 minutes. Remove 0.25% trypsin, PBS, and DMEM medium containing 10% fetal bovine serum and 1% double-antibody from the refrigerator and return them to room temperature. Remove the sealing film from the PBS and trypsin bottles and sterilize the stoppers and bottle caps over the flame of an alcohol burner.</p>
+          <p class="textztbf">3. Remove the HeLa cells to be passaged, remove the old culture medium with a pipette, add 3-5 mL of PBS, and gently shake to wash the cells twice.</p>
+          <p class="textztbf">*Be careful not to put the nozzle into the tube when adding liquid, and do not blow on the cells.</p>
+          <p class="textztbf">4. Add an appropriate amount of trypsin to cover the entire cell culture surface ( 1-2 mL for a 25 cm2 cell culture flask ) and shake gently.</p>
+          <p class="textztbf">*30 seconds after adding trypsin, aspirate the trypsin and wait for the trypsin remaining in the culture medium to digest the cells; when the cells are about to become round under the microscope, stop digestion and aspirate the trypsin;</p>
+          <p class="textztbf">*Alternatively, do not remove the trypsin and observe the cell status under the microscope until the cells are separated and the boundaries are clear.</p>
+          <p class="textztbf">5. Add 3-5 ml of DMEM medium containing fetal bovine serum/ double antibody and pipette against the wall of the cell culture dish to prepare a cell suspension.</p>
+          <p class="textztbf">*When adding culture medium, do not add it to the side where cells are attached. Add it to the corners first and then pipette around to avoid excessive foaming.</p>
+          <p class="textztbf">*The blowing position should be even, from top to bottom, from left to right, in sequence to ensure that the cultured cells in each part can be blown, until the cells in the sheet have been dispersed into small clusters of cells or single cells, then stop blowing.</p>
+          <p class="textztbf">6. Passaging: After all cells have fallen off the culture dish, pipette the cell suspension to 1/3 of the original volume, and fill the remaining 2/3 with new DMEM medium containing fetal bovine serum / double antibody .</p>
+          <p class="textztbf">7. Place in a CO2 incubator and culture for 18-24 h.</p>
+      </section>
+
+      <section id="qpcr" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">6. qPCR steps</h2>
+          
+          <p class="textztbf">The qPCR here is mainly divided into three steps</p>
+          <p class="textztbf">RNA collection → RT-PCR → qPCR</p>
+
+          <h3>Step1. Cell Blow-off</h3>
+          <p class="textztbf">1. Discard the old culture medium and add 500ul BufferRL to blow the cells and collect them without digesting them from the cell plate.</p>
+          <p class="textztbf">2. First collect the old culture medium into a centrifuge tube. After trypsin digestion for 30 seconds, add culture medium to stop digestion, and collect cells by pipetting. Centrifuge, add 500ul Buffer RL, pipette, and vortex until there are no obvious cell clumps.</p>
+
+          <h3>Step2. RNA Extraction</h3>
+          <p class="textztbf">1. Transfer the sample to a gDNA column and centrifuge at 12,000 rpm (13,400 x g) for 30 seconds. Discard the column and collect the filtrate.</p>
+          <p class="textztbf">2. Add 0.5 times the volume of body fluid anhydrous ethanol to the concentrated solution and mix thoroughly</p>
+          <p class="textztbf">(After adding the solution , the solution will become turbid or flocculated . This is a normal phenomenon. After shaking and mixing, you can proceed directly to the next step.)</p>
+          <p class="textztbf">3. Transfer the entire mixture from step 2 to the RNA column and spin at 12,000 rpm. Discard the mixture .</p>
+          <p class="textztbf">4. Add 700 μl of Buffer RW1 at 12,000 rpm for 30 seconds and discard the mixture.</p>
+          <p class="textztbf">5. Add 700 μl of Buffer RW2 at 12,000 rpm for 30 seconds and discard the mixture. </p>
+          <p class="textztbf">6. Add 500 μl of Buffer RW2 at 12,000 rpm for 2 minutes (carefully remove the mixture to avoid contact with the filtrate). </p>
+          <p class="textztbf">7. Empty the column and spin at 12,000 rpm for 1 minute. Let it sit for 1-2 minutes.</p>
+          <p class="textztbf">8. Transfer the sample to a high-centrifuge tube ( the kit comes with 3% E). Add 50 μl of enzyme-free water to the center of the column , let it stand for 5 minutes, and then elute at 12,000 rpm for 1 minute. (If the yield is not high, try a second elution.) </p>
+          <p class="textztbf">9. If not used immediately, store in a refrigerator at -80 °C .</p>
+
+          <h3>Step3. RT-PCR</h3>
+          <p class="textztbf">Operate in a fume hood,</p>
+          <p class="textztbf">gDNA The reagents were stored in a -20° C refrigerator.</p>
+          <p class="textztbf">1. Preparation system:</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>5x gDNA clean Reaction Mix 2μl</li>
+              <li>Total RNA 1μg</li>
+              <li>RNase free water 10μl</li>
+              <li>42°C 2 min</li>
+              <li>Remove from heat at 4°C</li>
+          </ul>
+          <p class="textztbf">2. Reverse transcription reaction</p>
+          <p class="textztbf">1) Preparation system (20ul)</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>reaction solution 10 μL</li>
+              <li>5x EvM-MLV RT Reaction Mix(Yellow) 4ul </li>
+              <li>RNase-free water 6 μL</li>
+          </ul>
+          <p class="textztbf">2) PCR Procedure:</p>
+          <p class="textztbf">Mix the RCR system at 4°C</p>
+
+          <h3>Step4. qRCR</h3>
+          <p class="textztbf">When plating cells, perform three replicate wells.</p>
+          <p class="textztbf">Preparation of qPCR system: (You can add enzyme-free water and primers first, then add cDNA, and then add 2*mix)</p>
+          <ul style="margin-left: 4em; margin-bottom: 1em;">
+              <li>Primer (10 μm) 0.7 μL</li>
+              <li>cDNA 1.75 μL </li>
+              <li>2xMix 17.52μL </li>
+              <li>Water 14.33μL </li>
+          </ul>
+          <p class="textztbf">The internal reference microglobulin and GADPH are only used as blank groups.</p>
+          <p class="textztbf">Each sample was divided into 3 portions of 20 and added to 96 wells</p>
+          <p class="textztbf">When applying the anti-steaming film, do not touch the center of the film. After tearing off the film, stick the sticky side to the 96-well plate, then buckle the white paper, scrape it flat with the plate, and then tear off the excess parts on both sides.</p>
+          <p class="textztbf">Before loading, centrifuge at 800 rpm for 2 minutes.Peel off the white paper, leave the film , and feed into the machine.</p>
+
+          <h3>Step5. qPCR data processing</h3>
+          <p class="textztbf">Quantitative PCR was performed on a real-time PCR system , and data were collected and analyzed. All samples were prepared and replicated three times. Experiments were performed at least three times independently. To calculate relative concentrations, ΔCT values were obtained for all samples. ΔCT is a normalized, relative gene expression level. This is achieved by normalizing for the degradation effect of siRNA. Normalized expression for each sample was obtained by subtracting the CT value of the siRNA from the same sample and designated as ΔCT. This value was then converted to a comparative fold change by performing the log(2 − ( ΔCT )).</p>
+      </section>
+
+      <section id="sirna-transfection" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">7. siRNA transfection experiments</h2>
+          
+          <h3>Step1. Cell seeding:</h3>
+          <p class="textztbf">Adherent cells: Taking 293T cells as an example, 0.4x10* cells were seeded into a six-well plate containing 2 mL of complete medium to achieve a cell density of 50-80% during transfection.</p>
+          <p class="textztbf">Suspension cells: Taking THP-1 cells as an example, seed 0.5x10 cells into the wells of a six-well plate containing 2 mL of complete culture medium.</p>
+          <p class="textztbf"><strong>Note:</strong></p>
+          <p class="textztbf">1: The initial inoculation number of different cells depends on the different cell size, cell type, cell growth rate, culture time and experimental purpose. The number of cells inoculated in each well should be as similar as possible and the cells should be evenly distributed.</p>
+          <p class="textztbf">2: Suspension cells, immune cells, and primary cells are generally difficult to transfect due to their inherent characteristics. You can try to improve the transfection effect by adjusting the amount of siRNA and transfection reagent, using different transfection reagents, and standardizing the experimental operation as much as possible. If there is no obvious improvement, you can switch to electroporation or other methods.</p>
+
+          <h3>Step2. siRNA rapid staining</h3>
+          <p class="textztbf">Preparation of siRNA premix: Take a sterile enzyme-free EP tube, add 46ul of GA-RNA Buffer and 4ul of 20umol/L siRNA storage solution, and mix well by pipetting.</p>
+          <p class="textztbf">To prepare the sIRNA -GA rapid dye complex , add 7.5 μL of GA-RNA Reagent to the EP tube containing the sIRNA premix and pipette thoroughly to mix for more than 20 times, or vortex for 2-35 seconds.</p>
+          <p class="textztbf"><strong>Note:</strong></p>
+          <p class="textztbf">1. The transfection complex is stable at room temperature for 8 hours. Do not freeze the siRNA -GA transfection complex. </p>
+          <p class="textztbf">2. The RNA/GA-RNA Reagent ratio is a key factor in the encapsulation of the GA-RNA Transfection Reagent. If you need to increase or decrease the amount of SIRNA per well, you can increase or decrease the volume of siRNA -GA transfection complex added to the cells accordingly.</p>
+          <p class="textztbf">Add the siRNA -GA rapid transfection complex to the cell culture medium of the well plate to be transfected and mix gently.</p>
+          <p class="textztbf">Other necessary special treatments (optional, such as drug addition, etc., determined according to specific experimental conditions),</p>
+          <p class="textztbf">Place the culture plate in a 37°C CO incubator and culture for 24-96 hours (the culture time is related to the experimental purpose. qPCR is generally performed 24-48 hours after transfection to extract RNA for RT-qPCR testing; Western blotting is generally performed 48-96 hours after transfection to collect cells for Western blotting testing).</p>
+          
+          <p class="textztbf">Table 4 Recommended dosage for rapid staining of different culture dishes with a final concentration of 40 nmol/L siRNA</p>
+          <table style="margin-left: 4em; margin-bottom: 1em; border-collapse: collapse; width: 80%;">
+              <tr style="border: 1px solid #000;">
+                  <th style="border: 1px solid #000; padding: 5px;">Reagent</th>
+                  <th style="border: 1px solid #000; padding: 5px;">96 well plate</th>
+                  <th style="border: 1px solid #000; padding: 5px;">24 well plate</th>
+                  <th style="border: 1px solid #000; padding: 5px;">12 well plate</th>
+                  <th style="border: 1px solid #000; padding: 5px;">6 well plate</th>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">GA-RNA Buffer(μl)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2.3</td>
+                  <td style="border: 1px solid #000; padding: 5px;">11.5</td>
+                  <td style="border: 1px solid #000; padding: 5px;">46</td>
+                  <td style="border: 1px solid #000; padding: 5px;">23</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">20 μmol/L siRNA storage solution(μl)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.2</td>
+                  <td style="border: 1px solid #000; padding: 5px;">1</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2</td>
+                  <td style="border: 1px solid #000; padding: 5px;">4</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">GA-RNA Reagent(μl)</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.38 or 0.75</td>
+                  <td style="border: 1px solid #000; padding: 5px;">1.9 or 3.8</td>
+                  <td style="border: 1px solid #000; padding: 5px;">3.8 or 7.5</td>
+                  <td style="border: 1px solid #000; padding: 5px;">7.5 or 15</td>
+              </tr>
+          </table>
+          
+          <p class="textztbf">Note: Two different concentrations of GA-RNA Reagent are available for rapid staining . The specific concentration can be selected based on the specific cell type. For most cells, the ideal rapid staining effect can usually be achieved with the lower dose of GA-RNA Reagent .</p>
+
+          <h3>Step3. siRNA efficacy testing</h3>
+          <p class="textztbf">RNA level detection: RNA levels should be detected 24-48 hours after siRNA transfection. Detecting changes in target gene RNA levels by qPCR is a widely accepted standard for RNAi experimental results. The optimal detection time varies depending on the cell type. Testing too late may result in poor interference detection efficiency or even failure to detect interference effects.</p>
+          <p class="textztbf">Protein Level Detection: For protein-coding genes, it is recommended to perform protein detection 48-96 hours after transfection. Because protein expression is affected by many factors, if protein levels are unclear, please test mRNA levels to confirm the effectiveness of the siRNA.</p>
+      </section>
+
+      <section id="delivery-vectors" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">8. Preparation and Characterization of Hybrid Delivery Vectors</h2>
+          
+          <h3>Step1. Vaccination</h3>
+          <p class="textztbf">The Lpp-OmpA-eGFP and Lpp-OmpA-Anti GPC3 chimeric systems were selected , with Escherichia coli BL21 as the host bacteria. Escherichia coli that stably expressed eGFP and GPC3 antibodies on the outer membrane (abbreviated as LOE and GPC3 ) were cultured ; at the same time, Escherichia coli expressing eGFP intracellularly was cultured as a positive control, and BL21 was used as a negative control.</p>
+          <p class="textztbf"><strong>Experimental operation:</strong></p>
+          <p class="textztbf">1. Resuscitation of bacterial strains: Remove the glycerol tube from -80℃ and place it on ice immediately.</p>
+          <p class="textztbf">2. Streak inoculation: Dip the bacterial solution and streak it on the LB plate . Add 100 μg /mL kanamycin to the resistance plate .</p>
+          <p class="textztbf">3. Culture: Invert the plate and culture in a 37°C incubator for 12-16 hours.</p>
+
+          <h3>Step2. Bacterial culture</h3>
+          <p class="textztbf">1. Pick a single, isolated colony with regular morphology and neat edges that has formed on an LB plate after 16 hours of incubation at 37°C . Inoculate the selected bacteria into 10 mL of sterile LB medium supplemented with kanamycin at a final concentration of 50 μg /mL for the LOE , GPC3 , and eGFP strains . Incubate the inoculated bacterial suspension at 37°C in a shaker at 220 rpm for 12-16 hours to allow the bacteria to fully recover and enter early logarithmic growth.</p>
+          <p class="textztbf">2. Transfer the bacterial suspension from the 12-16 hour pre-culture to fresh LB liquid medium ( supplemented with Kanamycin at a final concentration of 50 μg / mL for the LOE , GPC3 , and eGFP strains ) at a 1:100 (v/v) inoculum ratio . Incubate at 37°C and 220 rpm with constant shaking for approximately 4 hours, until the OD₆₀₀ value reaches 0.6 . Immediately, add IPTG (isopropyl -β-D- thiogalactopyranoside ) to the culture medium to a final concentration of 2 μmol /mL . Adjust the culture conditions to 25 °C and 180 rpm , and continue induction for 16 hours to promote expression and correct folding of the target protein.</p>
+
+          <h3>Step3. Membrane Vesicle Preparation</h3>
+          <p class="textztbf">1. Bacteria Collection and Cleaning</p>
+          <p class="textztbf">The bacterial suspension was divided into 50 mL centrifuge tubes and centrifuged at 8,000× g at 4°C for 3 min (balanced with deionized water before centrifugation). The supernatant culture medium was completely discarded and the centrifuge tubes were placed on ice to maintain a low temperature environment. Then, pre-chilled PBS buffer ( pH 7.4 ) was used. Wash the bacterial pellet twice: add 10 mL of PBS each time to fully resuspend the bacteria, then centrifuge again at 8,000× g and 4°C for 3 min , discarding the supernatant to ensure removal of residual culture medium components and secreted metabolites.</p>
+          
+          <p class="textztbf">2. Ultrasonic cell disruption</p>
+          <p class="textztbf">Resuspend the washed cells in an appropriate amount of PBS and disrupt them using an ultrasonic disruptor . Keep the centrifuge tube in an ice-water mixture for temperature control throughout the process. Set the ultrasonic program to 5 seconds on, 5 seconds off , for a total of 10 minutes . Ensure that the probe is submerged below the liquid level and does not contact the tube wall to achieve efficient cell lysis while avoiding sample overheating and foaming.</p>
+          
+          <p class="textztbf">3. Removal of Cell Debris</p>
+          <p class="textztbf">The lysate after disruption was centrifuged at 17,000× g and 4°C for 30 min (precisely balanced before centrifugation) to separate and remove unbroken cells and large membrane fragments. The supernatant was carefully collected and placed on ice. This supernatant is the crude extract containing vesicles.</p>
+          
+          <p class="textztbf">4. Ultra-high-speed centrifugation to enrich vesicles</p>
+          <p class="textztbf">The supernatant was filtered through a 0.22 μm sterile filter to remove residual impurities. Aliquots were then dispensed into ultracentrifuge tubes, accurately balanced using a 1/10,000 analytical balance (each tube was accurately balanced to within ±0.01 g ). Ultracentrifugation was performed at 170,000× g and 4°C for 30 min . A translucent vesicle pellet was visible at the bottom of the tube .</p>
+          
+          <p class="textztbf">5. Vesicle Resuspension and Storage</p>
+          <p class="textztbf">Prepare PBS buffer filtered through a 0.22 μm filter . After centrifugation, quickly discard the supernatant to avoid disturbing the pellet. Gently resuspend each pellet in 1 mL of pre-chilled PBS by pipetting. Combine the resuspensions in pre-chilled 1.5 mL centrifuge tubes. Keep on ice throughout the entire process. Finally, aliquot and store at 4 ° C .</p>
+
+          <h3>Step4. Nanoflow cytometry</h3>
+          <p class="textztbf">Detecting properties such as membrane vesicle size, particle number, and protein fluorescence intensity</p>
+          
+          <p class="textztbf">1. System startup</p>
+          <p class="textztbf">1) Pre-startup inspection: Check the level of the wash solution (>10mL) and the height difference between the sheath solution and the waste solution (20-30cm).</p>
+          <p class="textztbf">2) Turn on the computer and run the NF Profession2.0 software. When you hear two "beep-- beep-- " sounds, it means the device is connected successfully.</p>
+          <p class="textztbf">3) System initialization: Click Start Up. The camera, laser and air pump are now turned on.</p>
+          <p class="textztbf">4) Flow Initialization: Start the flow system by clicking Sheath Flow > StartUp . Place 150 L of ultrapure water on the sample holder . Click Sample > Boosting and allow the flow to initialize for 5 minutes. After initialization, click Sample > Unload.</p>
+          <p class="textztbf">5) Eliminate bubbles: Observe the tubing inside the right door of the instrument to see if there are any bubbles remaining. If so, click Sheath Flow > Empty Sheath. Once the bubbles are eliminated, click Sheath Flow > Purge. Once the bubbles are eliminated, the Sheath Flow status will automatically switch to Normal .</p>
+          <p class="textztbf">Routine quality control of nanoflow cytometry</p>
+          
+          <p class="textztbf">2. Concentration standard detection</p>
+          <p class="textztbf">1) Sample loading : Load concentration standard (250nm SiNPs, 100uL), Sample--Boosting, time 1min.</p>
+          <p class="textztbf">2) Parameter Settings: In Samp.Inf , select "250nm Std FL SiNPs " and the default parameters are Laser power: 20mW, SS Decay: 0.2%. Also, enter a dilution factor of 100. The sample name can be manually modified.</p>
+          <p class="textztbf">3) Sampling: Sample--Sampling, click A in the toolbar and select Large signal to automatically set the threshold; click Auto Sampling and enter 1.0 in the box to the right of Sampling SET to fix the Sampling pressure at 1.0 kPa; wait for the Sampling pressure to stabilize at 1.0 kPa, then click Time to Record to collect data: After data collection is completed, the collection mode automatically jumps to Buffer. Click the Save button in the pop-up box to save the data as Nfa File; Unload the sample.</p>
+          <p class="textztbf">4) Capillary cleaning: Load the capillary with cleaning solution (150 μL), sample for 1 minute, and then unload. Remove any residual cleaning solution from the capillary tip with ultrapure water (150 μL).</p>
+          
+          <p class="textztbf">3. Particle size standard testing</p>
+          <p class="textztbf">1) Kamiyoshi : Load particle size standard product (Silica Nanospheres68~155nm, 100uL), Sample--Boosting. Time 1min.</p>
+          <p class="textztbf">2) Parameter setting: Select "68-155S16M-Exo" in Samp.Inf . The sample name can be modified manually.</p>
+          <p class="textztbf">3) Sampling: Sample--Sampling, click the toolbar and select Small signal, automatically set the threshold: Fix the Sampling pressure to 1.0kPa: Click Time to Record to collect data: Click the Save button in the pop-up box to save the data as Nfa File; Unload the sample.</p>
+          <p class="textztbf">4) Capillary cleaning: Load the capillary with washing solution (150 μL), sample-boosting for 1 minute, and unload. Use ultrapure water (150 μL) to remove any residual washing solution from the capillary tip.</p>
+          
+          <p class="textztbf">4. Blank control test</p>
+          <p class="textztbf">1) Loading : Load blank control (sample dilution solution, such as PBS), Sample--Boosting, time 1 min.</p>
+          <p class="textztbf">2) Parameter setting: Select "68-155S16M-Exo" in Samp.Inf , and pay attention to modifying the sample name (the detection conditions of the blank control should be consistent with those of the sample).</p>
+          <p class="textztbf">3) Sampling: Sample--Sampling, click on the toolbar</p>
+          <p class="textztbf">And select Small signal, automatically set the threshold: Fix the Sampling pressure to 1.0kPa: Click Time to Record to collect data: After data collection is completed, click the Save button to save the data as Nfa File: Unload the blank control.</p>
+          
+          <p class="textztbf">5. Sample testing</p>
+          <p class="textztbf">1) Loading : Load sample (100uL), Sample--Boosting, time 1min.</p>
+          <p class="textztbf">2) Parameter setting: Select "68-155S16M-Exo" in Samp.Inf , change the sample name and enter the dilution factor.</p>
+          <p class="textztbf">number.</p>
+          <p class="textztbf">3) Sampling: Sample--Sampling, click the toolbar and select Small sigal to automatically set the threshold; fix the Sampling pressure to 1.0kPa; wait for the Sampling pressure to stabilize at 1.0kPa, click Time to Record to collect data; after data collection is completed, click the Save button to save the data as Nfa File: Unload the sample.</p>
+          <p class="textztbf">4) Capillary cleaning: Load the capillary with washing solution (150 μL), sample-boosting for 1 minute, and unload. Use ultrapure water (150 μL) to remove any residual washing solution from the capillary tip.</p>
+
+          <h3>Step5. Preparation of EV- LNP Hybrids</h3>
+          <p class="textztbf">LNP components of formula 1273 , molar ratio: DOTAP: cholesterol :DSPC:PEG- lipid = 50:38.5:10:1.5</p>
+          <p class="textztbf">Liposome concentration ratio ( Formula 1273 )</p>
+          <table style="margin-left: 4em; margin-bottom: 1em; border-collapse: collapse; width: 80%;">
+              <tr style="border: 1px solid #000;">
+                  <th style="border: 1px solid #000; padding: 5px;">Components</th>
+                  <th style="border: 1px solid #000; padding: 5px;">content</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Mv</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Weigh the mass</th>
+                  <th style="border: 1px solid #000; padding: 5px;">concentration</th>
+                  <th style="border: 1px solid #000; padding: 5px;">Weigh the volume</th>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">HUO</td>
+                  <td style="border: 1px solid #000; padding: 5px;">50%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">709</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.008863 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.1 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">88.63μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">D0PE</td>
+                  <td style="border: 1px solid #000; padding: 5px;">10%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">744.034</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.00186 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.1 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">18.60μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">cholesterol</td>
+                  <td style="border: 1px solid #000; padding: 5px;">37.5%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">386.65</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.003635 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.02 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">181.75μL</td>
+              </tr>
+              <tr style="border: 1px solid #000;">
+                  <td style="border: 1px solid #000; padding: 5px;">DSPEPEG2000</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2.5%</td>
+                  <td style="border: 1px solid #000; padding: 5px;">2000</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.001250 g</td>
+                  <td style="border: 1px solid #000; padding: 5px;">0.01 g/mL</td>
+                  <td style="border: 1px solid #000; padding: 5px;">125μL</td>
+              </tr>
+          </table>
+          
+          <p class="textztbf"><strong>Steps:</strong></p>
+          <p class="textztbf">1. HUO (SM-102) is a viscous liquid. First, add 1 ml of anhydrous ethanol to the HUO (SM-102) centrifuge tube.</p>
+          <p class="textztbf">2. Liposome Preparation (Concentration: 12.5 mM ): Use a micropipette to accurately weigh the appropriate volumes of cationic carrier, amphiphilic phospholipid bilayer , cholesterol, and DSPE-PEG2000 into a 2 mL centrifuge tube . Add DMSO -dissolved coumarin 6 (C6) fluorescent dye for labeling to a final concentration of 160 μmol/L . Make up the volume to 2 mL with 100% ethanol .</p>
+          <p class="textztbf">3. Mix the citric acid buffer and LNPs at a ratio of 3:1 by pipetting and incubate at room temperature for 10 min .</p>
+          <p class="textztbf">4. Vortex vigorously for 1 minute , then place in a 10 Kd dialysis bag and dialyze against PBS buffer at 4 °C in the dark to remove unlabeled free C6 . Store in a 4 °C refrigerator until ready for use.</p>
+          <p class="textztbf">For fluorescent labeling of EVs , DID (excitation / emission: 644/665 nm ) was selected as the fluorescent dye. To 200 µL of purified EVs (concentration approximately 4 × 10 10 particles /mL ), DID solution was added to the solution to a final dye concentration of 40 µmol/L . The solution was incubated with rotation at room temperature in the dark for 1 hour. The solution was then dialyzed against PBS buffer at 4°C in a 10Kd dialysis bag in the dark to remove unlabeled free DID dye. The solution was then refrigerated at 4°C until ready for use.</p>
+          <p class="textztbf">The prepared EVs and LNP liposome solutions were diluted to 4×10 9 particles /mL and thoroughly mixed at a particle concentration ratio of 1 : 1 . They were immediately frozen in liquid nitrogen for 1 min , then completely thawed in a 37 °C water bath and incubated for about 5 min . After repeating the operation three times , the hybrid particles were homogenized using an ultrasonic disruptor . The ultrasonic program was set to 5 s on , 5 s off , for a total of 5 min . The mixture was then placed at 4 °C for use.</p>
+          <p class="textztbf">Nanoflow cytometry was used to detect the properties of EV-DID , LNP-C6 and hybrids.</p>
+
+          <h3>Step6. Characterization</h3>
+          <p class="textztbf">1. Characterization with Zeiss Confocal Microscope</p>
+          <p class="textztbf">20 μl of sample was dropped onto a glass slide, which was then covered with a coverslip and photographed using a Zeiss confocal microscope under a 60× oil objective lens .</p>
+          
+          <p class="textztbf">2. Western Blot Detection of Vesicle Proteins :</p>
+          <p class="textztbf">Protein electrophoresis was performed on 1.5 mm thick SDS-PAGE gels (12% separating gel concentration, 5% stacking gel concentration). An appropriate amount of purified vesicle sample was mixed with 5 × SDS - PAGE protein loading buffer at a 4:1 volume ratio . After thorough vortexing, the mixture was heated in a boiling water bath for 5 minutes to fully denature the proteins.</p>
+          <p class="textztbf">After the sample cools, briefly centrifuge to collect the condensate on the tube wall. Add sufficient 1× electrophoresis buffer to the electrophoresis tank, loading 20 μL of sample per well. Add 5 μL of prestained protein molecular weight standards to adjacent lanes as a reference. Run two gels simultaneously. Electrophoresis parameters are as follows: an initial voltage of 80 V to allow the sample to migrate and compact into a narrow band in the stacking gel. When the bromophenol blue indicator reaches the separating gel interface, increase the voltage to 150 V and continue running until the bromophenol blue indicator migrates to the bottom edge of the gel, at which point the electrophoresis is terminated.</p>
+          <p class="textztbf">Take a 4.5 x 8.5 cm PVDF membrane and soak it in anhydrous methanol for 1 minute to activate the hydrophobic groups. Then, transfer it to transfer buffer for 5 minutes. Assemble the SDS-PAGE gel and pretreated PVDF membrane in a " sandwich " configuration in a transfer cassette, strictly adhering to the principle of facing the negative electrode with the gel side facing the positive electrode and the membrane side facing the positive electrode. Remove any air bubbles and place the membrane in the transfer chamber .</p>
+          <p class="textztbf">After transfer , transfer the membrane to a high-efficiency blocking buffer and block on a shaker at room temperature for 10 minutes. After blocking, prepare the primary antibody working solution : Dissolve 1 g of skim milk powder in 20 mL of TBST buffer. Add 2 μL of mouse His monoclonal antibody and mix thoroughly. Immerse the membrane in the primary antibody working solution and incubate at room temperature for 30 minutes before transferring to a 4°C refrigerator for overnight incubation.</p>
+          <p class="textztbf">Soak the membrane in methanol for 1 minute to activate it, then soak it in transfer buffer for 5 minutes . Transfer the membrane using a transfer apparatus , ensuring the gel is close to the negative electrode. After transfer , block the membrane with a high-efficiency blocking solution for 10 minutes . Prepare the primary antibody: 20 ml TBST + 1 g skim milk powder + 2 μL His antibody. After blocking, incubate with the primary antibody for 30 minutes and refrigerate at 4 °C overnight.</p>
+          <p class="textztbf">Another SDS-PAGE gel was stained with Coomassie Brilliant Blue and destained, and the whole protein band was photographed using a gel imaging system as a control.</p>
+          <p class="textztbf">After primary antibody incubation, remove the membrane and wash it six times with TBST buffer for 10 minutes each to completely remove any unbound primary antibody. Prepare the secondary antibody working solution : Dissolve 1 g of skim milk powder in 20 mL of TBST buffer, then add 2 μL of horseradish peroxidase- conjugated goat anti-mouse IgG secondary antibody. Incubate on a shaker at room temperature for 1 hour, then wash the membrane six times with TBST for 10 minutes each . Apply the luminescent solution evenly to the membrane surface , allow to react for 1 minute, and remove any remaining liquid by aspiration. Acquire the signal using a chemiluminescence imaging system.</p>
+      </section>
+  </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应Overview
+        document.getElementById('text-2'),  // 对应RNA Transcription
+        document.getElementById('text-3'),  // 对应mRNA Switch Transfection
+        document.getElementById('text-4'),  // 对应5'-UTR Validation
+        document.getElementById('text-5'),  // 对应Western Blot
+        document.getElementById('text-6'),  // 对应Cell Passaging
+        document.getElementById('text-7'),  // 对应qPCR
+        document.getElementById('text-8'),  // 对应siRNA Transfection
+        document.getElementById('text-9')   // 对应Delivery Vectors
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('overview'),
+        document.getElementById('rna-transcription'),
+        document.getElementById('mrna-switch-transfection'),
+        document.getElementById('mrna-utr-validation'),
+        document.getElementById('western-blot'),
+        document.getElementById('cell-passaging'),
+        document.getElementById('qpcr'),
+        document.getElementById('sirna-transfection'),
+        document.getElementById('delivery-vectors')
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 300) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,1706 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block lead %}
+<style>
+    p:empty {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    height: 0;
+    }
+    .container{
+        width: 100% !important;
+        max-width: none !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    /* 原有核心样式保持不变 */
+    .img-container {
+        position: relative;
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0 !important;
+        padding: 80px 0 0 0 !important;
+        overflow: hidden;
+    }
+    
+    .divide-container {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+        height: 100vh !important;
+        background: linear-gradient(171deg, #d3bae4 0%, #d2b4f6 100% 100%);
+    }
+
+    .divide-container2 {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+        height: 100vh !important;
+        background: linear-gradient(rgb(210 180 245), rgb(255 250 237));
+    }
+
+    .divide-container3 {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+        height: 100vh !important;
+        background-color:rgb(254 249 237);
+    }
+
+    .divide-container4 {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+        height: 100vh !important;
+        background-color:rgb(254 249 237);
+    }
+
+    .divide-container5 {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+        height: 100vh !important;
+        position: relative;
+        background-color: rgb(254 249 237);
+    }
+
+    .divide-container5 img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* 初始状态 - 图片在视窗外 */
+    .divide-container5 img:nth-child(1) {
+        /* computer0 - 保持原位 */
+        opacity: 0;
+        animation: fadeIn 1s ease-out forwards;
+    }
+
+    .divide-container5 img:nth-child(2) {
+        /* computer2 - 从右向左 */
+        transform: translateX(100%);
+        transition: transform 1.2s ease-out;
+    }
+
+    .divide-container5 img:nth-child(3),
+    .divide-container5 img:nth-child(5) {
+        /* computer3 和 computer5 - 从左向右 */
+        transform: translateX(-100%);
+        transition: transform 1.2s ease-out;
+    }
+
+    .divide-container5 img:nth-child(4) {
+        /* computer4 - 从下往上 */
+        transform: translateY(100%);
+        transition: transform 1.2s ease-out 0.2s; /* 稍微延迟 */
+    }
+
+    /* 动画激活状态 - 图片移动到最终位置 */
+    .divide-container5.animate-active img:nth-child(2) {
+        transform: translateX(0);
+    }
+
+    .divide-container5.animate-active img:nth-child(3),
+    .divide-container5.animate-active img:nth-child(5) {
+        transform: translateX(0);
+    }
+
+    .divide-container5.animate-active img:nth-child(4) {
+        transform: translateY(0);
+    }
+
+    /* 淡入动画 */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+
+    .divide-container6 {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0 !important;
+        padding: 0 !important;
+        overflow: hidden;
+        height: 100vh !important;
+        background: linear-gradient(rgb(254 249 237), rgb(231 223 233));
+    }
+
+    .full-page-img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        margin: 0 !important;
+        padding: 0 !important;
+        height: 100vh * 3408 / 1985；
+    }
+
+    .next-content {
+        max-width: 1200px;
+        margin: 0 auto !important;
+        padding: 0px 0px;
+    }
+
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden;
+        background-color: #f9f9f9;
+    }
+
+    /* 叠加图片容器样式 */
+    .overlay-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .overlay-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* 保留原有动画效果 */
+    @keyframes moveLeftRight {
+        0% { transform: translateX(-12px); }
+        50% { transform: translateX(12px); }
+        100% { transform: translateX(-12px); }
+    }
+
+    @keyframes moveUpDown {
+        0% { transform: translateY(-20px); }
+        50% { transform: translateY(22px); }
+        100% { transform: translateY(-20px); }
+    }
+
+    @keyframes breathe {
+        0% { transform: scale(0.98); }
+        50% { transform: scale(1.03); }
+        100% { transform: scale(0.98); }
+    }
+
+    @keyframes subtleBreathe {
+        0% { transform: scale(1); opacity: 0.9; }
+        50% { transform: scale(1.08); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.9; }
+    }
+
+    .move-horizontal-1 { animation: moveLeftRight 8s ease-in-out infinite; }
+    .move-horizontal-2 { animation: moveLeftRight 10s ease-in-out 1s infinite; }
+    .move-horizontal-3 { animation: moveLeftRight 12s ease-in-out 2s infinite; }
+
+    .move-vertical-1 { animation: moveUpDown 9s ease-in-out 0.5s infinite; }
+    .move-vertical-2 { animation: moveUpDown 11s ease-in-out 1.5s infinite; }
+    .move-vertical-3 { animation: moveUpDown 13s ease-in-out 2.5s infinite; }
+
+    .breathe-1 { animation: breathe 6s ease-in-out infinite; }
+    .breathe-2 { animation: breathe 8s ease-in-out 2s infinite; }
+    
+    .subtle-breathe { animation: subtleBreathe 3s ease-in-out infinite; }
+
+    /* 内容布局样式 */
+    .content-container {
+        display: flex;
+        align-items: center;
+        margin: 5% 0px -2% 10vw;
+        padding: 0 0 20vh 0;
+        max-width: 1400px;
+        width: 100%;
+        position: relative;
+        gap: 0;
+    }
+
+    #new-section {
+        margin: 12.4vh 0px 0 0;
+        height: 60vh;
+        padding:0 0 auto 0;
+    }
+
+    .stats-image-container {
+        width: 45%;
+        height: 46.6vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        right: -100%;
+        top: 0;
+        transition: right 0.8s ease;
+    }
+    
+    .stats-image.visible {
+        right: 0;
+    }
+
+    .image-stat {
+        position: absolute;
+        font-size: clamp(20px, 4vw, 32px);
+        font-weight: bold;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        opacity: 0;
+        transform: translateX(30px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+        z-index: 10;
+    }
+
+    .image-stat.china {
+        bottom: 35%;
+        right: 2%;
+        transition-delay: 0.5s;
+    }
+
+    .image-stat.asia {
+        top: 20%;
+        right: 15%;
+        transition-delay: 0.8s;
+    }
+
+    .image-stat.visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .plain-text p {
+        margin-bottom: 18%;
+        font-size: 1.6vw;
+        color: #333333f1;
+        line-height: 2.8;
+        text-align: center;
+        margin-top: 5vw;
+    }
+
+    .plain-text-container {
+        width: 55%;
+        transform: translateX(50px);
+        opacity: 0;
+        transition: transform 0.8s ease 0.5s, opacity 0.8s ease 0.5s;
+    }
+
+    .plain-text-container.visible {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .plain-text p:nth-child(2) {
+        font-size: 2vw;
+        color: rgba(168, 85, 247, 0.8);
+        font-weight: 1000;
+        margin-bottom: 0;
+        white-space: nowrap;
+        overflow: visible;
+        text-shadow:  1px 3px rgba(124, 58, 237, 0.3);
+    }
+
+    .image-label {
+        position: absolute;
+        font-size: clamp(18px, 3vw, 24px);
+        font-weight: bold;
+        padding: 8px 12px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        transform: translateY(10px); /* 初始位置略微下移 */
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        z-index: 10;
+    }
+
+    .plain-text p:last-child {
+        margin-bottom: 0;
+    }
+
+    .art-stats-container {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        padding: 0;
+        text-align: center;
+        height: 23.74vh;
+        margin-bottom: 9.34vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 1s ease 0.1s, transform 1s ease 0.1s;
+    }
+
+    .art-stats-container.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .art-stat {
+        font-size: 4.2vh;
+        font-weight: 800;
+        color: #d603ad;
+        text-shadow: 3px 3px 6px rgba(124, 58, 237, 0.3);
+        margin-bottom: 15px;
+        margin-top: 10px;
+        letter-spacing: 1px;
+        line-height: 1.4;
+    }
+
+    .art-stat .highlight-number {
+        color: #eb0404;
+        font-size: 5.5vh;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-shadow: 0 0 10px rgba(239,68,68,0.2), 2px 2px 0 #fff;
+        vertical-align: middle;
+        padding: 0 6px;
+        transition: color 0.2s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+
+    .highlight-number2 {
+        font-size: 7.52vh; 
+        font-weight: 900;
+        text-align: left;
+        color: #af1a81; 
+        text-shadow: 0 0 10px rgba(239,68,68,0.2), 2px 2px 0 #fff;
+        padding: 0 0.5% 0 0.5%;
+    }
+
+    .highlight-number3 {
+        font-size: 2.9vw;
+        color: #055c99;
+        text-align: center;
+        font-weight: 700;
+        text-shadow: 0 0 10px rgba(239,68,68,0.2), 2px 2px 0 #fff;
+        padding: 0 0.5% 0 0.5%;
+    }
+
+    .art-stat:last-child {
+        margin-bottom: 0;
+    }
+
+    .vertical-treatment-status {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: none;
+    }
+
+    .treatment-title {
+        font-size: 5.52vh;
+        font-weight: 900;
+        text-align: left;
+        color: #af1a81;
+        padding-top: 10.8vh;
+        padding-bottom: 8.74vh;
+        overflow: visible;
+        position: relative;
+        left: 0;
+        margin-left: 0;
+        width: 100vw;
+        box-sizing: border-box;
+        padding-left: 5vw;
+    }
+
+    .treatment-panels.horizontal-mode {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6.55vw;
+        margin-bottom: 8.25vh;
+        width: 62.4vw;
+        background: none;
+        height: 40vh;   
+    }
+
+    .treatment-panel {
+        background: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1 1 0px;
+        height:44.99vh;
+        width: 13.1vw;
+    }
+
+    .panel-img {
+        width: 13.09vw;
+        height: 33vh;
+        padding-bottom: 4.89vh;
+        border-radius: 25px;
+        overflow: hidden;
+    }
+
+    .panel-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .panel-title {
+        font-size: 2vw;
+        font-weight: 800;
+        text-align: center;
+        color: #7b31be;
+        line-height: 1.3;
+        margin-bottom: 0;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(239,68,68,0.2), 2px 2px 0 #fff;
+    }
+
+    .side-effects-list {
+        font-weight: 400;
+        font-size: 0.5em;
+        color:#333;
+        display: block;
+        margin-top: 8px;
+        line-height: 1.5;
+        white-space: nowrap;
+        text-align: center;
+        text-shadow: none;
+    }
+
+    .treatment-summary {
+        font-size: 1.9vw;
+        color: #055c99;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 0.3px;
+        overflow: visible;
+        white-space: nowrap;
+        line-height: 1.5;
+    }
+
+    @keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    }
+
+    .vertical-treatment-status {
+        /* 增添默认隐藏动画前态 */
+        opacity: 0;
+        transform: translateY(80px);
+        transition: opacity 0.7s, transform 0.8s;
+    }
+
+    .vertical-treatment-status.animated-in {
+        /* 增添激活类：整体出现 */
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.7s, transform 0.8s;
+    }
+
+    .treatment-panel {
+        /* 增添动画前态 */
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+        transition: opacity 0.6s, transform 0.6s;
+    }
+    .treatment-panel.animated-in {
+        /* 增添动画出现激活态 */
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        animation: fadeInUp 0.7s both;
+    }
+
+    .image-holder {
+        width: 40%;
+        height: 40.53vh;
+        position: relative;
+        transform: translateY(20px) translateX(-10px);
+        opacity: 0;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    .image-holder.visible {
+        transform: translateY(0) translateX(-10px);
+        opacity: 1;
+    }
+
+    .label-modular {
+        top: 38%;
+        left: 2%;
+        color: #6a69ff;
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.2), 0.5px 0.5px 0 #fff;
+        font-size: 3vh;
+        opacity: 0;
+        transition-delay: 0.4s;
+    }
+
+
+
+    .label-digital {
+        bottom: 26%;
+        left: 22%;
+        color: #6a69ff;
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.2), 0.5px 0.5px 0 #fff;
+        font-size: 3vh;
+        transition-delay: 0.6s;
+    }
+
+    .label-editable {
+        top: 12%;
+        right: 10%;
+        color: #aa0fcb;
+        text-align: right;
+        max-width: 40%;
+        text-shadow: 0 0 10px rgba(239, 68, 68, 0.2), 0.5px 0.5px 0 #fff;
+        font-size: 3vh;
+        transition-delay: 0.8s;
+    }
+
+    .image-holder.visible .image-label {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .image-caption {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10px;
+        font-size: clamp(18px, 3vw, 24px);
+        font-weight: bold;
+        color: #333;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        z-index: 5;
+        white-space: nowrap;
+        transition: opacity 0.8s ease 0.5s;
+    }
+
+    .factor-label {
+        position: absolute;
+        font-size: clamp(17px, 3vw, 26px);
+        font-weight: bold;
+        color: #0093ff;
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.9), 2px 2px 4px rgba(0, 0, 0, 0.8);
+        z-index: 10;
+        text-shadow: 0 0 10px rgba(239,68,68,0.2), 1px 1px 0 #fff;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+    }
+
+    .image-item.visible .image-caption,
+    .image-item.visible .factor-label {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .image-item.visible .factor-label {
+        transform: translateY(0);
+    }
+
+    .factor-hnf4 {
+        bottom: 35%;
+        left: 15%;
+    }
+
+    .factor-tgf {
+        top: 25%;
+        right: 15%;
+    }
+ 
+ /* mRNA Hero Section 滚动动画 */
+    .mrna-hero-section-breakout {
+        opacity: 0;
+        transform: translateY(60px) scale(0.97);
+        transition: opacity 1s cubic-bezier(.39,.58,.57,1.03), transform 1s cubic-bezier(.39,.58,.57,1.03);
+    }
+    .mrna-hero-section-breakout.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    /* 子元素依次延迟动画 */
+    .mrna-hero-section-breakout .core-animated {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+        transition: opacity 0.8s, transform 0.8s;
+    }
+
+    /* 可见时依次出现 */
+    .mrna-hero-section-breakout.visible .core-animated:nth-child(1) { /* Safety */
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition-delay: 0.25s !important;
+    }
+    .mrna-hero-section-breakout.visible .core-animated:nth-child(2) { /* 圆点 */
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition-delay: 0.35s !important;
+    }
+    .mrna-hero-section-breakout.visible .core-animated:nth-child(3) { /* Efficacy */
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition-delay: 0.45s !important;
+    }
+    .mrna-hero-section-breakout.visible .core-animated:nth-child(4) { /* 圆点 */
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition-delay: 0.55s !important;
+    }
+    .mrna-hero-section-breakout.visible .core-animated:nth-child(5) { /* Selectivity */
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transition-delay: 0.65s !important;
+    }
+
+    .images-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(15px, 3vw, 30px);
+        width: 60%;
+    }
+
+    .image-item {
+        flex: 1;
+        height: 280px;
+        position: relative;
+        opacity: 0;
+        transition: opacity 0.8s ease 0.3s;
+    }
+
+    .image-item.visible {
+        opacity: 1;
+    }
+
+    .purple-arrow {
+        color: #b466fc;
+        font-size: clamp(36px, 7vw, 56px);
+        font-weight: 950;
+        text-shadow: 2px 2px 0px rgba(102, 51, 153, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        opacity: 0;
+        transition: opacity 0.6s ease 0.3s;
+    }
+
+    .purple-arrow.visible {
+        opacity: 1;
+    }
+
+    .image-holder-fade {
+        width: 45vh;
+        height: 45vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slide-image-right {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transition: right 0.8s ease;  
+        border-radius: 64px;
+    }
+
+    .image-holder-fade.visible .slide-image-right {
+        right: 0;  /* 滑入到正常位置 */
+    }
+
+    .image-holder-fade {
+        width: 45vh;
+        height: 45vh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .text-box-fade {
+        FONT-VARIANT-EAST-ASIAN: JIS90;
+        width: 50%;
+        padding-left: 5vw;
+        background-color: transparent !important;
+        border: none !important;
+        image-rendering: pixelated;
+        box-shadow: none !important;
+        border-radius: 50%;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: justify;
+        transform: translateX(50px);
+        opacity: 0;
+        transition: transform 0.8s ease 0.5s, opacity 0.8s ease 0.5s;
+    }
+
+    .text-box-fade.visible {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    .slide-image {
+        width: 84%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        transition: transform 0.3s ease;
+    }
+
+    .slide-image.left {
+        left: 0;
+    }
+
+    .slide-image.right {
+        right: 0;
+    }
+
+    .slide-image:hover {
+        transform: scale(1.02);
+    }
+
+    .text-box {
+        width: 50vw;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        max-height: none !important;
+        white-space: nowrap; 
+        overflow: visible;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.6s ease 0.2s, opacity 0.6s ease 0.2s;
+    }
+
+    .text-box.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    #first-section .text-box p {
+        color: #406462 !important;
+        line-height: 1.8 !important;
+        text-indent: 0 !important;
+        margin: 0 !important;
+        font-weight: 1000 !important;
+        font-size: 2vw;
+    }
+
+    #first-section {
+        height: 52.91vh;
+        margin: 10.02vh 0 0 0;
+        padding: 0 0 0 0;
+        max-height: 100vh;
+        width: 100vw!important;
+        max-width: 100vw!important;
+        justify-content: center;
+        align-items: start;
+    }
+
+    .compare-section-breakout, 
+    .lnp-section-breakout {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        margin-right: 0;
+        max-width: 100vw;
+        min-width: 100vw;
+        position: relative;
+        left: 0;
+        right: 0;
+        box-sizing: border-box;
+        background: none !important;
+        padding-top: 2vw;
+        padding-bottom: 2vw;
+    }
+
+    .compare-section,
+    .lnp-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 3vw;
+        margin: 0vw 5vw 0 5vw;
+        min-width: 0;
+    }
+
+    .text-box-left {
+        width: 40%;
+        padding: 0;
+        background-color: transparent !important;
+        border: none !important;
+        image-rendering: pixelated;
+        box-shadow: none !important;
+        border-radius: 0;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: transform 0.6s ease 0.2s, opacity 0.6s ease 0.2s;
+        max-height: 260px;
+        overflow: visible;
+        text-align: justify
+    }
+
+    .text-box-left.visible {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .text-box h2, .text-box-left h2, .text-box-fade h2 {
+        margin-bottom: 12px;
+        color: #1a1a2e;
+        font-size: clamp(20px, 3vw, 26px);
+    }
+
+    .text-box p, .text-box-left p {
+        margin: 0 0 10px 0;
+        font-size: 1.6vw;
+        color: #d5510f;
+        line-height: 2.6;
+        font-weight: 600;
+    }
+
+    .text-box p {
+        line-height:3;
+    }
+
+    .text-box-fade p {
+        margin: 0 0 0 0;
+        font-size: 1.6vw;
+        color: #0e9eae;
+        line-height: 2.6;
+        font-weight: 600;
+        text-shadow: -1px -1px 0px black, 1px -1px 0px black, -1px 1px 0px black, 1px 1px 0px black;
+    }
+
+    .text-box p:last-child, .text-box-left p:last-child, .text-box-fade p:last-child {
+        margin-bottom: 0;
+    }
+
+    .bottom-space {
+        height: 600px;
+    }
+
+    .image-holder {
+        width: 50vw;
+        height: 40.53vh;
+        position: relative;
+    }
+
+    #video {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .video-wrapper {
+        position: relative;
+        width: 60%;
+        padding-bottom: 56.25%;
+        height: 60vh;
+        margin-top: 20vh;
+        margin-bottom: 20vh;
+        overflow: hidden;
+        border-radius: 20px;
+        padding: 20px;
+        background: linear-gradient(145deg, #9d7bc7, #e3d8ed);
+        box-shadow: 
+            0 20px 40px rgba(139, 92, 246, 0.3),
+            0 10px 20px rgba(139, 92, 246, 0.2),
+            inset 0 2px 4px rgba(255, 255, 255, 0.3),
+            inset 0 -2px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .video-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border-radius: 15px;
+        border: 3px solid rgba(255, 255, 255, 0.4);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .video-wrapper::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        background: #000;
+        border-radius: 10px;
+        z-index: 0;
+    }
+
+    .video-wrapper iframe {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: calc(100% - 40px);
+        height: calc(100% - 40px);
+        border: none;
+        border-radius: 10px;
+        box-sizing: border-box;
+        z-index: 2;
+    }
+
+    /* 新增：computer5的上下浮动动画 */
+    @keyframes computer5Float {
+        0% { transform: translateX(0) translateY(0); }
+        50% { transform: translateX(0) translateY(-20px); }
+        100% { transform: translateX(0) translateY(0); }
+    }
+
+    .divide-container5 img:nth-child(5) {
+    /* computer5 - 从左向右并添加上下移动动画 */
+        transform: translateX(-100%);
+        transition: transform 1.2s ease-out;
+        animation: computer5Float 6s ease-in-out infinite; /* 新增上下浮动动画 */
+    }
+    
+    .divide-container5.animate-active img:nth-child(3),
+    .divide-container5.animate-active img:nth-child(5) {
+        transform: translateX(0);
+    }
+
+    /* 移动端适配 */
+    @media (max-width: 900px) {
+        .compare-section,
+        .lnp-section {
+            flex-direction: column;
+            gap: 4vh;
+            width: 100vw;
+            max-width: 100vw;
+            padding: 0 0;
+        }
+        .compare-section-breakout, .lnp-section-breakout {
+            left: 0;
+            margin-left: 0;
+            width: 100vw;
+            min-width: 100vw;
+        }
+        .treatment-panels.horizontal-mode {
+            flex-direction: column;
+            gap: 36px;
+            align-items: center;
+        }
+        .treatment-panel {
+            max-width: none;
+            width: 80vw;
+        }
+        .panel-img {
+            width: 80vw;
+            max-width: 340px;
+            height: 40vw;
+            max-height: 190px;
+        }
+    }
+
+    @media (max-width: 800px) {
+        .treatment-panel {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 20px 10px;
+        }
+        .panel-img {
+            width: 80vw;
+            max-width: 240px;
+            height: 30vw;
+            max-height: 160px;
+            margin-left: 0;
+            margin-top: 8px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .content-container, .treatment-status-container {
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .stats-image-container, .plain-text-container,
+        .image-holder, .image-item, .images-container, .image-holder-fade,
+        .text-box, .text-box-left, .text-box-fade,
+        .book-page-text, .treatment-image-placeholder {
+            width: 100%;
+        }
+        
+        .treatment-image-placeholder {
+            min-width: auto;
+        }
+        
+        .small-images-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .small-proportional-image {
+            max-width: 100%;
+            width: 80%;
+        }
+        
+        .images-container {
+            flex-direction: column;
+        }
+        
+        .stats-image-container {
+            height: 220px;
+        }
+        
+        .image-holder, .image-item {
+            height: 100%;
+        }
+        
+        .text-box, .text-box-left, .text-box-fade, .book-page-text {
+            max-height: none;
+            border-radius: 4px;
+        }
+
+        .image-label, .image-caption, .factor-label {
+            font-size: clamp(14px, 4vw, 18px);
+        }
+        
+        .label-editable {
+            max-width: 70%;
+        }
+    }
+
+</style>
+
+<!-- 保留原有图片容器及其动画 -->
+<div class="img-container">
+    <img src="https://static.igem.wiki/teams/5844/home/part-1/hoome.avif" class="full-page-img" alt="iGEM Team Home Image">
+    
+    <!-- 叠加图片容器 -->
+    <div class="overlay-container">
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-sx-3-1.webp" class="overlay-img move-vertical-3" alt="叠加图6">
+        <!-- 2张呼吸效果的图片 -->
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-hx-1-1.webp" class="overlay-img breathe-1" alt="叠加图7">
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-hx-2-1.webp" class="overlay-img breathe-2" alt="叠加图8">
+    
+        <!-- 3张左右移动的图片 -->
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-zy-1-1.webp" class="overlay-img move-horizontal-1" alt="叠加图1">
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-zy-2-1.webp" class="overlay-img move-horizontal-2" alt="叠加图2">
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-zy-3-1.webp" class="overlay-img move-horizontal-3" alt="叠加图3">
+        
+        <!-- 3张上下移动的图片 -->
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-sx-1-1.webp" class="overlay-img move-vertical-1" alt="叠加图4">
+        <img src="https://static.igem.wiki/teams/5844/home/part-1/dut-china-sx-2-1.webp" class="overlay-img move-vertical-2" alt="叠加图5">
+    </div>
+</div>
+{% endblock %}
+{% block page_content %}
+<div class="divide-container">
+<div class="next-content">
+    <!-- 新增部分：左侧图片（带数据标签），右侧无框文本 -->
+    <div class="content-container" id="new-section">
+        <div class="stats-image-container">
+            <img src="https://static.igem.wiki/teams/5844/home/part-2/dut-china-home2.webp" alt="肝癌相关数据图片" class="stats-image">
+            <div class="image-stat china">China：50%</div>
+            <div class="image-stat asia">Asia：72%</div>
+        </div>
+        <div class="plain-text-container">
+            <div class="plain-text" style="font-weight: 900;white-space: nowrap;overflow:visible;">
+                <p>Approximately 72% of global liver cancer cases occur in Asia<br>with China alone accounting for nearly half.</p>
+                <p>This disease steals lives and shatters families.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新增的全屏艺术字统计数据 -->
+    <div class="art-stats-container" id="art-stats">
+        <div class="art-stat">
+            China is estimated to face 
+            <span class="highlight-number">428,000</span> 
+            new cases of liver cancer in 2025
+        </div>
+        <div class="art-stat">
+            with an estimated 
+            <span class="highlight-number">367,000</span> 
+            deaths
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="divide-container2">
+    <!-- 第二部分：治疗现状（纵向排列） -->
+    <div class="vertical-treatment-status" id="treatment-status">
+        <div class="treatment-title">Another 
+            <span class="highlight-number2">Concern </span>
+            Is :</div>
+    <div class="treatment-panels horizontal-mode">
+            <!-- 板块一：药效有限 -->
+            <div class="treatment-panel">
+                <div class="panel-img">
+                    <img src="https://static.igem.wiki/teams/5844/home/part-4/dut-china-home4-3.webp" alt="Limited efficacy">
+                </div>
+                <div class="panel-title">Limited efficacy</div>
+            </div>
+            <!-- 板块二：耐药性 -->
+            <div class="treatment-panel">
+                <div class="panel-img">
+                    <img src="https://static.igem.wiki/teams/5844/home/part-4/dut-china-home4-1.webp" alt="Drug resistance">
+                </div>
+                <div class="panel-title">Drug resistance</div>
+            </div>
+            <!-- 板块三：副作用 -->
+            <div class="treatment-panel">
+                <div class="panel-img">
+                    <img src="https://static.igem.wiki/teams/5844/home/part-4/dut-china-home4-2.webp" alt="Severe side effects">
+                </div>
+                <div class="panel-title">
+                    Severe side effects<br>
+                    <span class="side-effects-list">Such as hypertension, diarrhea, and skin rash</span>
+                </div>
+            </div>
+    </div>
+        <div class="treatment-summary">
+            Therapeutic options for liver cancer are frequently plagued by three major <span class="highlight-number3">limitations</span>
+        </div>
+    </div>
+</div>
+
+<div class="divide-container3">
+    <!-- 第三部分：左侧图片滑入，右侧文字框 -->
+    <div class="content-container" id="first-section">
+        <div class="image-holder">
+            <img src="https://static.igem.wiki/teams/5844/home/part-5/dut-china-home5-1-1.webp" alt="左侧滚动显示的图片" class="slide-image left" >
+            
+            <!-- 图片标签 -->
+            <div class="image-label label-modular">Modular</div>
+            <div class="image-label label-digital">Digital</div>
+            <div class="image-label label-editable">Editable with Personalization</div>
+        </div>
+        <div class="text-box">
+            <p style="padding-left:-5vw;">&emsp;&emsp;mRNA-based therapeutics are modular, <br>digital, and personalizable.<br><br><br>&emsp;&emsp;Their protein production is rapid, efficient, <br>avoiding the risk of genomic integration.</p>
+        </div>
+    </div>
+
+    <!-- mRNA Hero Section -->
+    <div class="mrna-hero-section-breakout" id="mRNA-future-section"
+        style="
+        position: relative;
+        left: 50%;
+        right: 50%;
+        height: 38.11vh;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        width: 100vw;
+        max-width: 100vw;
+        box-sizing: border-box;
+        padding: 0 !important;
+        margin-top: 30px; margin-bottom: 30px;
+        border: none !important;
+        box-shadow: none !important;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        background: transparent !important;
+        align-items: center;
+        ">
+    <div style="
+        width: 85vw;
+        height: 18vh;
+        text-align: center;
+        background: #ffcd38;
+        border: none !important;
+        border-radius: 20px !important; /* 修改为需要的圆角值 */
+        box-shadow: none !important;
+        outline: none !important;
+        overflow: hidden;
+    ">
+        <h2 style="
+            display: inline-block;
+            font-size: 3.2vw;
+            font-weight: 900;
+            color: #9a50d5;
+            margin: 0;
+            line-height: 1.2;
+            letter-spacing: 1.8px;
+            text-shadow: 0 3px 22px rgba(123,49,190,0.08);
+            border: none !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 5.9vh 0 5.7vh 0;
+            /* 移除h2上的圆角设置，因为它会被容器的圆角包含 */
+        ">
+            Welcome to the future of mRNA therapeutics
+        </h2>
+    </div>
+        <!-- 核心三点行 -->
+        <div style="
+            width: 100vw;
+            display: flex;
+            height: 8.2vh;
+            justify-content: center;
+            align-items: center;
+            gap: 5vw;
+            flex-wrap: nowrap;
+            margin: 0 !important;
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            outline: none !important;
+            padding-top: 9vh;
+        ">
+            <h3 class="core-animated"
+                style="font-size: 4.6vw;text-shadow: none; font-weight: 800; color: #9a41c0; margin: 0; line-height: 1.1; white-space: nowrap; border: none !important;">
+                Safety
+            </h3>
+            <span class="core-animated"
+                style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#9d3a94; margin:0 2px; opacity:0.15;">
+            </span>
+            <h3 class="core-animated"
+                style="font-size: 4.6vw;text-shadow: none; font-weight: 800; color: #9d388a; margin: 0; line-height: 1.1; white-space: nowrap; border: none !important;">
+                Efficacy
+            </h3>
+            <span class="core-animated"
+                style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#9d3a94; margin:0 2px; opacity:0.15;">
+            </span>
+            <h3 class="core-animated"
+                style="font-size: 4.6vw;text-shadow: none; font-weight: 800; color: #a32c45; margin: 0; line-height: 1.1; white-space: nowrap; border: none !important;">
+                Selectivity
+            </h3>
+        </div>
+    </div>
+</div>
+
+<div class="divide-container4">
+    <!-- 两张图片的区域 -->
+     <p><br></p>
+    <div class="compare-section-breakout">
+    <div class="compare-section fade-in-up">
+        <div class="text-box-left fade-in-left delay-1" style="
+                                        background-color: rgba(255, 255, 255, 0.85); 
+                                        border: 1px solid #d1c4e9; 
+                                        border-radius: 8px; 
+                                        padding: 15px; 
+                                        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);">
+        <p style="color: #8B3A3A; text-shadow:none; ">&emsp;&emsp;We engineered a modular mRNA system that programs cells to turn down a cancer protein TGF-β and turn up a tumor suppressor HNF4α. </p>
+        </div>
+        <div class="images-container">
+        <div class="image-item">
+            <img src="https://static.igem.wiki/teams/5844/home/part-5/dut-china-home5-21.webp" alt="右侧滚动显示的图片1" class="slide-image">                
+            <!-- 左侧图片标签 -->
+            <div class="factor-label factor-hnf4 subtle-breathe">HNF4α ↑</div>
+            <div class="factor-label factor-tgf subtle-breathe">TGFβ ↓</div>
+            <div class="image-caption">Diseased Liver</div>
+        </div>
+        <div class="purple-arrow">→</div>
+        <div class="image-item">
+            <img src="https://static.igem.wiki/teams/5844/home/part-5/dut-china-home5-22.webp" alt="右侧滚动显示的图片2" class="slide-image">
+            <!-- 右侧图片标签 -->
+            <div class="image-caption">Healthy Liver</div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- 圆形区域 -->
+    <div class="lnp-section-breakout">
+    <div class="lnp-section fade-in-up">
+        <!-- 顺序：图片在左 -->
+        <div class="image-holder-fade fade-in-left delay-1">
+        <img src="https://static.igem.wiki/teams/5844/home/part-5/dut-china-home5-3.webp" alt="从右侧滑入的图片" class="slide-image-right">
+        </div>
+        <div class="text-box-fade  fade-in-right delay-2"style="
+                                        background-color: rgba(245, 245, 245, 0.8); 
+                                        border: 1px solid #b2dfdb; 
+                                        border-radius: 6px; 
+                                        padding: 12px; 
+                                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+        <p style="color: #734ba6; text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.15);">&emsp;&emsp;We have engineered our LNP delivery vehicles by displaying GPC3 antibodies on their surface, which significantly improves their targeting of liver cancer cells.</p>
+        </div>
+    </div>
+    </div>
+</div>
+
+<!--电脑部分-->
+<div class="divide-container5">
+    <img src="https://static.igem.wiki/teams/5844/home/part-6/computer0.webp" alt="computer">
+    <img src="https://static.igem.wiki/teams/5844/home/part-6/computer2.webp" alt="rna">
+    <img src="https://static.igem.wiki/teams/5844/home/part-6/computer3.webp" alt="lines">
+    <img src="https://static.igem.wiki/teams/5844/home/part-6/computer4.webp" alt="righttext">
+    <img src="https://static.igem.wiki/teams/5844/home/part-6/computer5.webp" alt="lefttext">
+</div>
+
+<!--视频部分-->
+<div class="divide-container6" id="video">
+    <div class="video-wrapper">
+        <iframe title="DUT-China: Modular mRNA precision therapeutics for liver cancer (2025) - Project Promotion [English]" 
+                src="https://video.igem.org/videos/embed/a6UJXYbiWFzGyRH6S8dm4V" 
+                allow="fullscreen" 
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms">
+        </iframe>
+    </div>
+</div>
+
+<!-- 删除所有JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 获取所有区域元素
+    const newSection      = document.getElementById('new-section');
+    const artStats        = document.getElementById('art-stats');
+    const treatmentStatus = document.getElementById('treatment-status');
+    const firstSection    = document.getElementById('first-section');
+    // 特别注意ID结构已变，第二、三部分用突破容器的class来找
+    const secondSection   = document.querySelector('.compare-section-breakout');
+    const thirdSection    = document.querySelector('.lnp-section-breakout');
+
+    // mRNA Hero Section 动画元素（保持原有）
+    const mrnaHeroSection = document.getElementById('mRNA-future-section');
+    const mrnaCoreRow = mrnaHeroSection && mrnaHeroSection.querySelector('div:nth-child(2)');
+    const coreAnimatedEls = mrnaCoreRow ? mrnaCoreRow.querySelectorAll('.core-animated') : [];
+
+    // 新增：获取"大图片容器"和"文字容器"元素
+    const imgContainer         = document.querySelector('.img-container'); // 图片外层容器
+    const bottomTextContainer  = document.querySelector('.bottom-text-container'); // 三个大字的容器
+    let hasAnimated = false; // 防止动画重复触发的标记（只执行一次）
+    
+    // 新增：获取 divide-container5 相关元素
+    const divideContainer5 = document.querySelector('.divide-container5');
+    
+    // 新增区域元素
+    const statsImage  = newSection?.querySelector('.stats-image');
+    const chinaStat   = newSection?.querySelector('.image-stat.china');
+    const asiaStat    = newSection?.querySelector('.image-stat.asia');
+    const plainText   = newSection?.querySelector('.plain-text-container');
+
+    // 第三部分元素
+    const firstImage       = firstSection?.querySelector('.slide-image');
+    const firstImageHolder = firstSection?.querySelector('.image-holder');
+    const firstTextBox     = firstSection?.querySelector('.text-box');
+
+    // 两张图片区域元素（新结构：container内部元素）
+    const secondContentContainer = secondSection?.querySelector('.compare-section');
+    const secondImageItems = secondContentContainer?.querySelectorAll('.image-item') || [];
+    const secondTextBox    = secondContentContainer?.querySelector('.text-box-left');
+    const purpleArrow      = secondContentContainer?.querySelector('.purple-arrow');
+
+    // 圆形区域元素（新结构：container内部元素）
+    const thirdContentContainer = thirdSection?.querySelector('.lnp-section');
+    const thirdImageHolder = thirdContentContainer?.querySelector('.image-holder-fade');
+    const thirdTextBox     = thirdContentContainer?.querySelector('.text-box-fade');
+    
+    // 【=============== 新增：divide-container5 动画逻辑 ===============】
+    // 修改后的 animateDivideContainer5 函数
+function animateDivideContainer5() {
+    if (!divideContainer5) return;
+    
+    const rect = divideContainer5.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    
+    // 检查当前是否已经有动画类（用于判断方向）
+    const isCurrentlyActive = divideContainer5.classList.contains('animate-active');
+    
+    // 设置不同的触发点
+    // 进入动画：元素进入视口70%位置
+    const enterTriggerPoint = viewportHeight * 0.7;
+    // 离开动画：元素离开视口30%位置就触发（更早）
+    const leaveTriggerPoint = viewportHeight * 0.3;
+    
+    if (!isCurrentlyActive) {
+        // 当前没有动画，使用进入触发点
+        if (rect.top < enterTriggerPoint && rect.bottom > 0) {
+            divideContainer5.classList.add('animate-active');
+        }
+    } else {
+        // 当前有动画，使用离开触发点（更早触发）
+        if (rect.top > leaveTriggerPoint || rect.bottom < 0) {
+            divideContainer5.classList.remove('animate-active');
+        }
+    }
+}
+    
+    // 【=============== 修改后的治疗现状动画逻辑 ===============】
+    function animateTreatmentStatusBlock() {
+        if (!treatmentStatus) return;
+        
+        const rect = treatmentStatus.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        
+        // 触发条件：元素进入视口下方85%位置
+        const triggerPoint = viewportHeight * 0.6;
+        
+        // 判断元素是否在可见范围内
+        const isInView = rect.top < triggerPoint && rect.bottom > 0;
+        
+        if (isInView) {
+            // 元素在视口内，添加动画
+            if (!treatmentStatus.classList.contains('animated-in')) {
+                treatmentStatus.classList.add('animated-in');
+                
+                // 按顺序延时处理panel出现
+                const panels = treatmentStatus.querySelectorAll('.treatment-panel');
+                panels.forEach((panel, idx) => {
+                    setTimeout(() => {
+                        panel.classList.add('animated-in');
+                    }, 220 * idx + 80);  // 每个panel延迟时间
+                });
+            }
+        } else {
+            // 元素离开视口，移除动画类
+            treatmentStatus.classList.remove('animated-in');
+            const panels = treatmentStatus.querySelectorAll('.treatment-panel');
+            panels.forEach((panel) => {
+                panel.classList.remove('animated-in');
+            });
+        }
+    }
+
+    // 新增：监听"图片底部与屏幕底部重合"的函数
+    function checkImgBottomToScreenBottom() {
+        if (hasAnimated || !imgContainer || !bottomTextContainer) return;
+        const imgContainerRect = imgContainer.getBoundingClientRect(); 
+        const viewportHeight = window.innerHeight; 
+        if (imgContainerRect.bottom <= viewportHeight + 10) { 
+            bottomTextContainer.classList.add('drop-animate');
+            hasAnimated = true; 
+        }
+    }
+
+    // 处理滚动逻辑
+    function handleScroll() {
+        requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+
+            // 处理新增区域
+            handleNewSection(scrollY);
+
+            // 处理艺术字统计区域
+            handleArtStats(scrollY);
+
+            // 处理mRNA Hero Section动画
+            handleMrnaHeroSection(scrollY);
+
+            // 新增：动画新版"治疗现状"（横排三图）动画
+            animateTreatmentStatusBlock();
+            
+            // 新增：处理 divide-container5 动画
+            animateDivideContainer5();
+
+            // 处理第三部分 - 左侧图片滑入
+            handleFirstSection(scrollY);
+
+            // 处理两张图片区域 - 渐出效果
+            handleSecondSection(scrollY);
+
+            // 处理圆形区域 - 图片右侧滑入
+            handleThirdSection(scrollY);
+
+            // 原图片底部掉落逻辑
+            checkImgBottomToScreenBottom();
+        });
+    }
+    
+    // 新增区域处理函数
+    function handleNewSection(scrollY) {
+        if (!newSection) return;
+        const containerOffsetTop = newSection.offsetTop;
+        const containerHeight = newSection.offsetHeight;
+        const triggerStart = containerOffsetTop - window.innerHeight * 0.8;
+        const triggerRange = containerHeight * 1.2;
+        let revealPercentage = (scrollY - triggerStart) / triggerRange;
+        revealPercentage = Math.max(0, Math.min(1, revealPercentage));
+        if (revealPercentage > 0.1) {
+            statsImage?.classList.add('visible');
+            if (revealPercentage > 0.3) {
+                chinaStat?.classList.add('visible');
+                asiaStat?.classList.add('visible');
+            } else {
+                chinaStat?.classList.remove('visible');
+                asiaStat?.classList.remove('visible');
+            }
+            if (revealPercentage > 0.5) {
+                plainText?.classList.add('visible');
+            } else {
+                plainText?.classList.remove('visible');
+            }
+        } else {
+            statsImage?.classList.remove('visible');
+            chinaStat?.classList.remove('visible');
+            asiaStat?.classList.remove('visible');
+            plainText?.classList.remove('visible');
+        }
+    }
+    
+    // 艺术字统计区域处理函数
+    function handleArtStats(scrollY) {
+        if (!artStats) return;
+        const containerOffsetTop = artStats.offsetTop;
+        const triggerStart = containerOffsetTop - window.innerHeight * 0.9;
+        if (scrollY > triggerStart) {
+            artStats.classList.add('visible');
+        } else {
+            artStats.classList.remove('visible');
+        }
+    }
+
+    // mRNA Hero Section 动画
+    function handleMrnaHeroSection(scrollY) {
+        if (!mrnaHeroSection) return;
+        const sectionOffsetTop = mrnaHeroSection.offsetTop;
+        const triggerStart = sectionOffsetTop - window.innerHeight * 0.8;
+        if (scrollY > triggerStart) {
+            mrnaHeroSection.classList.add('visible');
+        } else {
+            mrnaHeroSection.classList.remove('visible');
+        }
+    }
+
+    // 第三部分处理函数（无变化）
+    function handleFirstSection(scrollY) {
+        if (!firstSection || !firstImageHolder || !firstImage) return;
+        const containerOffsetTop = firstSection.offsetTop;
+        const containerHeight = firstSection.offsetHeight;
+        const imageWidth = firstImageHolder.offsetWidth;
+
+        const triggerStart = containerOffsetTop - window.innerHeight * 0.9;
+        const triggerRange = containerHeight * 1.2;
+
+        let revealPercentage = (scrollY - triggerStart) / triggerRange;
+        revealPercentage = Math.max(0, Math.min(1, revealPercentage));
+
+        const leftPosition = -imageWidth + (imageWidth * revealPercentage) - 10;
+        firstImage.style.left = `${leftPosition}px`;
+
+        if (revealPercentage > 0.05) {
+            firstImageHolder.classList.add('visible');
+            if (revealPercentage > 0.2) {
+                firstTextBox?.classList.add('visible');
+            }
+        } else {
+            firstImageHolder.classList.remove('visible');
+            firstTextBox?.classList.remove('visible');
+        }
+    }
+
+    // 两张图片区域处理函数 - 渐出效果
+    function handleSecondSection(scrollY) {
+        if (!secondSection || secondImageItems.length === 0) return;
+        const containerOffsetTop = secondSection.offsetTop;
+        const containerHeight = secondSection.offsetHeight;
+
+        const triggerStart = containerOffsetTop - window.innerHeight * 0.9;
+        const triggerRange = containerHeight * 1.2;
+
+        let revealPercentage = (scrollY - triggerStart) / triggerRange;
+        revealPercentage = Math.max(0, Math.min(1, revealPercentage));
+
+        if (revealPercentage > 0.2) {
+            secondTextBox?.classList.add('visible');
+            if (revealPercentage > 0.2) {
+                secondImageItems[0].classList.add('visible');
+                if (revealPercentage > 0.4) {
+                    purpleArrow?.classList.add('visible');
+                    if (revealPercentage > 0.6) {
+                        secondImageItems[1].classList.add('visible');
+                    } else {
+                        secondImageItems[1].classList.remove('visible');
+                    }
+                } else {
+                    purpleArrow?.classList.remove('visible');
+                    secondImageItems[1].classList.remove('visible');
+                }
+            } else {
+                secondImageItems.forEach(item => item.classList.remove('visible'));
+                purpleArrow?.classList.remove('visible');
+            }
+        } else {
+            secondTextBox?.classList.remove('visible');
+            secondImageItems.forEach(item => item.classList.remove('visible'));
+            purpleArrow?.classList.remove('visible');
+        }
+    }
+
+    // 圆形区域处理函数 - 图片右侧滑入
+    function handleThirdSection(scrollY) {
+        if (!thirdSection || !thirdContentContainer) return;
+        
+        const containerOffsetTop = thirdSection.offsetTop;
+        const containerHeight = thirdSection.offsetHeight;
+        const triggerStart = containerOffsetTop - window.innerHeight * 0.8;
+        const triggerRange = containerHeight * 1.2;
+
+        let revealPercentage = (scrollY - triggerStart) / triggerRange;
+        revealPercentage = Math.max(0, Math.min(1, revealPercentage));
+
+        // 使用与新增区域相同的显示逻辑
+        if (revealPercentage > 0.1) {
+            // 先显示图片容器，触发图片滑入
+            thirdImageHolder?.classList.add('visible');
+            
+            // 延迟显示文字框
+            if (revealPercentage > 0.15) {
+                thirdTextBox?.classList.add('visible');
+            } else {
+                thirdTextBox?.classList.remove('visible');
+            }
+        } else {
+            thirdImageHolder?.classList.remove('visible');
+            thirdTextBox?.classList.remove('visible');
+        }
+    }
+
+    // 滚动事件监听与性能优化
+    let isScrolling = false;
+    window.addEventListener('scroll', () => {
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                handleScroll();
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    });
+
+    // 初始检查
+    handleScroll();
+});
+</script>
+{% endblock %}

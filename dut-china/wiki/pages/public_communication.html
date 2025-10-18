@@ -1,0 +1,624 @@
+{% extends "layout.html" %}
+  
+{% block title %}Public Communication{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-public-communication.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(1rem, 3vw, 3rem); /* 左侧导航栏左侧边距减小 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* 增加导航项间距 */
+    max-width: 200px; /* 限制导航栏最大宽度 */
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 20px; /* 文字缩小 */
+    transition: all 0.2s linear;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: normal; /* 允许文字换行 */
+    line-height: 1.2; /* 调整行高 */
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 20px !important; /* 保持缩小后的文字大小 */
+    font-weight: 900;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px;
+    width: clamp(70%, 75vw, 80%);
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem);
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(191, 20, 243, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    font-size: 1.92rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* 自定义样式：深蓝色加粗 */
+.highlight-title {
+    color: #b366f7;
+    font-weight: bold;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-size: 1.4rem
+}
+
+/* 图片相关样式 */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 图片画廊样式 */
+.gallery-section {
+    padding: 3rem;
+    border-bottom: 3px solid #000;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    margin: 2rem auto;
+    box-sizing: border-box;
+    padding: 0 10px;
+}
+
+.gallery figure {
+    position: relative;
+    width: calc(50% - 10px); /* 实现“两两一行”布局，扣除间隙 */
+    margin: 0;
+    overflow: hidden;
+    border-radius: 10px; /* 小圆角效果 */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease;
+}
+
+.gallery figure:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    transition: transform 0.4s ease;
+}
+
+.gallery figure:hover img {
+    transform: scale(1.08); /* hover时图片轻微放大 */
+}
+
+/* 左侧注释框样式 */
+.caption-left {
+    position: absolute;
+    left: -220px; /* 初始隐藏在图片左侧外部 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    padding: 12px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    transition: left 0.4s ease;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+/* 右侧注释框样式 */
+.caption-right {
+    position: absolute;
+    right: -220px; /* 初始隐藏在图片右侧外部 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    padding: 12px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+    border-radius: 6px;
+    transition: right 0.4s ease;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+/* hover时显示注释框 */
+.gallery figure:hover .caption-left {
+    left: -10px; /* 滑动到图片左侧边缘外 */
+}
+
+.gallery figure:hover .caption-right {
+    right: -10px; /* 滑动到图片右侧边缘外 */
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .gallery figure {
+        width: 100%;
+    }
+    
+    .caption-left, .caption-right {
+        position: static;
+        transform: none;
+        width: 100%;
+        margin-top: 10px;
+        display: block;
+    }
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#one-day-doctor" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">"D" & "S"</span>
+    </a>
+    
+    <a href="#love-protect-treat" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">Love · Protect · Treat Your Liver</span>
+    </a>
+    
+    <a href="#lock-on-liver" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">Lock on The Liver</span>
+    </a>
+    
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[180px] md:ml-[220px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="one-day-doctor" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <p class="textztbf">Throughout the public communication section, we have consistently adhered to a "people-oriented" philosophy, actively gathering insights and opinions from a diverse public spanning different ages, educational backgrounds, professions, and even nationalities. We have thoughtfully integrated their feedback into our project, enabling continuous reflection and adjustment. Moreover, throughout the implementation of our activities, we iteratively optimized the processes in response to public input, ultimately achieving highly positive outcomes. In addition, we proposed the "W-H-W'(Why, How, What) activity design framework. At the initial stage, the "Why" phase helps clarify the ultimate objectives of the activity. During execution, the "How" phase guides the design of specific procedures and scientifically sound methodologies. Finally, the "What" phase facilitates post-activity review and consolidation of insights gained.</p>
+          <div class="image-container">
+            <image src="https://static.igem.wiki/teams/5844/pages/team-collaboration/tc.webp" alt="Systemic Drug Circulation and Metabolism"></image>
+          </div>
+        </section>
+
+      <section id="one-day-doctor" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">"Doctor for a Day" & "A Sticker of Hope, A Step Toward Cure"</h2>
+          
+          <p class="highlight-title">Why do it?</p>
+          <p class="textztbf">After reviewing the 2024 White Paper on the Diagnosis and Treatment of Primary Liver Cancer in China and reading a large number of literature and social survey studies, we identified a widespread lack of public awareness regarding existing liver cancer therapies, as well as serious limitations and side effects associated with these treatments. As the Chinese saying goes, "The onlooker sees most of the game". Therefore, we decided to adopt the public's perspective that of an objective observer to further refine the targeting and positioning of our novel drug and its therapeutic objectives.</p>
+          
+          <p class="highlight-title">How we did it?</p>
+          <h3>"Doctor for a Day"</strong></h3>
+          <p class="textztbf">This activity, built around simulated clinical diagnosis and treatment, uses display boards that blend professional knowledge with simple, cartoon-style visuals. It introduces participants to mainstream liver cancer treatments such as liver transplantation, ablation therapy, and radiotherapy, explaining when each therapy is applicable and how it works.</p>
+          <p class="textztbf">The boards also feature cartoon stickers representing liver tumors with different lesion types. Using role-playing theory, participants step into the shoes of a "doctor" and choose what they think is the best treatment for each tumor. After making their choice, they lift the sticker to reveal the clinically recommended treatment and its associated risks.</p>
+          <p class="textztbf">Through this interactive experience, participants gain a clear understanding of current liver cancer therapies, including their limitations, while being encouraged to reflect critically on the challenges and shortcomings of existing treatments.</p>
+          <div class="gallery">
+              <!-- 第一张图片 -->
+              <figure>
+                  <div class="caption-left">  HP Leader Qingxin Hu is introducing our "Doctor for a Day" activity to two primary school students.</div>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc1.webp" alt="科普活动图片1">
+              </figure>
+              
+              <!-- 第二张图片 -->
+              <figure>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc2.webp" alt="科普活动图片2">
+                  <div class="caption-right">  HP Leader Qingxin Hu is explaining the mainstream treatment methods for liver cancer.</div>
+              </figure>
+              
+              <!-- 第三张图片 -->
+              <figure>
+                  <div class="caption-left">  After the young participant role-played as a doctor treating cancer cells, the team member is unveiling the truth to her.</div>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc3.webp" alt="科普活动图片3">
+              </figure>
+              
+              <!-- 第四张图片 -->
+              <figure>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc4.webp" alt="科普活动图片4">
+                  <div class="caption-right">  Team HP's Alhoussainy Diallo is explaining the modular design of our project's mRNA medications to the international guests.</div>
+              </figure>
+          </div>
+          <h3>"A Sticker of Hope, A Step Toward Cure"</h3>
+          <p class="textztbf">Following the "One-Day Doctor" activity, we adopted a "question-led" approach by setting up display boards featuring open-ended questions such as "What do you think is the biggest challenge in current liver cancer treatment?" and "What are your expectations for novel liver cancer therapies?" Participants were provided with sticky notes to write down their thoughts and opinions.</p>
+          <p class="textztbf">Alongside the questions, we also briefly introduced our project's goals, including efforts to overcome drug resistance and enhance cell selectivity, to encourage participants to share feedback aligned with these research directions. Team members were present to promptly answer questions, further explaining advantages of our approach such as low drug resistance and dual cell-selectivity mechanisms. This helped participants articulate their views in a more informed manner.</p>
+          <p class="textztbf">Throughout the activity, we generated a real-time word cloud displaying the most frequently mentioned keywords from participant responses.</p>
+          <div class="gallery">
+              <!-- 第一张图片 -->
+              <figure>
+                  <div class="caption-left">  Three children are writing down their wishes for the future treatment of liver cancer.</div>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc5.webp" alt="科普活动图片1">
+              </figure>
+              
+              <!-- 第二张图片 -->
+              <figure>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc6.webp" alt="科普活动图片2">
+                  <div class="caption-right">  An elderly person in their seventies is writing down their hopes and concerns for our project.</div>
+              </figure>
+              
+              <!-- 第三张图片 -->
+              <figure>
+                  <div class="caption-left">  A young man is looking at our sticky note display board.</div>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc7.webp" alt="科普活动图片3">
+              </figure>
+              
+              <!-- 第四张图片 -->
+              <figure>
+                  <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc8.webp" alt="科普活动图片4">
+                  <div class="caption-right">  Alhoussainy Diallo from Team HP is posing for a photo with two international guests in front of the display board outside.</div>
+              </figure>
+          </div>
+          <p class="highlight-title">What we learned?</p>
+          <p class="textztbf">1. We observed that participants initially had relatively low receptiveness to professional medical terminology, which consequently reduced their overall willingness to patiently learn about treatment details. This situation prompted us to adjust our approach in the latter part of the activity, where we explained specialized terms in more accessible language. Thanks to this timely reflection and adaptation, the second half of the session proceeded very smoothly. The feedback we collected regarding the format of professional knowledge communication provided a basis for subsequently optimizing the presentation of science popularization content, thereby helping to more effectively convey the project's core technology and value to the public.</p>
+          <p class="textztbf">2. After the sticky note activity, we categorized and analyzed the collected responses, performing keyword frequency statistics. The results revealed that issues such as cost, side effects, and targeting efficacy attracted particular attention. These insights also provided clear direction for the subsequent optimization and practical implementation of the project. In response to public concerns about side effects and targeting precision, we have strengthened our commitment to research and development in areas such as cell selectivity and accurate targeting. At the same time, public focus on cost has prompted us to incorporate economic considerations more thoroughly into the drug development process, striving to enhance the future drug's accessibility.</p>
+          <div class="image-container">
+              <image src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc910.webp" alt="Training Accuracy vs Literature Target">
+          </div>
+        </section>
+
+      <section id="love-protect-treat" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Love · Protect · Treat Your Liver</h2>
+          
+          <p class="highlight-title">Why do it?</p>
+          <p class="textztbf">According to the GLOBOCAN2018 forecast, by 2040, the incidence and mortality rates of liver cancer in China will increase by 50.5% and 54.9% respectively compared to 2018. The increase is particularly significant among people over 70 years old. The elderly are at high-risk group for liver cancer and are our potential stakeholders. Therefore, we plan to popularize knowledge of liver cancer prevention and treatment among the elderly in nursing homes, convey the advantages of modular RNA drugs in liver cancer treatment in this project, and understand the special needs and preferences of the elderly population for liver cancer treatment drugs, so that the project development can be more in line with the actual situation of patients.</p>
+          
+          <p class="highlight-title">How we did it?</p>
+          <p class="textztbf">Over the course of three days, we visited Dalian Bohai Senior Care Center, Dalian Zhongshan Guilin No. 1 Senior Care Center, and Dalian Kangyang Changcheng Senior Care Center in sequence. The activities were centered around the theme "Love · Protect · Treat Your Liver". Guided by the psychological principle of motivation activation, we structured the session to begin with health education and interactive experiences, which are topics of greater interest to the elderly, before transitioning to an introduction of our project.</p>
+          <p class="textztbf">During the health education segment, we explained early symptoms of liver cancer (such as loss of appetite, jaundice, and palmar erythema) and preventive measures (such as avoiding aflatoxin in diet and regular health check-ups) in accessible language. In the interactive segment, we demonstrated self-massage techniques for liver-related acupoints, including Taichong and Ganshu , and conducted a 30-second liver function self-check (observing palm color and sclera condition), which was well-received and actively followed.</p>
+          <p class="textztbf">For the project introduction, considering the elderly audience's limited familiarity with specialized terminology, we employed an analogy-based approach combined with comic-style illustrations to simplify the mechanism of mRNA therapeutics, emphasizing advantages such as precise protein regulation and low drug resistance. Finally, we distributed small gifts, including traditional "Good Luck" fans, as a token of appreciation.</p>
+          
+          <div class="gallery">
+            <!-- 第一张图片 -->
+            <figure>
+                <div class="caption-left">  Students from Team HP posing for a group photo with the elderly residents of Dalian Bohai Nursing Home.</div>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc11.webp" alt="科普活动图片1">
+            </figure>
+            
+            <!-- 第二张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc12.webp" alt="科普活动图片2">
+                <div class="caption-right">  The elderly gentleman is reading our Recipes to Protect the Liver.</div>
+            </figure>
+            
+            <!-- 第三张图片 -->
+            <figure>
+                <div class="caption-left">  We are distributing small gifts to the elderly.</div>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc13.webp" alt="科普活动图片3">
+            </figure>
+            
+            <!-- 第四张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc14.webp" alt="科普活动图片4">
+                <div class="caption-right">  Tao Zhu from Team HP is using comic-style illustrations to explain the project's mechanism to the elderly.</div>
+            </figure>
+          </div>
+
+          <p class="highlight-title">What we learned?</p>
+          <p class="textztbf">During the activities, the elderly participants showed significant concern regarding drug toxicity and side effects, and expressed worries about pricing and insurance coverage. Over three-fifths preferred oral medication, one-third were concerned about the safety profile of our approach, and a quarter highlighted cost as a major issue. After we switched to a comic-based format for explanation, two-thirds of the elderly indicated that they could understand our project. Many also voiced expectations for reducing hospital visits and optimizing dosing frequency.</p>
+          <p class="textztbf">In our initial interactions, we observed that using technical terminology made it difficult for the elderly to comprehend our project, which limited their ability to provide meaningful feedback. Subsequently, we adopted more accessible comics to illustrate the project, and the vast majority of participants reported being able to grasp the key concepts after the sessions. Through these in-depth interactions, we identified specific needs of the elderly population regarding drug safety, convenience, and affordability. These insights have directly guided further optimizations in our project, leading us to focus on extending dosing intervals in subsequent pharmacokinetic modeling and accelerating the development of low-cost delivery vectors, ensuring our solutions remain aligned with clinical realities and patient needs.</p>
+          
+        </section>
+
+      <section id="lock-on-liver" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Lock on The Liver. Sure & Steady Delivery.</h2>
+          
+          <p class="highlight-title">Why do it？</p>
+          <p class="textztbf">Through an in-depth review of multiple social research studies, we identified significant limitations in the public's understanding of mRNA-based drug design. Most patients and their families perceive liver cancer medications primarily in terms of "efficacy" and "side effects", with little awareness of pharmacokinetics, which is the critical discipline governing a drug's safety and therapeutic performance. To bridge this gap, we developed "Precise Delivery", an interactive public engagement game centered on pharmacokinetics, allowing participants to better appreciate the advantages and feasibility of mRNA therapies guided by pharmacokinetic principles.</p>
+          
+          <p class="highlight-title">How we did it?</p>
+          <p class="textztbf">We built a highly realistic mRNA pharmacokinetic simulation platform that offers an immersive experience into the sophistication of drug design. Participants step into the role of drug research and development scientists, starting by setting key parameters such as dosing regimens, and each decision directly influences the simulation outcome. Once parameters are confirmed and the simulation begins, the system utilizes advanced pharmacokinetic-pharmacodynamic (PK-PD) modeling to generate and visualize core dynamic curves in real time. This process not only helps the public intuitively grasp how pharmacokinetic parameters affect drug efficacy and safety, but also deepens their understanding of the scientific and clinical value behind mRNA technology in achieving "precise and stable drug delivery".</p>
+          <p class="textztbf">Additionally, we designed a protein mutation-based mini-game. Students were invited to select their preferred amino acid from a given set, substitute the original amino acid at the mutation site, and predict the protein structure post-mutation, aiming to identify the most stable mutated protein. The activity garnered enthusiastic participation, including many from non-biology backgrounds, while raising awareness of pharmacokinetics.</p>
+
+          
+          <div class="gallery">
+            <!-- 第一张图片 -->
+            <figure>
+                <div class="caption-left">  The students are experimenting with adjusting mRNA parameters, and the pharmacokinetic-pharmacodynamic model outputs results based on the modified parameters.</div>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc19.webp" alt="科普活动图片1">
+            </figure>
+            
+            <!-- 第二张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc20.webp" alt="科普活动图片2">
+                <div class="caption-right">  The students are experimenting with adjusting mRNA parameters, and the pharmacokinetic-pharmacodynamic model outputs results based on the modified parameters.</div>
+            </figure>
+            
+            <!-- 第三张图片 -->
+            <figure>
+                <div class="caption-left">  The dry lab team members is introducing our model to the students.</div>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc21.webp" alt="科普活动图片3">
+            </figure>
+            
+            <!-- 第四张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/public-communication/dut-china-pc22.webp" alt="科普活动图片4">
+                <div class="caption-right">  Members of the Dry Lab team are addressing the students' questions.</div>
+            </figure>
+         </div>
+
+          <p class="highlight-title">What we learned？</p>
+          <p class="textztbf">In the early stages of the simulation, participants often felt unfamiliar with terms like "plasma concentration-time curve", which initially hindered their willingness to explore further. This observation prompted us to adjust our strategy mid-activity: we translated complex concepts into everyday narratives and used dynamic curve visualizations for comparative explanation, which significantly boosted both comprehension and engagement.</p>
+          <p class="textztbf">This initiative not only enhanced public understanding of the "high efficacy, low toxicity" nature of mRNA therapies but also prompted our team to shift from a "technology-centered" to a "human-centered" perspective. Moreover, we attracted many new students to synthetic biology, encouraging them to join the iGEM-DUT community and inspiring their interest in participating in iGEM competitions.</p>
+        </section>
+
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应"One Day Doctor"
+        document.getElementById('text-2'),  // 对应"Love · Protect · Treat"
+        document.getElementById('text-3'),  // 对应"Lock on The Liver"
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('one-day-doctor'),  // 对应text-1
+        document.getElementById('love-protect-treat'),       // 对应text-2
+        document.getElementById('lock-on-liver'),       // 对应text-3
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 500) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

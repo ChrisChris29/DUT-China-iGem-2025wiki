@@ -1,0 +1,658 @@
+{% extends "layout.html" %}
+  
+{% block title %}Team Collaboration{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-team-collaboration.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(1rem, 3vw, 3rem); /* 减小左侧边距，避免过宽 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem; /* 保持间距 */
+    padding-left: 1.2rem; /* 为侧边线留出空间 */
+    max-width: 220px; /* 限制最大宽度，确保不会过宽 */
+}
+
+/* 侧边线容器 */
+.wz-nav-line-container {
+    position: relative;
+    padding-left: 1.5rem; /* 文字与侧边线的距离 */
+}
+
+/* 侧边线样式 */
+.wz-nav-line-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 0;
+    background-color: rgba(128, 0, 128, 0.3);
+    transition: height 0.3s ease, background-color 0.3s ease;
+}
+
+/* 激活状态的侧边线 */
+.wz-nav-line-container.active::before {
+    height: 100%;
+    background-color: rgba(128, 0, 128, 0.8);
+}
+
+/* 悬停状态的侧边线 */
+.wz-nav-line-container:hover::before {
+    height: 100%;
+    background-color: rgba(128, 0, 128, 0.5);
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: flex-start; /* 改为顶部对齐，适应多行文本 */
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 16px; /* 保持原有字体大小 */
+    transition: all 0.2s linear;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: normal; /* 允许文字换行 */
+    line-height: 1.4; /* 增加行高，提高多行可读性 */
+    max-width: 180px; /* 限制文字最大宽度，确保换行 */
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(128, 0, 128, 0.9); /* 激活状态使用主题色 */
+    font-size: 16px !important; /* 保持原有字体大小 */
+    font-weight: 900;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1150px;
+    width: clamp(70%, 75vw, 80%);
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(-2rem, 0vw, 0rem); /* 增加右边距，确保不被遮挡 */
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* 图片相关样式 */
+.image-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0 rgba(128, 0, 128, 0.3);
+    border-radius: 8px;
+}
+
+.image-container.three-images img {
+    flex: 1;
+    min-width: 200px;
+    max-width: calc(33.333% - 1rem);
+}
+
+.image-container.two-images img {
+    flex: 1;
+    min-width: 200px;
+    max-width: calc(50% - 1rem);
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 图文布局样式 */
+.image-text-container {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.image-left .image-text-image {
+    flex: 0 0 35%;
+    order: 1;
+}
+
+.image-left .image-text-content {
+    flex: 1;
+    order: 2;
+}
+
+.image-right .image-text-image {
+    flex: 0 0 35%;
+    order: 2;
+}
+
+.image-right .image-text-content {
+    flex: 1;
+    order: 1;
+}
+
+.image-text-image img {
+    width: 100%;
+    height: auto;
+    border: 2px solid #000;
+    box-shadow: 4px 4px 0 rgba(128, 0, 128, 0.3);
+    border-radius: 8px;
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+    /* 中等屏幕下调整导航和内容位置 */
+    .wz-nav-container {
+        max-width: 180px;
+    }
+    
+    .wz-content-container {
+        width: clamp(65%, 70vw, 75%);
+    }
+}
+
+@media (max-width: 768px) {
+    .image-text-container {
+        flex-direction: column;
+    }
+    
+    .image-text-image,
+    .image-left .image-text-image,
+    .image-right .image-text-image {
+        flex: 0 0 100%;
+        order: 1;
+    }
+    
+    .image-text-content,
+    .image-left .image-text-content,
+    .image-right .image-text-content {
+        order: 2;
+    }
+    
+    .image-container.three-images img,
+    .image-container.two-images img {
+        max-width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    /* 移动端导航调整 */
+    .wz-nav-container {
+        left: 0.5rem;
+        gap: 1rem;
+        max-width: 150px;
+    }
+    
+    .wz-nav-line-container {
+        padding-left: 1rem;
+    }
+    
+    .wz-content-container {
+        width: calc(100% - 4rem);
+        margin-right: 2rem;
+        margin-left: 180px; /* 确保内容在导航右侧 */
+    }
+}
+
+/* 图片画廊样式 */
+.gallery-section {
+    padding: 3rem;
+    border-bottom: 3px solid #000;
+}
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    margin: 2rem auto;
+    box-sizing: border-box;
+    padding: 0 10px;
+}
+
+.gallery figure {
+    position: relative;
+    width: calc(50% - 10px); /* 实现“两两一行”布局，扣除间隙 */
+    margin: 0;
+    overflow: hidden;
+    border-radius: 10px; /* 小圆角效果 */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease;
+}
+
+.gallery figure:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    transition: transform 0.4s ease;
+}
+
+.gallery figure:hover img {
+    transform: scale(1.08); /* hover时图片轻微放大 */
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    
+    <!-- 团队合作相关导航项 -->
+    <a href="#pekinghsc-seminar" class="wz-nav-link wz-nav-item">
+        <div class="wz-nav-line-container" id="line-7">
+            <span id="text-7" class="wz-nav-text">The Functional Nucleic Acid Seminar</span>
+        </div>
+    </a>
+    
+    <a href="#12th-ccic" class="wz-nav-link wz-nav-item">
+        <div class="wz-nav-line-container" id="line-8">
+            <span id="text-8" class="wz-nav-text">The 12th CCIC</span>
+        </div>
+    </a>
+    
+    <a href="#hazu-communication" class="wz-nav-link wz-nav-item">
+        <div class="wz-nav-line-container" id="line-9">
+            <span id="text-9" class="wz-nav-text">The Communication with HAZU-China</span>
+        </div>
+    </a>
+    
+    <a href="#afmu-collaboration" class="wz-nav-link wz-nav-item">
+        <div class="wz-nav-line-container" id="line-10">
+            <span id="text-10" class="wz-nav-text">Cooperate with AFMU-China</span>
+        </div>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      
+      <!-- 团队合作相关内容 -->
+      <section id="pekinghsc-seminar" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Participate in The Functional Nucleic Acid Seminar Organized by PekingHSC</h2>
+          <p class="textztbf">On August 7,2025, the PekingHSC team hosted a functional nucleic acid seminar. The conference was divided into two themes: ' Application frontier of functional nucleic acids in biomedical diagnosis and treatment ' and ' Design, screening and optimization of functional nucleic acids '.</p>
+          
+          <!-- 第一个图文布局：左侧图片，右侧文字 -->
+          <div class="image-text-container image-left">
+              <div class="image-text-image">
+                  <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc11.webp" alt="Seminar discussion scene">
+              </div>
+              <div class="image-text-content">
+                  <p class="textztbf">In the first part of the theme, NNU-China, CJUH-JLU-China and ZJU-China, three teams focused on how to solve the challenges of delivery, stability and immunogenicity of functional nucleic acids in vivo applications, and how to realize the integration of diagnosis and treatment. The application frontier of functional nucleic acids was introduced. By listening to the reports of other iGEM teams, we have a clearer understanding of the frontier development of functional nucleic acids, filling in some of the missing details when we collect background information.</p>
+              </div>
+          </div>
+          
+          <!-- 第二个图文布局：左侧文字，右侧图片 -->
+          <div class="image-text-container image-right">
+              <div class="image-text-image">
+                  <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc12.webp" alt="Dry experiment methods presentation">
+              </div>
+              <div class="image-text-content">
+                  <p class="textztbf">In the second part of the topic, HZAU-China and PekingHSC introduced the dry experiment methods of their projects in the process of functional nucleic acid screening and optimization. We show our rational design strategy for nucleic acids (structure-based computational design). Our rational design ideas are well received. After the meeting, we discussed the design of the dry experimental model of the riboswitch with the PekingHSC dry experimental group. Through the communication and in-depth discussion between each other, we deepened our understanding and provided us with new perspectives and ideas.</p>
+              </div>
+          </div>
+      </section>
+
+      <section id="12th-ccic" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">The 12th CCIC</h2>
+          <p class="textztbf">The iGEMer China Community Congress (CCIC) is the largest platform for iGEMers to connect and communicate within China. The 12th CCIC Conference was hosted by the Engineering Biology Young Enthusiasts Association.107 iGEM teams from all over the country gathered in Beijing to communicate and learn from each other.</p>
+          
+          <!-- 第三个图文布局：左侧图片，右侧文字 -->
+          <div class="image-text-container image-left">
+              <div class="image-text-image">
+                  <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc13.webp" alt="12th CCIC conference scene">
+              </div>
+              <div class="image-text-content">
+                  <p class="textztbf">In the 5-minute roadshow session, we demonstrated our project-modular RNA precise therapeutic drugs for liver cancer. In the poster display link, our posters have attracted the onlookers of many teams. The iGEMers from different schools have a strong interest in our posters for our projects. In close communication with them, we also face some doubts. For example, HZAU-China has also studied the targets we have selected and the pathways they are located in. They have put forward some insights based on their research on our pathway selection, which has prompted us to reflect on the project design from a new perspective. Through this exchange, we also established a profound friendship with HZAU, and further discussed each other 's projects in all aspects after the meeting. We also learned about their projects and their thinking about synthetic biology in our conversations with other iGEMers.</p>
+              </div>
+          </div>
+          
+          <!-- 两张图片一行布局 -->
+          <div class="image-container two-images">
+              <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc14.webp" alt="CCIC event photo 1">
+              <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc15.webp" alt="CCIC event photo 2">
+          </div>
+          
+          <p class="textztbf">In addition, we have also listened to a number of high-level reports and discussions in the business community and academia, from which we have benefited a lot. Through this CCIC, we not only learned about the experimental design of many excellent teams, but also gained valuable opinions from other iGEMers on our projects and made new friends, which prompted us to think from a new perspective.</p>
+      </section>
+
+      <section id="hazu-communication" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">The Communication with HAZU-China</h2>
+          
+          <div class="image-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc6.webp" alt="Communication with HAZU-China">
+          </div>
+          
+          <p class="textztbf">At the CCIC conference, through close communication between the two teams, we learned that in the treatment of hemorrhoids studied by HZAU-China, they are similar to our pathway selection. HAZU team members introduced that hemorrhoids can be regarded as a benign tumor that does not metastasize to a certain extent, similar to liver tumors. In addition, the delivery vectors of our two team projects have bacterial cell membrane components and both use the PROTAC ubiquitination degradation system. Therefore, the projects of our two teams have strong similarities in tumor treatment strategies.</p>
+          
+          <div class="gallery">
+            <!-- 第一张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-ttc-2.webp">
+            </figure>
+            
+            <!-- 第二张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-ttc-3.webp">
+            </figure>
+            
+            <!-- 第三张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-ttc-4.webp">
+            </figure>
+            
+            <!-- 第四张图片 -->
+            <figure>
+                <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-ttc-5.webp">
+            </figure>
+        </div>
+          
+          <p class="textztbf">In order to learn from each other and discuss the similarities and aspects between our projects, we have enthusiastically expressed their opinions and feedback on project design details, target pathway selection, safety and other issues.</p>
+          <p class="textztbf">During the conference, we focused on the two major treatment directions of liver cancer and intestinal diseases, and demonstrated innovative ideas in modular biological design, targeted regulation and safety strategies and their respective technical characteristics in the field of precision therapy. At the same time, we exchanged ideas on the hypoxic microenvironment of dry experimental tumors. We agreed that the construction of hypoxic microenvironment of liver tumors and hemorrhoids was similar, and further clarified the importance of pharmacokinetic model in drug development.</p>
+          <p class="textztbf">In the process of communication, we find that the common concern of the two teams is security, which suggests that we need to pay more attention to the security in each process in the future to ensure that we are responsible for the society and the world.</p>
+      </section>
+
+      <section id="afmu-collaboration" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Cooperate with AFMU-China to Carry Out Popular Science Activities</h2>
+          
+          <!-- 三张图片一行布局 -->
+          <div class="image-container three-images">
+              <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc16.webp" alt="Popular science activity photo 1">
+              <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc17.webp" alt="Popular science activity photo 2">
+              <img src="https://static.igem.wiki/teams/5844/pages/team-collaboration/dut-china-tc18.webp" alt="Popular science activity photo 3">
+          </div>
+          
+          <p class="textztbf">In the progress of the previous public communication activities, we found that the public's understanding of liver cancer and the treatment and prevention of liver cancer is generally insufficient. In order to improve the public's understanding of liver cancer so as to increase public acceptance in the follow-up stage of the project, we contacted AFMU-China, which is jointly committed to the research of liver cancer treatment, and jointly launched video and podcasts.</p>
+          <p class="textztbf">Both the videos and podcasts were well-received, and we received enthusiastic reviews in the comments section, with many expressing their support for our project and expecting us to overcome medical challenges. Some viewers said that after watching the video, they had a deeper understanding of the current situation of liver cancer and liver cancer treatment, and also looked forward to the future of liver cancer treatment.</p>
+      </section>
+</div></main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts和lines
+    const texts = [
+        document.getElementById('text-7'),  // 对应PekingHSC Seminar
+        document.getElementById('text-8'),  // 对应12th CCIC
+        document.getElementById('text-9'),  // 对应HAZU Communication
+        document.getElementById('text-10')  // 对应AFMU Collaboration
+    ];
+    
+    const lines = [
+        document.getElementById('line-7'),  // 对应PekingHSC Seminar的线
+        document.getElementById('line-8'),  // 对应12th CCIC的线
+        document.getElementById('line-9'),  // 对应HAZU Communication的线
+        document.getElementById('line-10')  // 对应AFMU Collaboration的线
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('pekinghsc-seminar'),
+        document.getElementById('12th-ccic'),
+        document.getElementById('hazu-communication'),
+        document.getElementById('afmu-collaboration')
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 560) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            lines.forEach(line => line && line.classList.remove('active'));
+            
+            if (texts[index]) texts[index].classList.add('active');
+            if (lines[index]) lines[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+        
+        lines.forEach((line, index) => {
+            if (!line) return;
+            line.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}

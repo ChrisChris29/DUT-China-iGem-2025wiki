@@ -1,0 +1,574 @@
+{% extends "layout.html" %}
+  
+{% block title %}Toehold Switch{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-toehold-switch.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(2rem, 6vw, 6rem); /* 左侧导航栏左侧边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* 增加间距以适应换行 */
+}
+
+/* 导航侧边栏设计 */
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+    position: relative;
+    padding-left: 1.5rem; /* 为侧边栏留出空间 */
+}
+
+/* 侧边栏装饰 */
+.wz-nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: rgba(128, 0, 128, 0.3);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.wz-nav-item:hover::before {
+    background-color: rgba(128, 0, 128, 0.8);
+    width: 6px;
+}
+
+.wz-nav-item.active::before {
+    background-color: rgba(128, 0, 128, 1);
+    width: 8px;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 20px; /* 保持原有文字大小 */
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    white-space: normal; /* 允许文字换行 */
+    max-width: 220px; /* 限制最大宽度，确保换行合理 */
+    line-height: 1.3; /* 调整行高，适应多行文字 */
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 20px !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px;
+    width: clamp(70%, 75vw, 80%);
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem);
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em;
+    margin-bottom: 1em;
+}
+
+h2 {
+    text-shadow: 3px 3px 0 rgba(128, 0, 128, 0.4);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* 图片相关样式 */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4B5563;
+}
+
+/* 表格样式 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#background" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">Background & Motivation</span>
+    </a>
+    
+    <a href="#problem" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">Problem Discovery</span>
+    </a>
+    
+    <a href="#genetic" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">Genetic Algorithm Engine</span>
+    </a>
+    
+    <a href="#optimization" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">Iterative Optimization</span>
+    </a>
+    
+    <a href="#validation" class="wz-nav-link wz-nav-item">
+        <span id="text-5" class="wz-nav-text">Computational Validation</span>
+    </a>
+    
+    <a href="#future" class="wz-nav-link wz-nav-item">
+        <span id="text-6" class="wz-nav-text">Future Roadmap</span>
+    </a>
+
+    <a href="#user" class="wz-nav-link wz-nav-item">
+        <span id="text-7" class="wz-nav-text">User Manual</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[280px] md:ml-[350px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="background" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">1. Background &amp; Motivation</h2>
+          <p class="textztbf">As an emerging RNA regulatory element, the toehold switch has shown great potential in biosensing and gene regulation. The purpose of this module is to develop a highly specific and efficient toehold switch for miR-21 and to find new ideas for the design of toehold switches.</p>
+      </section>
+
+      <section id="problem" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">2. Problem Discovery</h2>
+          <h3>Initial scenario limitation</h3>
+          <p class="textztbf">Using the TrigGate platform of the TAU team, we initially designed and generated 25 toehold switch sequences. After wet experimental verification, the first batch of verification results showed that the generated switches had poor stability and high fluorescence brightness in the off state.</p>
+          
+          <!-- 图片及下方注释 -->
+          <div class="image-container">
+              <img src="https://static.igem.wiki/teams/5844/pages/toehold/toehold4.webp" alt="The toehold sequence-regulated protein expression effect verification experiment">
+          </div>
+          <div class="image-caption">
+              Figure. The toehold sequence-regulated protein expression effect verification experiment is shown in the fluorescence intensity measured by a microplate reader at a wavelength of 560 nm. C1, E1, I1, K1T1 groups were transfected only with mRNA with toehold switch sequence and Luciferase sequence, C2, E2, I2, K2, T2 groups were transfected with mRNA and miR-21 analogs, C3, E3, i3, K3, T3 groups were transfected with mRNA and miR-21 mimics. The toehold sequence used in T1T2T3 group was from the literature, and the others were from the model generation. Statistical significance was calculated by ordinary one-way ANOVA with Bonferroni's method for multiple comparisons (* p<0.05; **p<0.01;*** p<0.001; ****p<0.0001 mean ± SD).
+          </div>
+          
+          <p class="textztbf">Reasons for the analysis are as follows:</p>
+          
+          <!-- 问题类别和原因表格 -->
+          <table>
+              <thead>
+                  <tr>
+                      <th>Problem category</th>
+                      <th>Specific reasons</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>Structural stability</td>
+                      <td>GC content is low and free energy is too high</td>
+                  </tr>
+                  <tr>
+                      <td>Nonspecific activation</td>
+                      <td>The pseudoknot structure is not considered, and the dimer tendency is large.</td>
+                  </tr>
+                  <tr>
+                      <td>Conformational competition</td>
+                      <td>The Kozak sequence is not fully paired and is prone to unwinding</td>
+                  </tr>
+                  <tr>
+                      <td>Parameter is missing</td>
+                      <td>No specific concentration was set due to lack of parameters</td>
+                  </tr>
+              </tbody>
+          </table>
+      </section>
+
+      <section id="genetic" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">3. Genetic Algorithm Engine</h2>
+          <p class="textztbf">What we need is a switch with microRNA specificity and high on/off ratio. By analyzing the results of the first batch of wet experiments, we found that the sequences generated by the model were not ideal and did not meet the requirements of our project, so we carried out the second round of design. The diversity of TrigGate's generation switches is low, and it is inconvenient to use. After in-depth study, we found the problem:</p>
+          <p class="textztbf">The core module of the platform uses a fixed maximum of seven random numbers at the time of generation to determine the final generation sequence. In other words, when all the constraints input by the user are the same, the sequence difference obtained by generating the same seed for many times is extremely limited. This method can ensure the repeatability of the experiment and ensure the success of the reproduction.</p>
+          <p class="textztbf">However, under the requirement that we need the best possible switch sequence, such a fixed result is obviously not ideal. Therefore, we improve the genetic algorithm to increase the diversity of seeds and ensure the performance of the seeds.</p>
+          <div class="image-container">
+            <image src="https://static.igem.wiki/teams/5844/pages/toehold/toehold3.webp" alt="Training Accuracy vs Literature Target">
+          </div>
+          <p class="textztbf">1.We set a controllable genetic algorithm switch, and the user can choose whether to use the genetic algorithm or not. In addition, the user can control the structure of the genetic algorithm by setting the size of the population or controlling the number of cycles of the genetic algorithm, so as to provide the user with a relatively free use experience.</p>
+          <p class="textztbf">2.We improve the toehold_generator and create a GeneticToeholdGenerator, and the logic of the genetic algorithm is: using Nupack to generate the initial population, pre-test the fitness corresponding to the parameters to select the appropriate parameters; Subsequently, the obtained optimal parameters are input into a formal generation program, and a round of generation and screening is completed through the following steps: generating a sequence using Nupack under combined constraints, obtaining offspring through crossover and mutation, calculating the free energy difference to determine fitness, and checking for defects such as pseudoknots and reading frame issues.The above operations are then repeated until the preset breeding generation or population number is reached, and the algorithm is stopped.</p>
+          <p class="textztbf">3.In order to determine the optimal values of the coefficient of variation and the cross coefficient in the genetic algorithm corresponding to different input sequences of the user, we add a test program (ga _ parameter _ test) for the parameters of the genetic algorithm, which can automatically test the fitness and the free energy difference corresponding to different parameter combinations and select the most suitable parameters. Used in formal generation programs.</p>
+      </section>
+
+      <section id="optimization" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">4. Iterative Optimization</h2>
+          <h3>Three-round iterative evolution</h3>
+          <p class="textztbf">1.1 prompted us to think about and improve the model. After careful analysis, we decided to add a genetic algorithm to the program. We first determine the location of the script to use the genetic algorithm, fully understand the mechanism of the sequence generator, and decide to only increase the genetic algorithm part without modifying the remaining links to ensure the effectiveness and accuracy of the model.</p>
+          <p class="textztbf">The original design constraints of the model are very strict, so we use the original generation logic, that is, we use Nupack to generate random sequences to obtain candidate sequences, and then in the genetic algorithm part, we cross and mutate these candidate sequences to get more diverse results under the original strict constraints, and finally we screen and verify the results.</p>
+          <p class="textztbf">1.2 In the first round of design, we set the parameters very simply, using only a set of crossover and variation coefficients, which are not sequence-specific. After simple debugging, we did get a larger sequence space. However, when these sequences were tested for visualization and thermodynamic parameters, they showed poor functionality, and we began to rethink and carry out a second iteration.</p>
+          <p class="textztbf">2.1 In the second round of design, the reason for the failure of the first round is analyzed. We believe that the functional defect is caused by the lack of constraints of thermodynamic parameters. So we added Nupack and Viennarna to the evaluation function to prevent one of them from being uncallable. Subsequently, we obtained the second batch of sequences after eliminating all the reported errors. This batch of sequences shows good thermodynamic properties, but the the visualization results were still not ideal, and we believe that this result still falls short of expectations.</p>
+          <p class="textztbf">3.1 In the third round of design, we decided to add a parameter testing procedure in order that the structure of the sequence could meet the requirements in the process of population evolution without gradually losing features. We created a script that can automatically perform parameter testing and confirm the optimal crossover and variation coefficients corresponding to the input sequence, so as to specifically evolve different sequences. Experimental verification shows that the results are still not ideal, and we are looking for a better way to set the constraints</p>
+          <p class="textztbf">Our current model is still not perfect, in the next research process, we will continue to find a better way to generate, in order to perfect the model.</p>
+      </section>
+
+      <section id="validation" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">5. Computational Validation</h2>
+          <p class="textztbf">To ensure that the improvements we have made to the TrigGate model, especially the introduction of genetic algorithms, can effectively generate toehold switch sequences with better performance, we use a two-fold verification method based on computational biology. The core idea of this method is to quantitatively evaluate the prediction ability of the improved model from the two key dimensions of functional performance and structural stability of the switch by drawing the"functional adaptability curve"and"free energy change curve". At the same time, we add the log content, so that the information of the program can be interpreted, which is conducive to our evaluation of the function of the model.</p>
+          <p class="textztbf">First of all, we will use the original model and the improved model to generate 20 (or more) sequences and their model prediction scores, and use the NUPACK and ViennaRNA in the model to calculate the free energy, and calculate the ON/OFF ratio through the machine learning program. (Since we have not completed the iterative improvement of the model, we have not output the results. After the iteration of the model, we will use the real data for evaluation.)</p>
+          <p class="textztbf">Fitness curve evaluates the functional prediction ability of the model by comparing the prediction score of the model with the ON/OFF ratio, and verifies whether the model can accurately identify high-performance sequences. After getting the results, we will analyze from the following points.</p>
+          <p class="textztbf">Correlation coefficient R ²: evaluates the strength of the linear relationship between the model predicted score and the ON/OFF ratio, with R ²&gt;0.7 indicating a strong correlation</p>
+          <p class="textztbf">Data point distribution: observe whether there is a positive correlation trend from the lower left to the upper right, and improve whether the model data points are more concentrated in the upper right quadrant.</p>
+          <p class="textztbf">Extreme performance: compare the maximum ON/OFF ratio and the average ON/OFF ratio of the two models to see if the improved model has a significant improvement.</p>
+          <p class="textztbf">Trendline slope: The larger the slope, the stronger the recognition ability of the model to the high-performance series.</p>
+          <p class="textztbf">The ddG curve evaluates the structural stability prediction accuracy by comparing the model-predicted free energy with a calculated reference value, ensuring that the switch is stable enough in the untriggered state to avoid leaky expression, while verifying a reasonable balance of free energy differences to ensure effective conformational changes. After getting the results, we will analyze from the following points.</p>
+          <p class="textztbf">Prediction error (RMSE): the root mean square error between the predicted free energy of the model and the calculated value. The smaller the error, the more accurate the prediction.</p>
+          <p class="textztbf">Stability Distribution: Proportion of sequences with statistical dG _ off in the ideal stability interval (-5 to -15 kcal/mol)</p>
+          <p class="textztbf">Free Energy Difference Range: Verify that ΔΔG is in the valid trigger range (-10 to -20 kcal/mol)</p>
+          <p class="textztbf">Data consistency: Observe how close the model predicted values are to the calculated values, ideally distributed closely around the reference line</p>
+          <p class="textztbf">Through the combined validation of these two curves, we are able to provide strong dual evidence for the validity of the model improvement at the computational level before committing to the wet experiment. The functional adaptability curve ensures that our generated sequences perform better in theoretical function, while the free energy change curve ensures that these sequences are reliable in structural stability. This can not only confirm whether the genetic algorithm maintains the sequence quality while expanding the design space, but also verify in principle whether it is possible to solve the key defects found in the initial wet experiment, such as poor switching stability and high leakage expression, which lays a solid theoretical foundation for the subsequent experimental verification.</p>
+      </section>
+
+      <section id="future" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">6. Future Roadmap</h2>
+          
+          <!-- 优化方向和措施表格 -->
+          <table>
+              <thead>
+                  <tr>
+                      <th>Direction of optimization</th>
+                      <th>Specific measures</th>
+                      <th>Expected effect</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td>Experimental verification</td>
+                      <td>Validate the effectiveness of the improved algorithm through wet-lab experiments</td>
+                      <td>Biological function confirmation</td>
+                  </tr>
+                  <tr>
+                      <td>Computational efficiency</td>
+                      <td>Optimize code and utilize efficient libraries</td>
+                      <td>Reduce computation time</td>
+                  </tr>
+                  <tr>
+                      <td>Quality improvement</td>
+                      <td>Enhance quality control with multi-dimensional criteria</td>
+                      <td>Increase in the proportion of high-quality sequences</td>
+                  </tr>
+                  <tr>
+                      <td>Fitness Function</td>
+                      <td>Refine the fitness function by optimizing weighting factors</td>
+                      <td>Enhanced prediction accuracy</td>
+                  </tr>
+              </tbody>
+          </table>
+          
+          <p class="textztbf">We hope to establish an integrated toehold switch design platform to achieve seamless connection from computational design to experimental verification, and promote the application of RNA regulatory elements in precision medicine.</p>
+      </section>
+
+      <section id="user" class="wz-content-section">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">7. User Manual</h2>
+        <embed 
+              src="https://static.igem.wiki/teams/5844/pages/toehold/toehold-switch-generator-manual.pdf" 
+              type="application/pdf" 
+              style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 4px;"
+              title="hhp">
+        <!-- 备用提示（若浏览器不支持直接渲染） -->
+        <p style="text-align: center; color: #666; font-size: 0.9rem;">
+            <a href="https://static.igem.wiki/teams/5844/pages/toehold/toehold-switch-generator-manual.pdf" target="_blank" style="color: #f8c14a;">Click to Download</a>
+        </p>
+        <embed 
+              src="https://static.igem.wiki/teams/5844/pages/toehold/toehold-switch-validation-curves-manual.pdf" 
+              type="application/pdf" 
+              style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 4px;"
+              title="hhp">
+        <!-- 备用提示（若浏览器不支持直接渲染） -->
+        <p style="text-align: center; color: #666666; font-size: 0.9rem;">
+            <a href="https://static.igem.wiki/teams/5844/pages/toehold/toehold-switch-validation-curves-manual.pdf" target="_blank" style="color: #58d8b2;">Click to Download</a>
+        </p>
+
+      </section>
+  </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应Background&Motivation
+        document.getElementById('text-2'),  // 对应Problem Discovery
+        document.getElementById('text-3'),  // 对应Genetic Algorithm Engine
+        document.getElementById('text-4'),  // 对应Iterative Optimization
+        document.getElementById('text-5'),  // 对应Computational Validation
+        document.getElementById('text-6'),  // 对应Future Roadmap
+        document.getElementById('text-7')   // 对应user
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('background'),  // 对应text-1
+        document.getElementById('problem'),       // 对应text-2
+        document.getElementById('genetic'),       // 对应text-3
+        document.getElementById('optimization'),    // 对应text-4
+        document.getElementById('validation'),    // 对应text-5
+        document.getElementById('future') ,     // 对应text-6
+        document.getElementById('user')     // 对应text-7
+    ];
+    
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+    
+    // 可折叠内容功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 560) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            navLinks.forEach(item => item.classList.remove('active'));
+            
+            if (texts[index]) texts[index].classList.add('active');
+            if (navLinks[index]) navLinks[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+        
+        navLinks.forEach((link, index) => {
+            if (!link) return;
+            link.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}
+    

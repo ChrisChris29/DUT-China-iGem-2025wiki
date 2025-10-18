@@ -1,0 +1,679 @@
+{% extends "layout.html" %}
+  
+{% block title %}Contribution{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-contribution2.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+/* 展示页面css */
+/* 基础样式 */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #f9fafb;
+    color: #1f2937;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: inherit;
+    image-rendering: pixelated;
+}
+
+/* 新增的概述文本框样式 */
+.overview-box {
+    background-color: #fff;
+    border: 3px solid #000;
+    box-shadow: 6px 6px 0 rgba(255, 204, 0, 0.6); /* 阴影改为黄色 */
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    width: clamp(70%, 75vw, 80%);
+    text-align: justify;
+    line-height: 1.6;
+}
+
+/* 概述文本框内段落样式 - 与下方内容保持一致 */
+.overview-box p {
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em; /* 首行缩进 */
+    margin-bottom: 1em;
+}
+
+/* 导航样式 - 垂直文字导航 */
+.wz-nav-container {
+    position: fixed;
+    left: clamp(1rem, 3vw, 3rem); /* 左侧导航栏左侧边距减小 */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem; /* 增加间距 */
+    max-width: 120px; /* 限制导航栏宽度，允许换行 */
+}
+
+.wz-nav-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s linear;
+    position: relative; /* 为侧边栏定位 */
+    padding-left: 1.2rem; /* 为侧边栏留出空间 */
+}
+
+/* 侧边栏样式 */
+.wz-nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: transparent;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* 悬停状态侧边栏 */
+.wz-nav-item:hover::before {
+    background-color: rgba(128, 0, 128, 0.3);
+}
+
+/* 激活状态侧边栏 - 确保激活时显示更明显的侧边栏 */
+.wz-nav-item .wz-nav-text.active {
+    position: relative;
+}
+
+.wz-nav-item .wz-nav-text.active::before {
+    content: '';
+    position: absolute;
+    left: -1.2rem; /* 与padding-left对应 */
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: rgba(128, 0, 128, 0.8);
+    border-radius: 2px;
+}
+
+.wz-nav-text {
+    color: rgba(75, 85, 99, 0.8);
+    font-weight: bold;
+    font-size: 20px; /* 保持原有字体大小 */
+    transition: all 0.2s linear;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+}
+
+.wz-nav-text:hover {
+    color: rgba(55, 65, 81, 1);
+    transform: translateX(5px);
+}
+
+.wz-nav-text.active {
+    color: rgba(55, 65, 81, 1);
+    font-size: 20px !important; /* 保持原有字体大小 */
+    font-weight: 900;
+    text-shadow: 2px 2px 0 rgba(255,255,255,0.8);
+}
+
+.wz-nav-tooltip {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+    border: 2px solid #0003;
+    margin-left: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.875rem;
+}
+
+.wz-nav-item:hover .wz-nav-tooltip {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+a, .wz-nav-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover, a:active, a:focus,
+.wz-nav-link:hover, .wz-nav-link:active, .wz-nav-link:focus {
+    text-decoration: none;
+}
+
+/* 背景和内容样式 */
+.wz-bg-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px),
+                        linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.wz-content-container {
+    background-color: #fff;
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(128, 0, 128, 0.6);
+    border: 3px solid #000;
+    max-width: 1200px;
+    width: clamp(70%, 75vw, 80%);
+    margin: 0px 0px 0px auto;
+    margin-right: clamp(0rem, 0vw, 0rem);
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.wz-content-section {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 3px solid #000;
+}
+
+.wz-content-section:last-child {
+    border-bottom: none;
+}
+
+.wz-scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.wz-scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.textztbf { 
+    font-size: 1.12rem;
+    line-height: 1.5;
+    letter-spacing: 0.05em;
+    font-smooth: never;
+    -webkit-font-smoothing: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 2em; /* 段首缩进 */
+    margin-bottom: 1em;
+}
+
+ul.textztbf {
+    text-indent: 0;
+    margin-left: 4em;
+}
+
+h2 {
+    color: rgba(40,40,40, 1);
+    text-shadow: 2px 2px 0 rgba(158, 0, 158, 0.4);
+    font-smooth: never;
+    font-size: bold;
+    -webkit-font-smoothing: none;
+    letter-spacing: -0.02em;
+    border-bottom: 3px solid #000;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+}
+
+/* 图片相关样式 */
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+.image-caption {
+    text-align: center;
+    font-style: italic;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 下拉栏样式 */
+.collapsible {
+    background-color: rgba(128, 0, 128, 0.1);
+    color: #1f2937;
+    cursor: pointer;
+    padding: 12px 16px;
+    width: 100%;
+    border: 1px solid rgba(128, 0, 128, 0.3);
+    text-align: left;
+    outline: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+}
+
+.collapsible:after {
+    content: "▼";
+    color: rgba(128, 0, 128, 0.8);
+    font-weight: bold;
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.collapsible.active {
+    background-color: rgba(128, 0, 128, 0.2);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.collapsible.active:after {
+    transform: rotate(180deg);
+}
+
+.collapsible-content {
+    padding: 0 16px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: white;
+    border-left: 1px solid rgba(128, 0, 128, 0.2);
+    border-right: 1px solid rgba(128, 0, 128, 0.2);
+    border-bottom: 1px solid rgba(128, 0, 128, 0.2);
+    margin-bottom: 15px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.collapsible-content p, .collapsible-content ul {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+:root {
+    --primary: #66CCFF;
+    --secondary: #FFCC66;
+    --accent: #66CC99;
+    --warning: #CC6666;
+    --purple-shadow: rgba(128, 0, 128, 0.6);
+    --black-border: #000;
+}
+</style>
+
+<script>
+const tailwind = {
+    apply: function(classNames) {
+        const styles = {};
+        classNames.split(' ').forEach(className => {
+            if (this.utilities[className]) {
+                const declarations = this.utilities[className].split(';');
+                declarations.forEach(declaration => {
+                    if (declaration.trim()) {
+                        const [property, value] = declaration.split(':').map(s => s.trim());
+                        styles[property] = value;
+                    }
+                });
+            }
+        });
+        return styles;
+    }
+};
+
+function applyTailwindStyles() {
+    document.querySelectorAll('[class]').forEach(el => {
+        const classes = el.className;
+        const styles = tailwind.apply(classes);
+        Object.assign(el.style, styles);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', applyTailwindStyles);
+</script>
+
+<!-- 新增的概述文本框 -->
+<div class="overview-box">
+    <p>Driven by a shared passion for leveraging synthetic biology to address real-world health challenges, we are excited to share the full suite of tools and resources developed in our R-Home project with the global iGEM community. Our contributions span all aspects of the project: the wet-lab team delivers a modular mRNA therapeutic platform and a standardized Parts Collection; the dry-lab team provides a computational toolkit for UTR design and PK/PD modeling; we open-source the PREMA microfluidic pump hardware for affordable LNP production; and our Human Practices team offers the CARE framework to guide responsible innovation. We hope these assets will empower future teams to advance the field of precision medicine.</p>
+</div>
+
+<div class="wz-bg-overlay"></div>
+
+<!-- 左侧导航栏 -->
+<div class="wz-nav-container" style="opacity: 0; transform: translateY(-50%) translateX(-20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+    <a href="#wet-lab-parts" class="wz-nav-link wz-nav-item">
+        <span id="text-1" class="wz-nav-text">Wet-Lab Parts</span>
+    </a>
+    
+    <a href="#dry-lab-guidebook" class="wz-nav-link wz-nav-item">
+        <span id="text-2" class="wz-nav-text">Dry-Lab Guidebook</span>
+    </a>
+    
+    <a href="#hp-framework" class="wz-nav-link wz-nav-item">
+        <span id="text-3" class="wz-nav-text">HP Framework</span>
+    </a>
+    
+    <a href="#hardware-handbook" class="wz-nav-link wz-nav-item">
+        <span id="text-4" class="wz-nav-text">Hardware Handbook</span>
+    </a>
+</div>
+
+<!-- 右侧内容区 -->
+<main class="ml-[180px] md:ml-[220px] wz-flex wz-items-center wz-justify-center min-h-screen py-8">
+  <div class="wz-content-container">
+      <section id="wet-lab-parts" class="wz-content-section" style="scroll-margin-top: 0px;">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Wet-Lab Parts</h2>
+          <p class="textztbf">We have constructed a modular <strong>mRNA therapeutic platform</strong> for hepatocellular carcinoma, featuring a multi-layered regulation system. It comprises three core modules: therapeutic molecule construction, delivery vehicle design, and target application. All parts possess clearly defined biological functions, standardized interfaces, and validation data, making them suitable for subsequent development and application by the iGEM community. We welcome further use and iterative development by future teams.</p>
+          
+          <p class="textztbf">We designed a single mRNA construct that simultaneously expresses a <strong>PROTAC molecule</strong> targeting the degradation of the <strong>oncogenic protein TGF-β</strong> and supplements the <strong>tumor suppressor protein HNF4α</strong>. We are submitting the TGF-β degradation module and the HNF4α expression module as independent BioBrick parts, supporting modular assembly. We will also provide a stepwise validation protocol (target validation, module function validation, synergistic strategy validation) to offer a reliable experimental template for subsequent teams. Furthermore, we developed a hybrid delivery platform based on the Lpp-OmpA surface display system, enabling the <strong>functional display of a GPC3 single-chain antibody on an EVs-LNP vector</strong>. We will provide a complete Western Blot validation protocol, including antibody selection, experimental conditions, and data analysis methods.</p>
+          
+          <p class="textztbf">We successfully established a comprehensive 5' UTR performance evaluation system and developed <strong>two types of RNA molecular switches</strong> regulated by miR-21, achieving systematic optimization of mRNA translation efficiency and cell-specific expression control. Based on this, we are committed to establishing a standardized Parts Collection for the iGEM community, encompassing the following functional modules:</p>
+          
+          <!-- 第一部分下拉栏 -->
+          <button class="collapsible">Artificially Designed 5'UTR Collection</button>
+          <div class="collapsible-content">
+              <p class="textztbf">Contains several computationally optimized, wet-lab validated 5' UTR sequences suitable for various mRNA constructs, significantly enhancing target protein expression levels.</p>
+          </div>
+          
+          <button class="collapsible">Naturally Occurring 5'UTR Collection</button>
+          <div class="collapsible-content">
+              <p class="textztbf">Compiles various 5' UTR sequences derived from nature, providing real, diverse data samples for future teams to train and validate dry-lab models.</p>
+          </div>
+          
+          <button class="collapsible">miRNA-ON Switch Collection</button>
+          <div class="collapsible-content">
+              <p class="textztbf">Includes the exCAG conditional repression switch (with variants of 3x, 10x, and 30x CAG repeats offering gradient repression intensity, suitable for tunable translational control in eukaryotic systems) and Eukaryotic Toehold Switches (optimized for mammalian cells, initiating translation upon the presence of specific trigger RNA, enabling gene expression regulation).</p>
+          </div>
+          
+          <button class="collapsible">Protein Regulation Collection</button>
+          <div class="collapsible-content">
+              <p class="textztbf">We have collected a series of siRNAs targeting common reporter genes or tumor targets with high degradation activity, which can be used to expand the complexity of regulatory networks and support the construction and validation of multi-target synergistic regulation systems.</p>
+          </div>
+          
+          <button class="collapsible">Protein Regulation Collection</button>
+          <div class="collapsible-content">
+              <p class="textztbf">We have collected scaffold proteins suitable for bacterial surface display and provide two composite parts (Lpp-OmpA-eGFP and Lpp-OmpA-GPC3 single-chain antibody) already validated by wet-lab experiments, offering diverse protein surface display options for subsequent iGEM teams.</p>
+          </div>
+          
+          <p class="textztbf">This Part Collection aims to provide standardized, composable regulatory elements for synthetic biology research, assisting future iGEM teams in achieving more efficient and controllable engineering builds in areas such as genetic design and mRNA system development.</p>
+      </section>
+
+      <section id="dry-lab-guidebook" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Dry-Lab Guidebook</h2>
+          <p class="textztbf">We have constructed a multi-scale computational biology toolkit providing end-to-end support for mRNA drug development, from sequence design to in vivo metabolic prediction.</p>
+          
+          <p class="textztbf">Firstly, we developed the <strong>UTRGAN-Insight sequence design platform</strong>. This integrated model overcomes the length limitations of traditional UTR design and establishes a fully automated "Generate-Evaluate-Validate" workflow. By incorporating multi-objective optimization algorithms, the platform directly outputs high-performance sequences with balanced functionalities. All core code has been deployed to an open-source platform, providing ongoing algorithmic support for subsequent teams.</p>
+          <div style="margin: 3rem 0; display: flex; justify-content: center; flex-direction: column; gap: 1rem;">
+            <!-- PDF嵌入核心标签：width100%避免超出文本框，height足够阅读 -->
+            <embed 
+                src="https://static.igem.wiki/teams/5844/pages/5utr/5-utr-design-model-manual.pdf" 
+                type="application/pdf" 
+                style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 4px;"
+                title="5-utr-design-model-manual">
+            <!-- 备用提示（若浏览器不支持直接渲染） -->
+            <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                <a href="https://static.igem.wiki/teams/5844/pages/5utr/5-utr-design-model-manual.pdf" target="_blank" style="color: #66CCFF;">Click to Download</a>
+            </p>
+          </div>
+
+          <p class="textztbf">Secondly, building upon the existing iGEM triggate platform, we developed a <strong>Toehold Switch Optimization System</strong>. This model generates toehold switches compatible with eukaryotic cells. While maintaining high binding efficiency and sequence precision, it significantly enhances the structural diversity of the generated sequences, offering more choices for RNA switch design in complex environments, continuing the spirit of iGEM inheritance.</p>
+          <div style="margin: 3rem 0; display: flex; justify-content: center; flex-direction: column; gap: 1rem;">
+            <!-- PDF嵌入核心标签：width100%避免超出文本框，height足够阅读 -->
+            <embed 
+                src="https://static.igem.wiki/teams/5844/pages/toehold/toehold-switch-validation-curves-manual.pdf" 
+                type="application/pdf" 
+                style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 4px;"
+                title="5-utr-design-model-manual">
+            <!-- 备用提示（若浏览器不支持直接渲染） -->
+            <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                <a href="https://static.igem.wiki/teams/5844/pages/toehold/toehold-switch-validation-curves-manual.pdf" target="_blank" style="color: #66CCFF;">Click to Download</a>
+            </p>
+        </div>
+
+          <p class="textztbf">Furthermore, we innovatively constructed a <strong>Hypoxic-HCC PK Model</strong>. This model accurately simulates the spatiotemporal distribution and metabolic dynamics of drugs within tumor regions by coupling the heterogeneous characteristics of the hypoxic liver cancer microenvironment. We also developed an accompanying interactive visualization platform that supports flexible multi-parameter adjustment, greatly enhancing the model's practical value in experimental design and preclinical research. We believe this will also provide substantial support for subsequent teams.</p>
+          <div style="margin: 3rem 0; display: flex; justify-content: center; flex-direction: column; gap: 1rem;">
+            <!-- PDF嵌入核心标签：width100%避免超出文本框，height足够阅读 -->
+            <embed 
+              src="https://static.igem.wiki/teams/5844/pages/hhp/pkpd-model-manual.pdf" 
+              type="application/pdf" 
+              style="width: 100%; height: 800px; border: 1px solid #ddd; border-radius: 4px;"
+              title="hhp">
+            <!-- 备用提示（若浏览器不支持直接渲染） -->
+            <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                <a href="https://static.igem.wiki/teams/5844/pages/hhp/pkpd-model-manual.pdf" target="_blank" style="color: #66CCFF;">Click to Download</a>
+            </p>
+          </div>
+
+          <p class="textztbf">Below are the user guides for our three dry-lab sub-models. Whether you are conducting simulations, analyzing data, or integrating the R-Home model into your synthetic biology project, our user manual ensures a seamless and efficient experience.</p>
+      </section>
+
+      <section id="hp-framework" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">HP Framework</h2>
+          <p class="textztbf">In the early stages of our project, we recognized that Human Practices activities without systematic planning could easily become superficial. Therefore, we reframed the HP paradigm, constructing a complete and reusable methodological system. Its core is the dynamic feedback mechanism of "<strong>CARE Cycle</strong>."</p>
+          
+          <h3>1. Dynamic Feedback Mechanism of "Concern-Action-Response-Evaluation"</h3>
+          <p class="textztbf">We established a closed-loop management system that continuously responds to external inputs and drives the self-evolution of the project. The process can be summarized into the following four cyclical stages, demonstrating to future iGEM teams how to effectively integrate external feedback into the entire process of technology research and development:</p>
+          
+          <p class="textztbf"><strong>CARE Cycle</strong>: A Humanistic-Driven Framework for Responsible Innovation</p>
+          
+          <p class="textztbf">Our project contribution extends far beyond technical outputs; it lies in our proposal and practice of a systematic methodology：the <strong>CARE Cycle</strong>. This framework embeds Responsible Research and Innovation into every phase of the project lifecycle, ensuring our engineering solutions are always anchored in deep humanistic care and achieve self-evolution through continuous feedback iteration. <strong>CARE</strong> is an acronym for <strong>Concern, Action, Response, and Evaluation</strong>, collectively forming a dynamic, spiraling innovation process.</p>
+          
+          <!-- 第二部分下拉栏 -->
+          <button class="collapsible">C - Concern: Precise Problem Definition Based on Value-Sensitive Design</button>
+          <div class="collapsible-content">
+              <p class="textztbf">The project's driving force begins with a profound understanding of unmet social and technological needs. We employ the methodology of <strong>Value-Sensitive Design</strong> to proactively identify and reconcile the value propositions of diverse stakeholders, including patients, clinicians, industry, and the public. For instance, we reframe the technical question of "improving mRNA drug efficacy" into the precisely defined challenge: "How can we achieve hepatocellular carcinoma-specific protein regulation within the complex in vivo environment to maximize therapeutic effect while minimizing off-target risks to normal tissues?"</p>
+          </div>
+          
+          <button class="collapsible">A - Action: Collaborative Pathway Planning through Multidisciplinary Integration</button>
+          <div class="collapsible-content">
+              <p class="textztbf">Following the clarification of the core concern, we enter a deep integration analysis phase. The goal of this stage is to translate the value-based "Concern" into an actionable blueprint that balances <strong>technical rigor</strong> and <strong>social rationality</strong>. For example, addressing the concern of "enhancing drug accessibility," our action extends beyond assessing the technical feasibility of modular mRNA design to comprehensively evaluating it within the context of local healthcare resources, production costs, and insurance policies.</p>
+          </div>
+          
+          <button class="collapsible">R - Response: Materialization of Responsible Innovation through Concrete Solutions</button>
+          <div class="collapsible-content">
+              <p class="textztbf">The action pathways generated from the analysis phase are transformed here into specific, deliverable, and responsible solutions. We emphasize the <strong>tangible</strong> and <strong>diverse</strong> nature of the "Response." It includes not only the final mRNA therapeutic candidate but also:</p>
+              <ul class="textztbf">
+                  <li>Tools &amp; Models: Such as our open-source Eukaryotic Toehold Switch Design Model and 5' UTR Optimization Platform, providing reusable design tools for the community.</li>
+                  <li>Hardware &amp; Protocols: Such as our low-cost, high-performance PREMA Microfluidic Syringe Pump and its standardized production protocol, aimed at lowering technical barriers.</li>
+              </ul>
+          </div>
+          
+          <button class="collapsible">E - Evaluation: Learning Feedback Loop Driving Project Spiral Evolution</button>
+          <div class="collapsible-content">
+              <p class="textztbf">For us, the delivery of any solution is not the endpoint but the starting point for a new round of learning. We established a rigorous multi-dimensional evaluation mechanism, gathering real-world data on our "Response" solutions through wet-lab validation, expert review, potential user feedback, and safety testing. Evaluation results are systematically analyzed and fed back as new "trigger inputs" to the beginning of the CARE cycle. Positive outcomes are consolidated and amplified; any shortcomings or newly emerged issues immediately initiate a new "Concern-Analysis-Response-Evaluation" cycle. This <strong>iterative feedback loop</strong> empowers the project with dynamic adaptation and continuous optimization capabilities, which is core to its vitality.</p>
+          </div>
+          
+          <h3>2. Multi-dimensional, Multi-scenario Public Engagement Practice Template</h3>
+          <p class="textztbf">We provide a complete case library and resource pack for HP activities covering different audiences and formats, including:</p>
+          <ul class="textztbf">
+              <li>For the General Public: "Doctor for a day" role-playing, "A Sticker of Hope, A Step Toward Cure" sticky note interaction.</li>
+              <li>For Specific Stakeholders (Elderly Community): "Love · Protect · Treat Your Liver" nursing home science outreach, including health talks, acupressure massage, and comic explanations.</li>
+          </ul>
+          <p class="textztbf">We are pleased to share our curated Human Practices resources, which include activity plans, liver cancer awareness posters, elderly-friendly PowerPoint presentations, and liver-healthy dietary guides. Developed through our community engagements, these open-source materials are shared to inspire and support future iGEM teams in designing inclusive and socially meaningful initiatives.</p>
+          <div style="margin: 3rem 0; display: flex; justify-content: center; flex-direction: column; gap: 1rem;">
+            <!-- PDF嵌入核心标签：width100%避免超出文本框，height足够阅读 -->
+            <embed 
+                src="https://static.igem.wiki/teams/5844/pages/contribution/activity-plan.pdf" 
+                type="application/pdf" 
+                style="width: 100%; height: 720px; border: 1px solid rgba(218, 153, 228, 0.94); border-radius: 4px;"
+                title="activity-plan.pdf">
+            <!-- 备用提示（若浏览器不支持直接渲染） -->
+            <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                <a href="https://static.igem.wiki/teams/5844/pages/contribution/activity-plan.pdf" target="_blank" style="color: #3fffe2fe;">Click to Download</a>
+            </p>
+          </div>
+          <p style="text-align: left;">
+            <a href="https://static.igem.wiki/teams/5844/pages/contribution/nursing-home-activities.pdf" target="_blank" style="color: #ff6666;">Nursing Home Activities.ppt</a>
+          </p>
+          <p style="text-align: left;">
+            <a href="https://static.igem.wiki/teams/5844/pages/contribution/recipes-to-protect-the-liver.pdf" target="_blank" style="color: #ff6666;">Recipes to Protect the Liver.pdf</a>
+          </p>
+          <p style="text-align: left;">
+            <a href="https://static.igem.wiki/teams/5844/pages/contribution/poater-of-doctor-for-a-day.webp" target="_blank" style="color: #7887f9;">Poater of Doctor for a Day.png</a>
+          </p>
+          <p style="text-align: left;">
+            <a href="https://static.igem.wiki/teams/5844/pages/contribution/poster-of-a-sticker-of-hope-a-step-toward-cure.webp" target="_blank" style="color: #7887f9;">Poster of A Sticker of Hope, A Step Toward Cure.png</a>
+          </p>
+
+          <h3>3. Contribution and Legacy to the iGEM Community</h3>
+          <p class="textztbf">We provide a reusable HP methodological system. Future iGEM teams can directly adopt our approach for activity planning and leverage the mechanism to manage the interaction between their projects and societal needs. We embedded bioethics as a cornerstone from the project's inception and realized the "human-centered" principle through HP activities, setting an example for the community. We also strengthened the iGEM collaborative network: through in-depth exchanges and cooperation with multiple teams (including PekingHSC, HZAU, SYPHU), we demonstrated that HP is not only about "dialogue with the public" but also a catalyst for "advancing together with peers." We bequeath to the iGEM community a clear, actionable, and practically tested HP working paradigm and a rich resource repository, hoping to empower future teams to conduct their synthetic biology exploration more efficiently, deeply, and responsibly.</p>
+      </section>
+
+      <section id="hardware-handbook" class="wz-content-section">
+          <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] wz-font-bold wz-text-gray-800 wz-mb-4">Hardware Handbook</h2>
+          <p class="textztbf">In our iGEM project, we deeply recognized that advanced tools should not become barriers to scientific exploration. Therefore, we independently designed and built a set of open-source, low-cost, high-performance <strong>dual-channel microfluidic syringe pump systems</strong>. This addresses the core bottleneck of lipid nanoparticle (LNP) preparation for RNA drug delivery and stands as a key contribution to the iGEM community.</p>
+          
+          <p class="textztbf">We achieved a breakthrough in <strong>cost control</strong>. The total material cost for the complete system is approximately 775 RMB, reducing the cost by over 98% compared to commercial microfluidic equipment often priced at tens of thousands. This makes advanced LNP preparation technology accessible to academic teams with limited budgets, secondary schools, and iGEM teams in developing regions, significantly lowering the entry barrier to synthetic biology in the field of precision medicine.</p>
+          
+          <p class="textztbf">We have <strong>open-sourced all technical documentation</strong>, including: STL files for 3D-printed structural parts, circuit design and connection diagrams, control code (Arduino), and web UI front-end code. Subsequent teams can not only fully replicate our system but also make localized modifications and functional expansions based on our design, truly adhering to the iGEM spirit of cooperation.</p>
+          
+          <p class="textztbf">We innovatively integrated <strong>two syringe pump systems into a single unit</strong>, controlled via a unified web UI interface. This completely solves the pain points of parameter synchronization difficulties and cumbersome operation associated with using two independent devices traditionally, making the LNP preparation process more stable and efficient.</p>
+          
+          <p class="textztbf"><strong>"Chip-Collection" Integrated Fixture</strong>: Our self-designed collection fixture enables seamless connection between the microfluidic chip and the collection tubing, simplifying operational steps, avoiding sample loss, and improving experimental reproducibility and convenience.</p>
+          
+          <p class="textztbf">We conducted experimental comparisons between our self-developed device, a well-known commercial syringe pump, and the traditional hand-mixing method. Data shows that our device <strong>performs comparably</strong> to the commercial unit in terms of particle size control, encapsulation efficiency, and stability, and is far superior to the hand-mixing method.</p>
+          
+          <p class="textztbf">To further lower the technical barriers in synthetic biology, we have fully open-sourced our hardware system—including motor control codes and 3D modeling files. This initiative aligns with iGEM's spirit of collaboration and transparencyWe sincerely invite iGEMers worldwide to use, improve, and continue this work, collectively advancing synthetic biology technologies for the benefit of all.</p>
+          <div style="margin: 3rem 0; display: flex; justify-content: center; flex-direction: column; gap: 1rem;">
+            <!-- PDF嵌入核心标签：width100%避免超出文本框，height足够阅读 -->
+            <embed 
+                src="https://static.igem.wiki/teams/5844/pages/hardware/modeling-diagram-and-code.pdf" 
+                type="application/pdf" 
+                style="width: 100%; height: 720px; border: 1px solid rgba(171, 248, 252, 0.94); border-radius: 4px;"
+                title="activity-plan.pdf">
+            <!-- 备用提示（若浏览器不支持直接渲染） -->
+            <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                <a href="https://static.igem.wiki/teams/5844/pages/hardware/modeling-diagram-and-code.pdf" target="_blank" style="color: #3fffe2fe;">Click to Download</a>
+            </p>
+          </div>
+        </section>
+  </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    // 导航链接对应的texts
+    const texts = [
+        document.getElementById('text-1'),  // 对应Wet-Lab Parts
+        document.getElementById('text-2'),  // 对应Dry-Lab Guidebook
+        document.getElementById('text-3'),  // 对应HP Framework
+        document.getElementById('text-4')   // 对应Hardware Handbook
+    ];
+    
+    // HTML中实际存在的section
+    const sections = [
+        document.getElementById('wet-lab-parts'),
+        document.getElementById('dry-lab-guidebook'),
+        document.getElementById('hp-framework'),
+        document.getElementById('hardware-handbook')
+    ];
+    
+    // 初始设置第一个导航项为激活状态
+    if (texts.length > 0 && texts[0]) {
+        texts[0].classList.add('active');
+    }
+    
+    // 下拉栏功能
+    var coll = document.getElementsByClassName("collapsible");
+    for (var i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+
+    // 导航栏显示/隐藏控制
+    function toggleNavVisibility() {
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 1068) {
+            navContainer.style.opacity = '1';
+            navContainer.style.transform = 'translateY(-50%) translateX(0)';
+        } else {
+            navContainer.style.opacity = '0';
+            navContainer.style.transform = 'translateY(-50%) translateX(-20px)';
+        }
+    }
+
+    // 获取导航链接和容器
+    const navLinks = document.querySelectorAll('.wz-nav-link');
+    const navContainer = document.querySelector('.wz-nav-container');
+    if (!navContainer) return; // 容错：如果容器不存在，避免后续报错
+
+    // 导航链接点击事件
+    navLinks.forEach((link, index) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (index >= sections.length || !sections[index]) return;
+            
+            // 移除所有active，给当前添加active
+            texts.forEach(text => text && text.classList.remove('active'));
+            if (texts[index]) texts[index].classList.add('active');
+            
+            // 滚动到对应section
+            sections[index].scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+
+    // 更新激活的导航项
+    function updateActiveNav() {
+        const scrollPosition = window.scrollY;
+        const windowHeight = window.innerHeight;
+        let activeSectionIndex = -1;
+
+        sections.forEach((section, index) => {
+            if (!section) return;
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (scrollPosition >= sectionTop - windowHeight / 3 && 
+                scrollPosition < sectionTop + sectionHeight - windowHeight / 3) {
+                activeSectionIndex = index;
+            }
+        });
+
+        texts.forEach((text, index) => {
+            if (!text) return;
+            text.classList.toggle('active', index === activeSectionIndex);
+        });
+    }
+
+    // 监听滚动，更新导航状态
+    function updateOnScroll() {
+        updateActiveNav();
+        toggleNavVisibility();
+    }
+
+    window.addEventListener('scroll', updateOnScroll);
+    updateOnScroll();
+});
+</script>
+{% endblock %}
+</body></html>

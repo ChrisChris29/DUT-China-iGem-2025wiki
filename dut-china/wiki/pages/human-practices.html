@@ -1,0 +1,3111 @@
+{% extends "layout.html" %}
+  
+{% block title %}ihp{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/dut-china-ihp.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+<style>
+  /* 基础样式重置 - 移除所有默认内外边距 */
+    p:empty {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    height: 0 !important;
+    }
+
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+  
+  .ihp-container {
+      display: flex;
+      margin-top: 0;
+      padding:5vhs 0 0 0 !important;
+  }
+  
+  .ihp-title {
+      color: #6B46C1;
+      font-size: 48px;
+      font-weight: bold;
+      margin: 20px 0;
+      padding: 0 20px;
+  }
+  
+  .sidebar-nav {
+      position: sticky;
+      top: 45vh;
+      width: 250px;
+      height: fit-content;
+      padding: 0 20px;
+  }
+  
+  .nav-list {
+      list-style: none;
+      border-left: 3px solid #E5E7EB;
+  }
+  
+  .nav-list li {
+      margin-bottom: 15px;
+      padding-left: 20px;
+      transition: all 0.3s ease;
+  }
+  
+  .nav-list a {
+      color: #6B7280;
+      text-decoration: none;
+      font-size: 15px;
+      transition: all 0.3s ease;
+  }
+  
+  .nav-list a:hover {
+      color: #6B46C1;
+  }
+  
+  .nav-list li.active {
+      border-left: 3px solid #6B46C1;
+      margin-left: -3px;
+  }
+  
+  .nav-list li.active a {
+      color: #6B46C1;
+      font-weight: 600;
+  }
+  
+  .content-area {
+      flex: 1;
+      min-width: 0; /* 防止内容溢出 */
+  }
+  
+  /* 每个部分的容器 */
+  .section {
+      width: 100%;
+  }
+  
+  /* 标题容器 */
+  .section-title-container {
+      width: 100%;
+      padding: 0 20px 0 20px;
+  }
+  
+  .section-title {
+      color: #1F2937;
+      font-size: 28px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #E5E7EB;
+  }
+  
+  .section-title-container h2{
+    text-shadow: none;
+  }
+
+  .stage-number {
+      color: #6B46C1;
+      font-weight: bold;
+  }
+  
+    .text-box-container {
+        position: absolute;
+        transition: transform 0.3s ease; /* 只对transform添加过渡效果 */
+    }
+
+    /* 方案一核心：根据圆点方向调整文本框位置 */
+    /* 右侧圆点：文本框在圆点左侧 */
+    .text-box-container.has-dot-right {
+        transform: translateX(calc(-100% - 35px));
+    }
+
+    /* 左侧圆点：文本框在圆点右侧 */
+    .text-box-container.has-dot-left {
+        transform: translateX(35px);
+    }
+
+    /* 顶部圆点：文本框在圆点下方 */
+    .text-box-container.has-dot-top {
+        transform: translateX(-50%) translateY(35px);
+    }
+
+    /* 底部圆点：文本框在圆点上方 */
+    .text-box-container.has-dot-bottom {
+        transform: translateX(-50%) translateY(calc(-100% - 35px));
+    }
+
+
+    /* 文本框位置类 - 使用固定的位置值 */
+    .text-box-position-1 {
+        top: 6.5%;
+        left: 52.4%;
+        width: 40%;
+    }
+    
+    .text-box-position-2 {
+        top: 15.9%;
+        left: 49%;
+        width: 48%;
+    }
+
+    .text-box-position-3 {
+        top: 31%;
+        left: 3%;
+        width: 61%;
+    }
+
+    .text-box-position-4 {
+        top: 16.9%;
+        left: 0%;
+        width: 48%;
+    }
+
+    .text-box-position-5 {
+        top: 38.2%;
+        left: 3%;
+        width: 67%;
+    }
+
+    .text-box-position-6 {
+        top: 49.8%;
+        left: 4%;
+        width: 30%;
+    }
+    
+    .text-box-position-7 {
+        top: 42.6%;
+        left: 41%;
+        width: 55%;
+    }
+
+    .text-box-position-8 {
+        top: 56%;
+        left: 35%;
+        width: 62%;
+    }
+
+    .text-box-position-9 {
+        top: 78.5%;
+        left: 25%;
+        width: 72%;
+    }
+
+    .text-box-position-10 {
+        top: 67.4%;
+        left: 1.4%;
+        width: 72%;
+    }
+
+    .text-box-position-11 {
+        top: 13.3%;
+        left: 29%;
+        width: 65%;
+    }
+
+    .text-box-position-12 {
+        top: 20%;
+        left: 51%;
+        width: 47%;
+    }
+
+    .text-box-position-13 {
+        top: 20%;
+        left: 1%;
+        width: 46%;
+    }
+
+    .text-box-position-14 {
+        top: 36%;
+        left: 3%;
+        width: 47%;
+    }
+
+    .text-box-position-15 {
+        top: 43%;
+        left: 13%;
+        width: 32%;
+    }
+
+    .text-box-position-16 {
+        top: 43%;
+        left: 52%;
+        width: 33%;
+    }
+
+    .text-box-position-17 {
+        top: 53%;
+        left: 40.3%;
+        width: 54%;
+    }
+
+    .text-box-position-18 {
+        top: 61%;
+        left: 36%;
+        width: 61%;
+    }
+
+    .text-box-position-21 {
+        top: 6.5%;
+        left: 56%;
+        width: 37%
+    }
+
+    .text-box-position-22 {
+        top: 26.8%;
+        left: 14%;
+        width: 57%;
+    }
+
+    .text-box-position-23 {
+        top: 19.4%;
+        left: 42%;
+        width: 45%;
+    }
+
+    .text-box-position-24 {
+        top: 41.2%;
+        left: 6%;
+        width: 38%;
+    }
+
+    .text-box-position-25 {
+        top: 52%;
+        left: 38%;
+        width: 57%;
+    }
+
+    .text-box-position-26 {
+        top: 41%;
+        left: 48.3%;
+        width: 48%;
+    }
+
+    .text-box-position-27 {
+        top: 62%;
+        left: 36%;
+        width: 61%;
+    }
+
+    .text-box-position-41 {
+        top: 16.8%;
+        left: 26%;
+        width: 68%;
+    }
+
+    .text-box-position-42 {
+        top: 57.3%;
+        left: 43.6%;
+        width: 54%;
+    }
+
+    .text-box-position-43 {
+        top: 35.2%;
+        left: 2.9%;
+        width: 44%;
+    }
+
+    .text-box-position-44 {
+        top: 5%;
+        left: 14%;
+        width: 78%;
+    }
+
+    .text-box-position-45 {
+        top: 26.8%;
+        left: 13%;
+        width: 64%;
+    }
+
+    .text-box-position-46 {
+        top: 43%;
+        left: 14%;
+        width: 45%;
+    }
+
+    .text-box-position-47 {
+        top: 49.7%;
+        left: 44.3%;
+        width: 43%;
+    }
+
+    .text-box-position-48 {
+        top: 70%;
+        left: 42.6%;
+        width: 52%;
+    }
+
+    .text-box-position-31 {
+        top: 0.9%;
+        left: 1%;
+        width: 64%;
+    }
+    
+    .text-box-position-32 {
+        top: 26.8%;
+        left: 65%;
+        width: 34%;
+    }
+
+    .text-box-position-33 {
+        top: 49.8%;
+        left: 12%;
+        width: 41%;
+    }
+
+    .text-box-position-34 {
+        top: 52.8%;
+        left: 59%;
+        width: 36%;
+    }
+
+    .text-box-position-35 {
+        top: 66%;
+        left: 52.5%;
+        width: 44%;
+    }
+
+    .text-box-position-36 {
+        top: 6.8%;
+        left: 21%;
+        width: 72%;
+    }
+    
+    .text-box-position-37 {
+        top: 39.3%;
+        left: 3.3%;
+        width: 39%;
+    }
+
+    .text-box-position-38 {
+        top: 18.4%;
+        left: 6%;
+        width: 49%;
+    }
+
+    .text-box-position-39 {
+        top: 13%;
+        left: 22%;
+        width: 72%;
+    }
+
+    .text-box-position-310 {
+        top: 19.2%;
+        left: 56.4%;
+        width: 35%;
+    }
+
+    .text-box-position-311 {
+        top: 27.7%;
+        left: 7%;
+        width: 49%;
+    }
+
+    .text-box-position-312 {
+        top: 31.8%;
+        left: 3.4%;
+        width: 57%;
+    }
+
+    .text-box-position-313 {
+        top: 44%;
+        left: 7%;
+        width: 57%;
+    }
+
+    .text-box-position-314 {
+        top: 41.8%;
+        left: 66%;
+        width: 33%;
+    }
+
+    .text-box-position-315 {
+        top: 60%;
+        left: 53.4%;
+        width: 44%;
+    }
+
+    .text-box-position-316 {
+        top: 72.5%;
+        left: 53%;
+        width: 33%;
+    }
+
+    .text-box-position-317 {
+        top: 78.4%;
+        left: 14.3%;
+        width: 54%;
+    }
+
+    .text-box-position-318 {
+        top: 83%;
+        left: 4%;
+        width: 61%;
+    }
+
+
+    /* 内容区域需要相对定位作为绝对定位的参考 */
+    .section-content {
+        position: relative;
+    }
+  
+  /* Overview背景图样式 */
+  #overview-content {
+      background-image: url("https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp2-1.webp");
+      background-repeat: no-repeat;
+      background-size: contain;
+      height: 1500px;
+      position: relative;
+      width: 100%;
+  }
+  
+  /* Stage 1背景图样式 */
+  #stage1-content {
+    background-image: url("https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp1-1.webp");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    width:100%;
+    height:300vh;
+    position: relative; /* 确保作为绝对定位的参考 */
+    clip-path: polygon(0 0, 100% 0, 100% 93%, 0 93%);
+    margin-bottom: -21vh;
+  }
+
+  .text-title {
+        color: #1F2937;
+        line-height: 2;
+        margin-bottom: 1%;
+        background: none;
+        padding: 0;
+        font-weight: 800;
+        font-size: 2.5vh;
+    }
+
+    .text-title2 {
+        color: #1F2937;
+        line-height: 2;
+        margin-bottom: 1%;
+        background: none;
+        padding: 0;
+        font-weight: 800;
+        font-size: 2vh;
+    }
+
+    .main-text-box {
+        padding: 2%;
+        border-radius: 20px;
+        position: relative;
+        backdrop-filter: blur(5px);
+        width: 100%;
+        min-height: 10%;
+    }
+
+    /* 黄色主题 */
+    .main-text-box.y {
+        background-color: rgb(255 235 180);
+    }
+
+    /* 蓝色主题 */
+    .main-text-box.b {
+        background-color: rgb(214 193 248);
+    }
+
+    .main-text-box.g {
+        background-color: rgb(127 184 212);
+    }
+
+    /* 展开按钮基础样式 */
+    .expand-dot {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-color: #8db6ca;
+        border-radius: 50%;
+        display: flex;
+        cursor: url("https://static.igem.wiki/teams/5844/layout/cursor/dut-china-cur-pointer.webp"), pointer;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px #a8d7ee;
+        z-index: 10;
+    }
+
+    /* 按钮位置 - 上 */
+    .main-text-box.up .expand-dot {
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* 按钮位置 - 下 */
+    .main-text-box.do .expand-dot {
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* 按钮位置 - 左 */
+    .main-text-box.le .expand-dot {
+        left: -35px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* 按钮位置 - 右 */
+    .main-text-box.ri .expand-dot {
+        right: -35px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* 按钮hover效果 */
+    .expand-dot:hover {
+        background-color: #bcdeed;
+    }
+
+    /* 上下按钮的hover效果 */
+    .main-text-box.up .expand-dot:hover,
+    .main-text-box.do .expand-dot:hover {
+        transform: translateX(-50%) scale(1.1);
+    }
+
+    /* 左右按钮的hover效果 */
+    .main-text-box.le .expand-dot:hover,
+    .main-text-box.ri .expand-dot:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    /* 按钮图标 */
+    .expand-dot::after {
+        content: '+';
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .expand-dot.active::after {
+        content: '−';
+    }
+
+    .button1 {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-color: #8db6ca;
+        border-radius: 50%;
+        cursor: url("https://static.igem.wiki/teams/5844/layout/cursor/dut-china-cur-pointer.webp"), pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: none;
+        z-index: 10;
+    }
+
+    /* 按钮位置 - 上 */
+    .main-text-box.up .button1 {
+        top: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* 按钮位置 - 下 */
+    .main-text-box.do .button1 {
+        bottom: -35px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* 按钮位置 - 左 */
+    .main-text-box.le .button1 {
+        left: -35px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* 按钮位置 - 右 */
+    .main-text-box.ri .button1 {
+        right: -35px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    /* 按钮hover效果 */
+    .button1:hover {
+        background-color: #a7d1e7;
+    }
+
+    /* 上下按钮的hover效果 */
+    .main-text-box.up .button1:hover,
+    .main-text-box.do .button1:hover {
+        transform: translateX(-50%) scale(1.1);
+    }
+
+    /* 左右按钮的hover效果 */
+    .main-text-box.le .button1:hover,
+    .main-text-box.ri .button1:hover {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    .blue-div{
+        background-color: rgb(127 184 212);
+    }
+
+    /* 按钮图标 */
+    .button1::after {
+        content: none;
+    }
+
+    .button1.active::after {
+        content: none;
+    }
+
+    .centered-div {
+        padding: 0;
+        margin: 0 21% 0 21%;
+        height: 12vh;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* 图片样式 */
+    .centered-div img {
+        height: 100%;
+        width: auto;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        display: block;
+        padding: 0;
+        margin: 0;
+        border-radius: 10px;
+    }
+
+    .centered-span {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+        color: #1F2937;
+        line-height: 2.5;
+        margin-bottom: 1%;
+        background: none;
+        padding: 0;
+        font-weight: 800;
+        font-size: 1.2em;
+    }
+
+    .centered-span2 {
+        color: #d10303;
+        line-height: 2.5;
+        margin-bottom: 1%;
+        background: none;
+        padding: 0;
+        font-weight: 800;
+        font-size: 1.2em;
+    }
+
+    /* 展开文本框基础样式 - 改为绝对定位 */
+    .expanded-text-box {
+        position: absolute;
+        padding: 2%;
+        border-radius: 20px;
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.5s ease;
+        border: #0000001a 1px solid;
+        backdrop-filter: blur(5px);
+    }
+
+    /* 黄色展开框 */
+    .expanded-text-box.y {
+        background-color: rgb(255 235 180);
+    }
+
+    /* 蓝色展开框 */
+    .expanded-text-box.b {
+        background-color: rgb(214 193 248);
+    }
+
+    .expanded-text-box.g {
+        background-color: rgb(127 184 212);
+    }
+
+    /* 展开框位置 - 根据按钮位置决定 */
+    .main-text-box.do ~ .expanded-text-box {
+        top: calc(100% + 30px);
+    }
+
+    .main-text-box.up ~ .expanded-text-box {
+        bottom: calc(100% + 30px);
+    }
+
+    .main-text-box.le ~ .expanded-text-box,
+    .main-text-box.ri ~ .expanded-text-box {
+        top: 100%;
+        margin-top: 10px;
+    }
+
+    /* 展开状态 */
+    .expanded-text-box.active {
+        max-height: 21vh;
+        opacity: 1;
+        z-index: 10001;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    /* 文本框内文字样式 */
+    .expanded-text-box p {
+        color: #1F2937;
+        line-height: 1.5;
+        margin-top: 2vh;
+        background: none;
+        padding: 0;
+        font-weight: 500;
+        font-size: 1.8vh;
+    }
+
+    .main-text-box p {
+        color: #1F2937;
+        line-height: 1.5;
+        margin-top: 2vh;
+        background: none;
+        padding: 0;
+        font-weight: 500;
+        font-size: 1.9vh;
+    }
+
+    .ref-mark {  
+        position: relative;
+        top: -0.4em;  
+        font-size: 0.8em;  
+        color: #1F2937;  
+        margin-left: 0.1em;  
+    }
+
+    /* 蓝色主题文字颜色调整 */
+    .main-text-box.b p,
+    .expanded-text-box.b p,
+    .main-text-box.g p,
+    .expanded-text-box.g p {
+        color: #1F2937;
+    }
+
+  /* 其他阶段的背景图样式 */
+  #stage2-content {
+    background-image: url("https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp1-1.webp");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    width:100%;
+    margin-bottom: 50vh;
+    height:300vh;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% 77%, 0 77%);
+    margin-bottom: -69vh;
+  }
+  
+  #stage3-content {
+    background-image: url("https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp1-1.webp");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    width:100%;
+    margin-bottom: 50vh;
+    height:300vh;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% 77%, 0 77%);
+    margin-bottom: -69vh;
+  }
+  
+  #stage4-content {
+    background-image: url("https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp1-1.webp");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    width:100%;
+    margin-bottom: 50vh;
+    height:300vh;
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% 93%, 0 93%);
+    margin-bottom: -21vh;
+  }
+  
+  #stage5-content {
+    background-image: url("https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp1-1.webp");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+    width:100%;
+    margin-bottom: 50vh;
+    height:300vh;
+    position: relative;
+    clip-path:polygon(
+        0 0,
+        100% 0,
+        100% 86%,
+        15% 86%,
+        15% 72%,
+        0 72%
+    );
+    margin-bottom: -42vh;
+  }
+  
+  #stage6-content {
+      height: 1500px;
+      position: relative;
+  }
+
+    .care-container {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      background:white;;
+      padding: 40px 6vw 40px 6vw;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(107,70,193,.06);
+      margin-bottom: 60px;
+  }
+  .care-section {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 30px 18px;
+      background: #fffbe8;
+      border-radius: 14px;
+      box-shadow: 0 2px 14px 0 rgba(255,220,80,.07);
+      border-left: 7px solid #6B46C1;
+      position: relative;
+      transition: box-shadow .3s;
+  }
+  .care-section:hover {
+      box-shadow: 0 6px 22px 0 rgba(107,70,193,.13);
+      border-left-color: #FFD700;
+  }
+  .care-icon {
+      min-width: 56px;min-height:56px;
+      width: 56px;height:56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFD700 72%, #6B46C1 105%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(107,70,193,.11);
+      margin-right: 8px;
+      letter-spacing: 1px;
+  }
+  .care-content {
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+  }
+  .care-title {
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: #6B46C1;
+      margin-bottom:2px
+  }
+  .care-desc {
+      font-size: 1.03rem;
+      color: #1F2937;
+      line-height: 1.88;
+      margin-bottom: 3px;
+      font-weight:500;
+  }
+  .care-highlight {
+      border-radius: 5px;
+      padding: 0 6px;
+      font-weight: 600;
+      color:#4b51e8;
+  }
+  .care-example {
+      color:#3d3263;
+      background: #fcf6df;
+      border-left: 3px solid #6B46C1;
+      margin:10px 0 3px 0;
+      padding:8px 14px;
+      font-size: .98rem;
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+  }
+  .ihp-intro-box {
+      background: linear-gradient(90deg,#f7e8fc 60%,#fffce0 100%);
+      border-left: 7px solid #6B46C1;
+      box-shadow: 0 2px 12px 0 rgba(107,70,193,.09);
+      border-radius: 10px;
+      margin: 32px 0 40px 0;
+      padding: 28px 28px 20px 28px;
+      position: relative;
+  }
+  .ihp-intro-title {
+      font-size: 1.38rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+  }
+  .ihp-intro-text {
+      color: #313151;
+      font-size: 1.06rem;
+      line-height: 1.9;
+      font-weight: 500;
+  }
+  /* 容器样式：宽度100%，flex布局居中 */
+  .tupianbeijing {
+      display: flex;
+      justify-content: center; /* 水平居中对齐 */
+      width: 100%; /* 宽度占满父容器 */
+  }
+
+  /* 四个span的共同样式：黄色字体+深色描边 */
+  #bj1, #bj2, #bj3, #bj4 {
+      color: #fbef91; /* 黄色字体 */
+      font-weight: bold;
+      /* 深色描边效果（多重阴影叠加） */
+      text-shadow: 
+          -3px -3px 0 #8e7d9c,
+          3px -3px 0 #8e7d9c,
+          -3px 3px 0 #8e7d9c,
+          3px 3px 0 #8e7d9c;
+      font-size: 6vh;
+  }
+
+  #bj2{
+    text-shadow: 
+          -3px -3px 0 #876da8,
+          3px -3px 0 #876da8,
+          -3px 3px 0 #876da8,
+          3px 3px 0 #876da8;
+  }
+
+  #bj3{
+    text-shadow: 
+          -3px -3px 0 #cdade1,
+          3px -3px 0 #cdade1,
+          -3px 3px 0 #cdade1,
+          3px 3px 0 #cdade1;
+  }
+
+  #bj4{
+    text-shadow: 
+          -3px -3px 0 #a18cba,
+          3px -3px 0 #a18cba,
+          -3px 3px 0 #a18cba,
+          3px 3px 0 #a18cba;
+  }
+
+  /* 左侧元素到中间的距离 */
+  #bj1, #bj3 {
+      margin-right: 5vw; /* 距离容器中间15vw */
+  }
+
+  /* 右侧元素到中间的距离 */
+  #bj2, #bj4 {
+      margin-left: 5vw; /* 距离容器中间15vw */
+  }
+
+  /* 图片样式保持不变 */
+  .tupianbeijing + img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+  }
+
+    #stage6-content {
+        background: linear-gradient(135deg, #f5f3ff 0%, #fff9e6 100%);
+        padding: 60px 40px;
+        position: relative;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .epilogue-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .epilogue-quote {
+        text-align: center;
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: #6B46C1;
+        margin-bottom: 50px;
+        position: relative;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #6B46C1 0%, #FFD700 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .epilogue-section {
+        margin-bottom: 40px;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(107, 70, 193, 0.1);
+        border-left: 5px solid #6B46C1;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .epilogue-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, transparent 50%, rgba(255, 215, 0, 0.1) 50%);
+        border-radius: 0 15px 0 0;
+    }
+    
+    .epilogue-text {
+        font-size: 1.15rem;
+        line-height: 1.9;
+        color: #1F2937;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+    
+    .epilogue-highlight {
+        display: inline-block;
+        padding: 25px 35px;
+        margin: 30px 0;
+        background: linear-gradient(135deg, #6B46C1 0%, #8B5CF6 100%);
+        color: white;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-align: center;
+        width: 100%;
+        box-shadow: 0 8px 25px rgba(107, 70, 193, 0.25);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .epilogue-highlight::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+        animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .epilogue-list {
+        margin: 20px 0;
+        padding-left: 0;
+    }
+    
+    .epilogue-list-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        padding: 15px;
+        background: #f9f7ff;
+        border-radius: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .epilogue-list-item:hover {
+        transform: translateX(10px);
+        box-shadow: 0 3px 15px rgba(107, 70, 193, 0.15);
+    }
+    
+    .epilogue-list-item::before {
+        content: '▶';
+        color: #FFD700;
+        font-weight: bold;
+        margin-right: 15px;
+        font-size: 1.2rem;
+    }
+    
+    .epilogue-finale {
+        margin-top: 60px;
+        padding: 40px;
+        background: linear-gradient(135deg, #fff9e6 0%, #f5f3ff 100%);
+        border-radius: 20px;
+        text-align: center;
+        position: relative;
+        border: 3px solid #6B46C1;
+    }
+    
+    .epilogue-finale-text {
+        font-size: 1.3rem;
+        line-height: 2;
+        color: #1F2937;
+        font-weight: 600;
+    }
+    
+    .epilogue-finale-emphasis {
+        display: block;
+        font-size: 2.2rem;
+        color: #6B46C1;
+        font-weight: 800;
+        margin-top: 20px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(10px); }
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+        #transition .content-container > div:first-child {
+            flex-direction: column !important;
+        }
+        
+        #transition .content-container > div:first-child > div:first-child {
+            flex: 1 1 auto !important;
+            width: 100% !important;
+        }
+        
+        #transition .content-container > div:first-child > div:last-child {
+            padding: 30px 20px !important;
+        }
+    }
+
+    .references-container {
+    background: #F9FAFB;
+        border-radius: 15px;
+        padding: 40px;
+        margin: 40px 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .references-list {
+        list-style: none;
+        counter-reset: reference-counter;
+        padding-left: 0;
+    }
+
+    .reference-item {
+        position: relative;
+        padding-left: 50px;
+        margin-bottom: 20px;
+        line-height: 1.8;
+        font-size: 15px;
+        color: #374151;
+        counter-increment: reference-counter;
+    }
+
+    .reference-item::before {
+        content: "[" counter(reference-counter) "]";
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: 600;
+        color: #6B46C1;
+        font-size: 14px;
+        min-width: 35px;
+    }
+
+    .reference-item em {
+        font-style: italic;
+        color: #111827;
+        font-weight: 500;
+    }
+
+    /* 新增的stage描述样式 - 显示在下方 */
+    .stage-item {
+        position: relative;
+        /* 为下方的描述预留空间 */
+        padding-bottom: 10px;
+    }
+    
+    .stage-desc {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        margin-top: 8px;
+        padding: 8px 12px;
+        background-color: #6B46C1;
+        color: white;
+        border-radius: 6px;
+        font-size: 14px;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        max-width: 250px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        width: calc(100% - 20px); /* 适应导航栏宽度 */
+    }
+    
+    /* 小箭头指示器 - 指向上方的stage */
+    .stage-desc::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 20px;
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent transparent #6B46C1 transparent;
+    }
+    
+    .stage-item:hover .stage-desc {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(5px);
+    }
+    
+    /* 调整移动端显示 */
+    @media (max-width: 768px) {
+        .stage-desc {
+            max-width: 200px;
+            font-size: 13px;
+        }
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 800px) {
+        .references-container {
+            padding: 20px;
+            margin: 20px 10px;
+        }
+        
+        .reference-item {
+            padding-left: 35px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .reference-item::before {
+            font-size: 13px;
+            min-width: 30px;
+        }
+    }
+        
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    @media (max-width:800px) {
+      .care-container { padding:16px 2vw;}
+      .care-section { flex-direction:column; gap:10px;}
+      .care-icon {margin-bottom: .5em;}
+      .ihp-intro-box {padding:16px 9px;}
+      .ihp-intro-title { font-size:1.16rem }
+  }
+</style>
+
+<div class="ihp-container">
+    <!-- 左侧导航栏 -->
+    <nav class="sidebar-nav">
+        <ul class="nav-list">
+            <li><a href="#preface">Preface</a></li>
+            <li><a href="#start">Beginning</a></li>
+            <li class="stage-item">
+                <a href="#stage1">Stage 1</a>
+                <span class="stage-desc">Transforming Real-World Needs into Technical Solutions</span>
+            </li>
+            <li class="stage-item">
+                <a href="#stage2">Stage 2</a>
+                <span class="stage-desc">Developing a Safety-Driven Cell-Selective Switch</span>
+            </li>
+            <li class="stage-item">
+                <a href="#stage3">Stage 3</a>
+                <span class="stage-desc">Vector Optimization Guided by Delivery Requirements</span>
+            </li>
+            <li class="stage-item">
+                <a href="#stage4">Stage 4</a>
+                <span class="stage-desc">Pharmaceutical efficacy requirements drive the optimization of 5’-UTR and the establishment of pharmacokinetic models.</span>
+            </li>
+            <li class="stage-item">
+                <a href="#stage5">Stage 5</a>
+                <span class="stage-desc">Project implementation</span>
+            </li>
+            <li><a href="#stage6">Epilogue</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 右侧内容区 -->
+    <main class="content-area">
+        <!-- preface 部分 -->
+        <section id="preface" class="section">
+          <div class="section-title-container">
+            <h2 class="section-title"><span class="stage-number">Preface: </span>Our Structural Framework</h2>
+          </div>
+
+          <!-- 顶部总领文本框 -->
+          <div class="ihp-intro-box">
+            <div class="ihp-intro-title">
+            </div>
+            <div class="ihp-intro-text">
+              At iGEM iHP, we approach project development as an organic process of continuous dialogue with the complex real world. We introduce the <span class="care-highlight">"Concern-Action-Response-Evaluation (CARE)"</span> framework, which forms the core cycle of this dialogue. It ensures that our work always begins with deep humanistic care and, through rigorous creation and learning, achieves responsible and meaningful outcomes.
+            </div>
+          </div>
+          <!-- 顶部总领文本框结束 -->
+          
+
+          <div class="care-container">
+            <div class="tupianbeijing" style="display: flex; justify-items: center;"><span id="bj1">Concern</span><span id="bj2">Evaluation</span></div>
+            <img src="https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp2-1.webp" alt="beijing" style="width:100%;height:auto;object-fit: cover;padding:0 10% 0 10%">
+            <div class="tupianbeijing" style="display: flex; justify-items: center;"><span id="bj3">Action</span><span id="bj4">Response</span></div>
+
+            <!-- C -->
+            <div class="care-section">
+              <div class="care-icon" title="Concern">C</div>
+              <div class="care-content">
+                <div class="care-title">Concern</div>
+                <div class="care-example">
+                  Precision Anchored in Humanistic Perspectives.
+                </div>
+                <div class="care-desc">
+                  &emsp;&emsp;Our project is driven by a nuanced understanding of human society. When an initial "trigger input" emerges, whether it is an unmet clinical need, expert advice, public concerns from surveys, or ethical questions about a technology, we begin by gathering stakeholder perspectives to identify the most essential "concern."<br><br>&emsp;&emsp;For instance, instead of simply asking, "How can we improve mRNA drug efficacy?" we delve deeper: "How can we ensure our mRNA drug targets only liver cancer cells without affecting healthy cells in the same environment?" This process transforms vague stakeholder concerns into a precise mission, a responsibility for iGEMers to solve a concrete problem, setting a clear "North Star" for all subsequent actions.
+                </div>
+              </div>
+            </div>
+            <!-- A -->
+            <div class="care-section">
+              <div class="care-icon" title="Analysis">A</div>
+              <div class="care-content">
+                <div class="care-title">Action</div>
+                <div class="care-example">
+                  From Analysis to Proposed Solutions.
+                </div>
+                <div class="care-desc">
+                  &emsp;&emsp;Once the core concerns are defined, we proceed to an in-depth analysis phase. This stage aims to translate value-driven "concerns" into actionable pathways that are both technically rigorous and socially sound. We systematically integrate evidence from literature, expert knowledge, and, crucially, real-world insights from potential users and stakeholders.<br><br>&emsp;&emsp;For example, in addressing concerns raised by industry experts about the protein expression efficiency of mRNA drugs, our analysis not only evaluates the performance of various optimized 5' UTR models but also examines wet-lab reproducibility, explores iterative model refinement, and considers accessibility for local communities. This process builds a robust bridge between the therapeutic vision of mRNA-based liver cancer treatment and its practical engineering implementation.
+                </div>
+              </div>
+            </div>
+            <!-- R -->
+            <div class="care-section">
+              <div class="care-icon" title="Response">R</div>
+              <div class="care-content">
+                <div class="care-title">Response</div>
+                <div class="care-example">
+                  Test, Refine, Retest: Delivering Responsible Solutions.
+                </div>
+                <div class="care-desc">
+                  &emsp;&emsp;The "Creative Response" phase transforms analytical plans into tangible, deliverable solutions. This output can take multiple forms, such as an optimized UTR screening model, a drug guidance model, or a novel mRNA cancer therapeutic. Each solution is not just a technical product, but a direct response to societal needs and a testament to responsible innovation.
+                </div>
+              </div>
+            </div>
+            <!-- E -->
+            <div class="care-section">
+              <div class="care-icon" title="Evaluation">E</div>
+              <div class="care-content">
+                <div class="care-title">Evaluation</div>
+                <div class="care-example">
+                  &emsp;&emsp;Driving the Project's Spiral Evolution.
+                </div>
+                <div class="care-desc">
+                  &emsp;&emsp;For us, every solution is not an end point, but the start of a new learning cycle. The "evaluation" phase is crucial for capturing the real world's echo: we deliver our solutions to the world to receive its response, whether through lab validation or input from experts and clinicians.<br><br>&emsp;&emsp;The resulting data and insights become a valuable source for the project's evolution. Positive evaluation reinforces our confidence and propels the project forward, while any negative results or newly exposed issues are immediately absorbed as fresh "trigger inputs," initiating a new CARE cycle. It is this phase that empowers the project with continuous learning, self-correction, and dynamic, upward growth.
+              </div>
+            </div>
+          </div>
+        </section>
+            
+            <section id="start" class="section" style="margin-top: 40px; margin-bottom: 60px;">
+                <h2 class="section-title" style="text-shadow: none;"><span class="stage-number">Beginning:</span> A Story of Human Care</h2>
+        <!-- 使用与上面段落相同的容器结构 -->
+        <div class="content-container">
+            <div style="
+                display: flex;
+                align-items: stretch;
+                gap: 30px;
+                background: linear-gradient(135deg, #f8f5ff 0%, #fff7e6 100%);
+                border-radius: 25px;
+                overflow: hidden;
+                box-shadow: 0 10px 40px rgba(107,70,193,.08);
+            ">
+                <!-- 左侧GIF容器 -->
+                <div style="
+                    flex: 0 0 45%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 30px;
+                    background: rgba(255,255,255,0.5);
+                    backdrop-filter: blur(10px);
+                ">
+                    <img 
+                        src="https://static.igem.wiki/teams/5844/pages/ihp/azb3m-rxoyf.webp" 
+                        alt="Transition Animation"
+                        style="
+                            width: 100%;
+                            height: auto;
+                            object-fit: contain;
+                            border-radius: 15px;
+                            box-shadow: 0 5px 20px rgba(107,70,193,.15);
+                        "
+                    >
+                </div>
+                
+                <!-- 右侧文本框 -->
+                <div style="
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    padding: 40px 40px 40px 0;
+                ">
+                    <div style="
+                        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,235,180,0.3) 100%);
+                        border-left: 6px solid #6B46C1;
+                        border-radius: 15px;
+                        padding: 35px;
+                        box-shadow: inset 0 2px 10px rgba(107,70,193,.05);
+                        position: relative;
+                        overflow: hidden;
+                        width: 100%;
+                    ">
+                        <!-- 装饰性背景元素 -->
+                        <div style="
+                            position: absolute;
+                            top: -30px;
+                            right: -30px;
+                            width: 100px;
+                            height: 100px;
+                            background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%);
+                            border-radius: 50%;
+                        "></div>
+                        
+                        <!-- 引号装饰 -->
+                        <span style="
+                            position: absolute;
+                            top: 15px;
+                            left: 25px;
+                            font-size: 60px;
+                            color: rgba(107,70,193,0.1);
+                            font-family: Georgia, serif;
+                            line-height: 1;
+                        ">"</span>
+                        
+                        <!-- 文本内容 -->
+                        <p style="
+                            font-size: 1.2rem;
+                            line-height: 1.9;
+                            color: #1F2937;
+                            font-weight: 500;
+                            margin: 0;
+                            padding-left: 20px;
+                            font-style: italic;
+                            position: relative;
+                            z-index: 1;
+                        ">
+                            On my fifth day as a volunteer, I met a patient. He clutched a prenatal scan in one hand and a CT film dominated by a liver tumor in the other. His barely audible question, "Will I live to see my child?" hung in the air, a question that would define our purpose and compel us to seek a change.
+                        </p>
+                        
+                        <!-- 底部渐变线装饰 -->
+                        <div style="
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            right: 0;
+                            height: 3px;
+                            background: linear-gradient(90deg, #6B46C1 0%, #FFD700 50%, #6B46C1 100%);
+                            opacity: 0.6;
+                        "></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+        <section id="map" class="section">
+                <!-- 模块标题 -->
+                <div class="section-title-container">
+                    <h2 class="section-title"><span class="stage-number"></span> Stakeholder Map</h2>
+                </div>
+                
+                <!-- 内容容器：统一页面内边距与背景 -->
+                <div style="padding: 2vw 0vw; max-width: 1200px; margin: 0 auto;">
+                    <!-- 文字说明卡片：匹配现有页面卡片样式 -->
+                    <div class="ihp-intro-box" style="margin-top: 10px;">
+                    <p class="ihp-intro-text">
+                        To ensure our project is consistently responsible to society and individuals from the very beginning, we systematically assess the connections between various stakeholders and the project through the lenses of "benefit acquisition" and "risk exposure." This approach allows us to more equitably define the boundaries and impacts of each party's involvement.
+                    </p>
+                    </div>
+                    
+                    <!-- 动图容器：优化显示效果与响应式 -->
+                    <div style="
+                    margin-top: 30px;
+                    background: white;
+                    border-radius: 20px;
+                    box-shadow: 0 8px 32px rgba(107,70,193,.06);
+                    padding: 20px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    overflow: hidden;
+                    ">
+                    <img 
+                        src="https://static.igem.wiki/teams/5844/pages/ihp/dut-china-ihp3-1.webp" 
+                        alt="Stakeholder Map Animation" 
+                        style="
+                        max-width: 100%;
+                        height: auto;
+                        border-radius: 10px; /* 轻微圆角提升精致度 */
+                        "
+                    >
+                    </div>
+                </div>
+                
+            </section>
+
+        <!-- Stage 1 部分 -->
+        <section id="stage1" class="section"style="z-index: 1001;">
+            <div class="blue-div"><div class="centered-div" style="z-index: 1001;"><img src="https://static.igem.wiki/teams/5844/pages/ihp/dut-china-d01.webp" alt="stage1" style="z-index: 1001;"></div></div>
+            <div id="stage1-content" class="section-content" >
+                 <div style="
+                    position: absolute;
+                        top: 5.9%;
+                        right: 51%;
+                        width: auto;
+                        height: auto;
+                ">
+                    <!-- 照片容器：固定20vh*20vh，保持比例 -->
+                    <div style="
+                                width: 13vh;
+                                height: 13vh;
+                                border-radius: 16px;
+                                overflow: hidden;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                    ">
+                        <img 
+                            src="https://static.igem.wiki/teams/5844/pages/ihp/decoration.webp" 
+                            alt="iHP project related image" 
+                            style="
+                            width: 75%;
+                            height: 75%;
+                            object-fit: contain; /* 确保照片完全显示，保持比例 */
+                            "
+                        >
+                    </div>
+                    
+                    <!-- 对话框：从照片左侧引出 -->
+                    <div style="
+                        position: absolute;
+                        top: 50%;
+                        right: calc(100% + 20px); /* 位于照片左侧，间距20px */
+                        transform: translateY(-50%);
+                        width: 35vh;
+                        padding: 18px;
+                        background-color: white;
+                        border-radius: 12px;
+                        border: 1px solid #e9d5ff;
+                        box-shadow: 0 4px 16px rgba(107, 70, 193, 0.1);
+                        z-index: 10;
+                    ">
+                        <!-- 对话框指向箭头 -->
+                        <div style="
+                            position: absolute;
+                            top: 50%;
+                            right: -10px;
+                            transform: translateY(-50%);
+                            width: 0;
+                            height: 0;
+                            border-top: 10px solid transparent;
+                            border-bottom: 10px solid transparent;
+                            border-left: 10px solid white;
+                        "></div>
+                        
+                        <!-- 对话框文本 -->
+                        <p style="
+                            line-height: 1.6;
+                            line-height: 1.6;
+                            color: #1f2937;
+                            margin:1vh 0 1vh 0;
+                            font-size:2vh;
+                        ">
+                            To explore more about iHP, click the "+" button next to the text boxes. We use 
+                            <span style="color: #6b46c1; font-weight: 600;">purple boxes</span> to present perspectives and feedback from stakeholders, 
+                            <span style="color: #ffc107; font-weight: 600;">yellow boxes</span> to showcase our team's reflections and improvements, and 
+                            <span style="color: #1e88e5; font-weight: 600;">blue boxes</span> to mark key milestones in our project's development.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 第一个文本框 -->
+                <div id="" class="text-box-container text-box-position-1">
+                <div class="main-text-box y ri">
+                    <p>
+                        &emsp;&emsp;The current situation of liver cancer in China is severe<span class="ref-mark">[1]</span><span class="ref-mark">[2]</span>. Most patients with advanced cancer cannot undergo surgery, making treatment extremely difficult<span class="ref-mark">[3]</span>.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;In 2022, there were 367,700 new cases of liver cancer and 316,500 deaths in China. The early symptoms of liver cancer are insidious, and the early diagnosis rate of liver cancer in China is only about 12%. Most patients are already in the middle and late stages when they seek medical attention, and about 70% to 80% of patients have progressed to the stage where surgical resection is not possible at the time of initial diagnosis, which greatly increases the difficulty of treatment.
+                    </p>
+                </div>
+                </div>
+
+
+                <!-- 第二个文本框 -->
+                <div id="" class="text-box-container text-box-position-2">
+                <div class="main-text-box b do">
+                    <p><span class="text-title">Anonymous patient</span>
+                        <br>&emsp;&emsp;Currently, the small molecule targeted drugs he is using have significant side effects, including hand-foot syndrome, diarrhea, fatigue, and so on, and he needs to change medication every few months. He hopes to obtain therapeutic drugs with high efficacy and low side effects.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;Anonymous patient with advanced liver cancer
+                        <br>&emsp;&emsp;The individual most closely tied to the treatment plan, with firsthand experience of the treatment, can provide us with the most authentic treatment status and the deepest patient voice.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Currently, small molecule targeted drugs have significant side effects, and their impact has permeated daily life. At the same time, the cycle of drug resistance and medication changes makes treatment full of uncertainty.
+                        <br>&emsp;&emsp;Patients hope to obtain therapeutic drugs with high efficacy and low side effects, which can not only stabilize lesions but also have mild side effects that allow them to eat and rest normally, without falling into the dilemma of "treating cancer but harming the body" due to treatment.
+                        <br>&emsp;&emsp;We will design our drugs with this goal in mind, incorporating high efficacy and low side effects into the core evaluation dimensions from the initial design stage.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第三个文本框 -->
+                <div id="" class="text-box-container text-box-position-3">
+                <div class="main-text-box y le">
+                    <p>
+                        &emsp;&emsp;Through the needs of patients and the concerns of doctors, we focus on seeking more critical targets and conducting precise treatment, aiming to provide safer and more effective liver cancer treatment options.
+                    </p>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第四个文本框 -->
+                <div id="" class="text-box-container text-box-position-4">
+                <div class="main-text-box b do">
+                    <p>
+                        <span class="text-title">Doctor Tang Shunxiong</span>
+                        <br>&emsp;&emsp;He is more concerned about the drug's targets and pathways. He believes that current liver cancer treatments often adopt a one-drug, multi-target strategy, which may trigger pathway compensation, leading to drug resistance and toxic side effects.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-tangsx.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-tangsx.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Patient" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;Tang Shunxiong , attending physician in the Interventional Therapy Department of the Affiliated Zhongshan Hospital of Dalian University, specializing in interventional therapy
+                        <br>&emsp;&emsp;Focuses on the pathogenesis and treatment plan, and has direct control over the patient's treatment status, which can help us understand the current status of drugs more clearly.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Existing liver cancer drugs, such as multi-kinase inhibitors, can induce toxic side effects due to their multiple targets. In some patients, the use of multi-target inhibitors can lead to the activation of alternative pathways, which not only leads to drug resistance but also affects the function of normal tissues. Clinically commonly used molecularly targeted drugs, such as sorafenib and lenvatinib, have related targets such as VEGFR that also regulate vascular stability and blood pressure balance, and PDGFR also participates in skin keratinocyte proliferation and repair. When drugs inhibit these targets, they directly disrupt the functional homeostasis of normal cells, leading to the side effects experienced by these patients.
+                        <br>&emsp;&emsp;We will anchor key targets to achieve precise treatment, thereby producing highly effective and low-side-effect drugs.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第五个文本框 -->
+                <div id="" class="text-box-container text-box-position-5">
+                <div class="main-text-box y le">
+                    <p>
+                        <span class="text-title">Select mRNA to regulate liver cancer-specific targets</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;Molecularly targeted drugs work by binding to the structural pockets of proteins, while proteins whose functional interfaces lack such pockets are often considered "undruggable"<span class="ref-mark">[4]</span>; mRNA drugs have a broader range of targets and can precisely regulate liver cancer-specific targets, reducing toxic side effects.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第六个文本框 -->
+                <div id="" class="text-box-container text-box-position-6">
+                <div class="main-text-box y up">
+                    <p>
+                        <span class="text-title">Select TGF-β target</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;We screened out the TGF-β target, which upregulates and stimulates tumor migration<span class="ref-mark">[5]</span>, and found that this target already has clinical applications and marketed drugs<span class="ref-mark">[6]</span>.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第七个文本框 -->
+                <div id="" class="text-box-container text-box-position-7">
+                <div class="main-text-box b do">
+                    <p>
+                        <span class="text-title">Researcher Bu Pengcheng</span>
+                        <br>&emsp;&emsp;He believes that the TGF-β-affected pathway is singular, which may lead to pathway compensation.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-bupc.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-bupc.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Du Pengcheng" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;Bu Pengcheng , researcher at the Institute of Biophysics, Chinese Academy of Sciences, whose main research directions include tumor mechanisms.
+                        <br>&emsp;&emsp;He has conducted in-depth research on tumor mechanisms and can assist us in target selection.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;He believes that the TGF-β-affected pathway is singular. If only TGF-β is specifically inhibited, liver cancer cells will activate parallel pathways associated with it. These compensatory pathways will take over the function of TGF-β and continue to maintain the growth and metastasis ability of the tumor.
+                        <br>&emsp;&emsp;We will look for targets in the same pathway as TGF-β that can affect multiple pathways to cooperate with it.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第八个文本框 -->
+                <div id="" class="text-box-container text-box-position-8">
+                <div class="main-text-box y ri">
+                    <p>
+                        <span class="text-title">Establish the idea of simultaneously regulating two targets in one pathway</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;After discussion, we decided to look for another target in its pathway that can participate in multiple pathways to cooperate with it, solve the compensation problem, and increase drug efficacy.
+                        <br>&emsp;&emsp;We learned from the literature that HNF4α in cancer cells mainly functions through the Wnt/β-catenin, NF-κB, STAT3, and TGF-β signaling pathways, increasing cell migration and invasion and reducing cell apoptosis<span class="ref-mark">[7]</span>.
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/home/part-4/dut-china-jili.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 3% 10% 0 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/home/part-4/dut-china-jili.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP jili" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第九个文本框 -->
+                <div id="" class="text-box-container text-box-position-9">
+                <div class="main-text-box y up">
+                    <p>
+                        <span class="text-title">Using HNF4α-TGF-β as targets, design mRNA protein expression module and PROTAC degradation module</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;After determining the HNF4α and TGF-β targets, we brainstormed and decided to link mRNA drugs with targeted protein degradation, upregulating HNF4α with mRNA and downregulating TGF-β with the PROTAC system.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第十个文本框 -->
+                <div id="" class="text-box-container text-box-position-10">
+                <div class="main-text-box b do">
+                    <p>
+                        &emsp;&emsp;We introduced the targets we selected, the pathways they regulate, and the related mechanisms to Doctor Xie Weifen.
+                        <br><span class="text-title">Doctor Xie Weifen</span>
+                        <br>&emsp;&emsp;He said that the clinical trial of upregulating HNF4α has shown good results, and this target has good prospects for the treatment of patients with advanced liver cancer. He believes that our regulation plan also has the hope of achieving good therapeutic effects.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-xiewf2.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-xiewf2.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People dupc" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;Xie Weifen , currently the director of the Department of Gastroenterology and director of the Endoscopy Center at Shanghai Changzheng Hospital.
+                        <br>&emsp;&emsp;With experience leading a clinical trial on HNF4α modulation for liver cancer, he, as the direct research lead, can provide clinical evidence to support the target's efficacy.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Based on the clinical trials he personally conducted, he gave clear positive feedback, saying that the clinical trial of upregulating HNF4α has shown good results, and this target has good prospects for the treatment of patients with advanced liver cancer. He believes that our regulation plan also has the hope of achieving good therapeutic effects.
+                    </p>
+                </div>
+                </div>
+                <!-- 其他文本框保持不变... -->
+            </div>
+        </section>
+  
+
+        <!-- Stage 2 部分 -->
+        <section id="stage2" class="section"style="z-index: 1002;">
+            <div class="blue-div"><div class="centered-div" style="z-index: 1002;"><img src="https://static.igem.wiki/teams/5844/pages/ihp/dut-china-d02.webp" alt="stage2"  style="z-index: 1002;"></div></div>
+            <div id="stage2-content" class="section-content" >
+                
+                    <div style="position: relative;
+                                width: 100%;
+                                height: 500px; /* 可调整的父容器高度 */
+                                margin: 0 auto;
+                                overflow: hidden;">
+                        <img style="position: absolute;
+                                    top: 26%;
+                                    left: 66%;
+                                    width: 21%;
+                                    height: auto;"
+                            src="https://static.igem.wiki/teams/5844/pages/ihp/medicine2.webp"
+                            alt="Adjustable Image"
+                            class="adjustable-image">
+                    </div>
+                
+                    <div class="image-container" style="position: absolute; top: 26%; left: 8%; background: none; border: none; display: inline-block; box-shadow: none;">
+                        <img src="https://static.igem.wiki/teams/5844/pages/ihp/t1.avif" alt="示例图片" style="width: 45%; height: auto; display: block;">
+                    </div>
+    
+                    <div class="image-container" style="position: absolute; top: 64%; left: 51%; background: none; border: none; display: inline-block; box-shadow: none;">
+                        <img src="https://static.igem.wiki/teams/5844/mascot/dut-china-mascot-1.webp" alt="示例图片" style="width: 84%; height: auto; display: block;">
+                    </div>
+                <!-- 第一个文本框 -->
+                <div id="" class="text-box-container text-box-position-11">
+                <div class="main-text-box b ri">
+                    <p>
+                        <span class="text-title">Dr. Tang Shunxiong</span>
+                        <br>&emsp;&emsp;He is particularly concerned about the safety profile of our drug, specifically whether it has any toxic or side effects on normal cells.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-tangsx2.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-tangsx2.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Tang Shunxiong" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is an Attending Interventional Radiologist at Zhongshan Hospital Affiliated to Dalian University, specializing in interventional therapy for liver cancer with extensive clinical experience in drug administration. From his perspective, we can identify the core safety requirements for the clinical application of our project's drug.
+                        <br><span class="text-title2">What did we learn?</span>
+                        <br>&emsp;&emsp;We recognized a gap in our design regarding the need to "protect normal cells from the drug." This made us realize that our drug design must include components that restrict its expression in normal cells and ensure cellular selectivity.
+                    </p>
+                </div>
+                </div>
+
+
+                <!-- 第二个文本框 -->
+                <div id="" class="text-box-container text-box-position-12">
+                <div class="main-text-box y do">
+                    <p>
+                        <span class="text-title">&emsp;&emsp;We have proposed the concept of adding a "lock" mechanism to mRNA.</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp; After brainstorming, we conceived the idea of designing a "lock" mechanism for mRNA that only unlocks within liver cancer cells, thereby achieving cell-selective drug delivery.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第三个文本框 -->
+                <div id="" class="text-box-container text-box-position-13">
+                <div class="main-text-box y do">
+                    <p>
+                        <span class="text-title">&emsp;&emsp;Employing the exCAG sequence to serve as the "lock".</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp; We learned that the exCAG sequence can mediate RNA gelation<span class="ref-mark">[8]</span> and realized it could be incorporated at the tail of modular mRNA to induce gelation of the drug in normal cells.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第四个文本框 -->
+                <div id="" class="text-box-container text-box-position-14">
+                <div class="main-text-box b le">
+                    <p>
+                        <span class="text-title">Professor Sun Bingbing</span>
+                        <br>&emsp;&emsp;Professor Sun is more focused on the differences in the biochemical environments.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-sunbb.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-sunbb.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Sun Bingbing" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is a Professor at Dalian University of Technology, specializing in biomaterials and nano-bio interface research with solid interdisciplinary expertise. We hope to gain insights from his perspective on how to perceive the cellular environment.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;While addressing the question of "how to ensure the 'key' reliably distinguishes between cells," we realized that focusing solely on one-way targeting of specific cells is insufficient. The key lies in the fundamental differences in the internal biochemical environments of target versus non-target cells. Therefore, our strategy should shift from singular targeting to systematically comparing both cell types and proactively leveraging these differences as a new dimension in our design.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第五个文本框 -->
+                <div id="" class="text-box-container text-box-position-15">
+                <div class="main-text-box y do">
+                    <p>
+                        <span class="text-title">Employing miRNA-21 to serve as the "key"</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;To ensure the "key" can reliably distinguish liver cancer cells from normal cells, we established clear criteria for biomarker selection: it must be highly expressed specifically in liver cancer cells, with low or no expression in normal cells. Following this principle, we conducted a literature review of various candidate molecules and found that miRNA-21 is significantly overexpressed in liver cancer compared to normal tissues. Moreover, its positive detection rate and overall sensitivity are substantially higher than those of the traditional biomarker alpha-fetoprotein (AFP)<span class="ref-mark">[9]</span><span class="ref-mark">[10]</span><span class="ref-mark">[11]</span>. Based on its high specificity and diagnostic performance, we ultimately selected miRNA-21 as the molecular "key" for targeting liver cancer cells.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第六个文本框 -->
+                <div id="" class="text-box-container text-box-position-16">
+                <div class="main-text-box g do">
+                    <p>
+                        <span class="text-title">Molecular Switch Design Completed</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box g">
+                    <p>
+                        &emsp;&emsp;The core of the system is a regulatory switch based on the exCAG sequence. In normal cells, this sequence "locks" the modular mRNA in a non-functional gel state. The key to the design lies in the bridging sequence that connects the modular mRNA to exCAG, which is complementary to and can be recognized by miRNA-21. Once inside liver cancer cells rich in miRNA-21, this bridging sequence is specifically bound, triggering the release of the exCAG segment and restoring mRNA translation, ultimately enabling cell-selective drug activation.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第七个文本框 -->
+                <div id="" class="text-box-container text-box-position-17">
+                <div class="main-text-box b ri">
+                    <p>
+                        <span class="text-title">Professor Lu Boxun</span>
+                        <br>&emsp;&emsp;Professor Lu indicated that RNA gelation shows no significant toxic or side effects on normal cells.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is a professor at the School of Life Sciences, Fudan University, who discovered the phenomenon of RNA gelation during his research on neurodegenerative diseases. His perspective allows him to assess the safety and feasibility of the switch design in our project.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;We previously questioned whether RNA gelation would adversely affect normal cells or cause toxic side effects. In discussions with Professor Lu, he clarified that no neuronal cell death attributable to RNA gelation was observed in their previous experiments, confirming the absence of toxic effects on healthy neurons. This indicates that, in theory, our molecular switch design is safe.
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-lubx.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-lubx.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Lu Boxun" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第八个文本框 -->
+                <div id="" class="text-box-container text-box-position-18">
+                    <div class="main-text-box g ri">
+                    <p>
+                        &emsp;&emsp;Our molecular switch is theoretically safe,and its feasibility has been verified through wet lab experiments.
+                    </p>
+                    <div class="button1"></div>
+                    </div>
+                </div>
+        </section>
+        
+
+        <!-- Stage 3 部分 -->
+        <section id="stage3" class="section"style="z-index: 1003;">
+            <div class="blue-div"><div class="centered-div" style="z-index: 1003;"><img src="https://static.igem.wiki/teams/5844/pages/ihp/dut-china-d03.webp" alt="stage3" style="z-index: 1003;"></div></div>
+            <div id="stage3-content" class="section-content" >
+                <div class="image-container" style="position: absolute; top: 4%; left: 7%; background: none; border: none; display: inline-block; box-shadow: none;">
+                    <img src="https://static.igem.wiki/teams/5844/pages/ihp/postcard2.avif" alt="示例图片" style="width: 55%; height: auto; display: block;">
+                </div>
+                <!-- 第一个文本框 -->
+                <div id="" class="text-box-container text-box-position-21">
+                <div class="main-text-box b ri">
+                    <p><span class="text-title">Chairman Zhou Desheng</span>
+                        <br>&emsp;&emsp;A major challenge for mRNA drugs to reach the market lies in achieving targeted delivery.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-zhouds.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-zhouds.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Zhou Desheng" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is the Chairman and President of Kawin Science & Technology, a leading enterprise in the research, development, and production of liver disease medications, including treatments for hepatitis B and C.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Drawing on Kawin's deep expertise in liver drug development and industrialization, he emphasized that the success of any innovative drug depends not only on its pharmacological efficacy but also on its ability to achieve targeted delivery. We recognized that targeted drug delivery is a critical prerequisite for therapeutic effectiveness, and the design of the delivery vector directly determines its targeting capability.
+                    </p>
+                </div>
+                </div>
+
+
+                <!-- 第二个文本框 -->
+                <div id="" class="text-box-container text-box-position-22">
+                <div class="main-text-box b up">
+                    <p><span class="text-title">Dr. Lü Xueguang</span>
+                        <br>&emsp;&emsp;He places greater emphasis on the preparation technology of targeted delivery vectors, emphasizing that the selection of antibody presentation methods should be based on practical application requirements.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/dut-china-lvxg.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/dut-china-lvxg.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Lu Xueguang" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is a Research Professor and Doctoral Supervisor at the Institute of Chemistry, Chinese Academy of Sciences. With extensive expertise in the controlled synthesis of functional nanomaterials and their biomedical applications, he offers unique perspectives from the intersection of materials chemistry and drug delivery.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Inspired by Dr. Lü Xueguang, we recognized that engineering delivery vectors requires a systematic balance between two critical aspects: ensuring effective surface display and functional binding of antibodies, while achieving precise cell-level targeting of mRNA therapeutics.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第三个文本框 -->
+                <div id="" class="text-box-container text-box-position-23">
+                <div class="main-text-box y do">
+                    <p>
+                        &emsp;&emsp;<span class="text-title2">We have proposed a conceptual design for achieving targeted delivery through an engineered vector system.</span>
+                    </p>
+                    <div class="expand-dot"  onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        <br>&emsp;&emsp;We recognize that targeted drug delivery is a critical prerequisite for therapeutic efficacy, and the design of the delivery vector directly determines its targeting capability. Literature research indicates that lipid nanoparticles (LNP) possess inherent passive liver-targeting properties, primarily mediated through binding with apolipoprotein E (ApoE) in the blood and subsequent recognition and uptake by the low-density lipoprotein receptor (LDLR) on hepatocytes. However, this naturally occurring protein–receptor-based targeting strategy lacks cellular specificity at the organ level, making it difficult to precisely distinguish and target liver cancer cells within the complex hepatic cellular environment<span class="ref-mark">[12]</span> .
+                        <br>&emsp;&emsp;To enhance the cellular selectivity of mRNA drugs in liver cancer therapy, we propose to modify the LNP surface with an antibody against Glypican-3 (GPC3), a proteoglycan highly overexpressed in liver cancer<span class="ref-mark">[13]</span>. This design aims to leverage specific antibody-receptor interactions to enable active recognition and targeting of liver cancer cells by the carrier, thereby improving the efficiency of precise drug delivery.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第四个文本框 -->
+                <div id="" class="text-box-container text-box-position-24">
+                <div class="main-text-box y do">
+                    <p>
+                        <span class="text-title">Selected Technique for Engineering Delivery Vectors: Membrane Fusion.</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;Through systematic exploration, we ultimately adopted membrane fusion technology to construct engineered delivery vectors. This approach effectively fuses engineered extracellular vesicles from E. coli displaying surface GPC3 antibodies with drug-loaded LNPs <span class="ref-mark">[13]</span>, resulting in the formation of hybrid vectors. This strategy not only ensures the correct presentation and functional binding of GPC3 antibodies but also enhances the specific targeting capability of the vectors toward liver cancer cells, thereby offering a novel solution for improving mRNA drug delivery.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第五个文本框 -->
+                <div id="" class="text-box-container text-box-position-25">
+                <div class="main-text-box b ri">
+                    <p>
+                        <span class="text-title">Director Ye Wei, Production.</span>
+                        <br>&emsp;&emsp;He acknowledged the innovativeness of our engineered vector design while emphasizing greater focus on the quality control parameters of the novel carrier system.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-yw.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-yw.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Ye Wei" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;Director Ye Wei of Catug Bio, primarily responsible for drug scale-up production and quality control. With extensive experience in translating innovative therapeutic concepts, including nucleic acid drugs, from laboratory research to practical application, his deep industry expertise enables him to provide valuable insights and recommendations for the design and implementation of our novel vector system.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;He affirmed the innovativeness of our engineered vector design while emphasizing greater focus on the quality control parameters of the novel carrier. In response, we conducted subsequent wet-lab experiments to validate these parameters through measurement.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第六个文本框 -->
+                <div id="" class="text-box-container text-box-position-26">
+                <div class="main-text-box g do">
+                    <p>
+                        <span class="text-title">Developed an engineered delivery vector with targeting specificity for liver cancer cells.</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box g">
+                    <p>
+                        &emsp;&emsp;Presenting GPC3 antibodies on the surface of E. coli membranes, which are highly expressed in liver cancer cells, followed by fusing LNPs with antibody-presenting membrane vesicles to create engineered hybrids for precise targeting of liver cancer cells.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第七个文本框 -->
+                <div id="" class="text-box-container text-box-position-27">
+                    <div class="main-text-box g ri">
+                    <p>
+                        &emsp;&emsp;Wet lab results indicate that the particle size falls within the nanoscale range and exhibits favorable uniformity.
+                    </p>
+                    <div class="button1" onclick="toggleExpand(this)" id="button1"></div>
+                    </div>
+                </div>
+
+                
+        </section>
+
+
+        <!-- Stage 4 部分 -->
+        <section id="stage4" class="section"style="z-index: 1004;">
+            <div class="blue-div"><div class="centered-div" style="z-index: 1004;"><img src="https://static.igem.wiki/teams/5844/pages/ihp/dut-china-d04.webp" alt="stage4" style="z-index: 1004;"></div></div>
+            <div id="stage4-content" class="section-content" >
+                <div class="image-container" style="position: absolute; top: 60%; left: 1%; background: none; border: none; display: inline-block; box-shadow: none;">
+                    <img src="https://static.igem.wiki/teams/5844/pages/ihp/postcard4.avif" alt="示例图片" style="width: 45%; height: auto; display: block;">
+                </div>
+                <!-- 第一个文本框 -->
+                <div id="" class="text-box-container text-box-position-31">
+                <div class="main-text-box b ri">
+                    <p>
+                        <span class="text-title">Dr. Zhang Peiyu</span>
+                        <br>&emsp;&emsp;He stated that he is more concerned about the protein expression level, which directly determines the efficacy of mRNA drugs.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p> 
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-zhangpy.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-zhangpy.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Zhang Peiyu" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He serves as the Chief Scientist of XtalPi, had been deeply involved in in AI-driven biopharmaceutical R&D. Leveraging his extensive industry experience, he provides insights from the perspective of project implementation feasibility, while his profound academic rigor ensures the scientific credibility and precision of his viewpoints.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Enterprises focus more on practical effectiveness in drug development; leveraging AI-based screening and optimization to enhance drug R&D efficiency has become a new trend.
+                </div>
+                </div>
+
+
+
+                <!-- 第二个文本框 -->
+                <div id="" class="text-box-container text-box-position-32">
+                <div class="main-text-box b up">
+                    <p>
+                        <span class="text-title">Professor Wang Zhong</span>
+                        <br>&emsp;&emsp;He believes that the two models we use may have differences in data preprocessing, feature representation, or optimization objectives.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-wz2.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-wz2.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Wang Zhong" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is a professor at the School of Software, Dalian University of Technology, engaging in research on biostatistics and bioinformatics. We hope he can discuss with us the issues arising during the fusion process.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Generative models (Generative Adversarial Networks, GANs) may overprioritize specific numerical metrics (such as GC content, free energy, and Kozak sequence strength) while neglecting other biological constraints (such as immunogenicity and secondary structure complexity). This leads to output sequences that are "theoretically optimized" but "biologically non-functional."
+                        <br>&emsp;&emsp;In the adversarial process between the generator and discriminator of the UTRGAN model, the generator tends to produce sequences with high GC content to simulate the stability characteristics of natural 5’-UTRs, thereby avoiding detection by the discriminator. Although this mechanism improves the sequences’ performance in terms of structural stability, it may also sacrifice other functional properties due to overemphasizing local features (e.g., GC enrichment), which impairs the sequences’ applicability in real biological environments.
+                        <br>&emsp;&emsp;Models are typically trained on public datasets (e.g., UTRdb), but such datasets may contain experimental noise or lack contextual information specific to liver cancer cell types. Consequently, sequences generated by the models may perform well in certain cell types, yet exhibit low efficiency in other physiological or pathological environments.
+                </div>
+                </div>
+
+                <!-- 第三个文本框 -->
+                <div id="" class="text-box-container text-box-position-33">
+                <div class="main-text-box b up">
+                    <p>
+                        <span class="text-title">Dr. Zhang Ying</span>
+                        <br>&emsp;&emsp;As a doctor, he is more interested in the administration methods and frequencies of medications, as these factors also affect the efficacy of the drugs.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;Dr. Zhang Ying is the Director of Hepatology Division 6 at Dalian Public Health Clinical Center. We hope his rich clinical experience can provide insights to facilitate the advancement of our drug into clinical practice.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Physicians in clinical practice focus on the processes of drug absorption, distribution, metabolism, and excretion in the human body, as these processes determine the drug’s administration methods and dosages.
+                                                <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-zy.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-zy.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Zhang Ying" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 第四个文本框 -->
+                <div id="" class="text-box-container text-box-position-34">
+                <div class="main-text-box b ri">
+                    <p>
+                        <span class="text-title">Professor Wang Zhong</span>
+                        <br>&emsp;&emsp;He believes our model should have stronger liver cancer-specificity.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is a professor at the School of Software, Dalian University of Technology, engaging in research on biostatistics and bioinformatics.
+                        <br>&emsp;&emsp;We aim to refine our pharmacokinetic model by gaining insights into his perspectives.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;For pharmacokinetic models aimed at clinical guidance, bioinformatics experts pay greater attention to the models’ disease-specificity and applicability.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第五个文本框 -->
+                <div id="" class="text-box-container text-box-position-35">
+                <div class="main-text-box b ri">
+                    <p>
+                        <span class="text-title">Professor Chu Yanshuo</span>
+                        <br>&emsp;&emsp;He believes the model's results should be characterized by readability and presentability.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                                                <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-chuys.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/china-dut-chuys.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Chu Yanshuo" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;He is a professor at the School of Life Sciences, Harbin Institute of Technology, engaging in research in the field of tumor digital twin.We aim to further refine our pharmacokinetic model by gaining insights into his perspectives.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;Bioinformaticians believe that the visualization of results helps promote the further application of the model; to this end, we have visually organized the results.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第六个文本框 -->
+                <div id="" class="text-box-container text-box-position-36">
+                <div class="main-text-box y ri">
+                    <p>
+                        <span class="text-title">To enhance protein translation efficiency, we have decided to adopt a deep learning approach to optimize the 5’-UTR.</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        <br>&emsp;&emsp;We compared the performance of multiple models, decided to use GAN for sequence design<span class="ref-mark">[14]</span>, followed by screening and optimization using Insight<span class="ref-mark">[15]</span>, and the first batch of output 5’-UTR sequences were submitted to wet experimental verification.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第七个文本框 -->
+                <div id="" class="text-box-container text-box-position-37">
+                <div class="main-text-box y le">
+                    <p>
+                        <span class="text-title">Building an Automated Pipeline</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;We speculate that this is due to the lack of pretraining. However, the original dataset does not support the training of the fusion model, so we have decided to shift our strategy: design an automated workflow to enable the parallel operation of the two models, which also reduces modifications to the original models.
+                </div>
+                </div>
+
+                <!-- 第八个文本框 -->
+                <div id="" class="text-box-container text-box-position-38">
+                <div class="main-text-box y do">
+                    <p>
+                        <span class="text-title">We attempted to eliminate interference from environmental variations on the results through model fusion. </span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        <br>&emsp;&emsp;This produced a fused model capable of sequence design and optimization, and the resulting second batch of 5'-UTR sequences was submitted for wet lab validation.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第九个文本框 -->
+                <div id="" class="text-box-container text-box-position-39">
+                <div class="main-text-box y ri">
+                    <p>
+                        &emsp;&emsp;Wet experiments showed that the protein expression level was not ideal, and the translation efficiency of the first batch of sequences was not high.
+                    </p>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第十个文本框 -->
+                <div id="" class="text-box-container text-box-position-310">
+                <div class="main-text-box g ri">
+                    <p>
+                        &emsp;&emsp;The first round of model validation has been completed, and we begin the first round of model iteration.
+                    </p>
+                    <div class="button1" style="background-color: #8db6ca;"></div>
+                </div>
+                </div>
+                
+                
+                <div id="" class="text-box-container text-box-position-311">
+                <div class="main-text-box y le">
+                    <p>
+                        &emsp;&emsp;The results of the wet experiment are still not ideal.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div >
+                    <div class="expanded-text-box y">
+                    <p>
+                        <br>&emsp;&emsp;Wet experimental data show that the protein expression efficiency of the UTR sequences generated after model optimization has increased compared with the sequences from the previous two batches.
+                    </p>
+                </div>
+                </div>
+
+
+
+                <!-- 第二个文本框 -->
+                <div id="" class="text-box-container text-box-position-312">
+                <div class="main-text-box g le">
+                    <p>
+                        &emsp;&emsp;The second round of model validation has been completed, and we begin the second round of model iteration.
+                    </p>
+                    <div class="button1" style="background-color: #8db6ca;"></div>
+                </div>
+                </div>
+
+                <!-- 第三个文本框 -->
+                <div id="" class="text-box-container text-box-position-313">
+                <div class="main-text-box g le">
+                    <p>
+                        <span class="text-title">Develop an effective UTR optimization model</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box g">
+                    <p>
+                        <span class="text-title2">The results of the wet experiment are ideal</span>
+                        <br>&emsp;&emsp;Wet experimental data show that the protein expression efficiency of the UTR sequences generated after model optimization has increased compared with the sequences from the previous two batches.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第四个文本框 -->
+                <div id="" class="text-box-container text-box-position-314">
+                <div class="main-text-box y do">
+                    <p>
+                        &emsp;&emsp;We have decided to develop a pharmacokinetic model to support clinical translation by predicting the drug's distribution and changes in its concentration<span class="ref-mark">[16]</span><span class="ref-mark">[17]</span>.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;We plan to perform quantification and spatial modeling for the hypoxic microenvironment of liver cancer, develop a pharmacokinetic model that integrates the hypoxic spatial model and mRNA characteristic parameters<span class="ref-mark">[18]</span>, and simulate the dynamic distribution and metabolic processes of the drug within the tumor.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第五个文本框 -->
+                <div id="" class="text-box-container text-box-position-315">
+                <div class="main-text-box y ri">
+                    <p>
+                        &emsp;&emsp;During the model development process，We incorporated liver cancer-specific parameters and assumptions.
+                    </p>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第六个文本框 -->
+                <div id="" class="text-box-container text-box-position-316">
+                <div class="main-text-box y do">
+                    <p>
+                        &emsp;&emsp;Through visual integration, we have intuitively presented the full-process results of pharmacokinetics.
+                    </p>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第七个文本框 -->
+                <div id="" class="text-box-container text-box-position-317">
+                <div class="main-text-box g up">
+                    <p>
+                        &emsp;&emsp;We have developed a complete pharmacokinetic model.
+                    </p>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第八个文本框 -->
+                <div id="" class="text-box-container text-box-position-318">
+                <div class="main-text-box b le">
+                    <p>
+                        Dr. Zhang Ying.
+                        <br>&emsp;&emsp;He primarily acknowledged the efficacy of our drug based on the half-life predicted by our model and commended the model's role in guiding dosing.
+                    </p>
+                    <div class="button1s" ></div>
+                </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- Stage 5 部分 -->
+        <section id="stage5" class="section"style="z-index: 1005;">
+            <div class="blue-div"><div class="centered-div" style="z-index: 1005;"><img src="https://static.igem.wiki/teams/5844/pages/ihp/dut-china-d05.webp" alt="stage5" style="z-index: 1006;"></div></div>
+            <div id="stage5-content" class="section-content" >
+                <div class="image-container" style="position: absolute; top: 32%; left: 50%; background: none; border: none; display: inline-block; box-shadow: none;">
+                    <img src="https://static.igem.wiki/teams/5844/pages/ihp/postcard.avif" alt="示例图片" style="width: 100%; height: auto; display: block;">
+                </div>
+
+                <div class="image-container" style="position: absolute; top: 61%; left: 2%; background: none; border: none; display: inline-block; box-shadow: none;">
+                    <img src="https://static.igem.wiki/teams/5844/mascot/dut-china-mascot-9.webp" alt="示例图片" style="width: 30%; height: auto; display: block;">
+                </div>
+                <!-- 第一个文本框 -->
+                <div id="" class="text-box-container text-box-position-41">
+                <div class="main-text-box b do">
+                    <p><span class="text-title">Professor Zhang Hui, Department of Philosophy, Dalian University of Technology</span>
+                        <br>&emsp;&emsp;She suggested that the right of patients to informed consent during the process should be ensured, and the relevant information should be presented in a way that is as accessible as possible.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <a 
+                            href="https://static.igem.wiki/teams/5844/pages/ihp/people/dut-china-zh.webp" 
+                            style="
+                                /* 父容器样式：实现居中 + 控制图片最大显示范围 */
+                                display: block;        /* 将a标签转为块级元素，便于居中 */
+                                margin: 0 auto;        /* 水平居中（上下边距可根据需求调整） */
+                                box-sizing: border-box;
+                                padding: 0 10% 3% 10%;
+                            "
+                            >
+                            <img 
+                                src="https://static.igem.wiki/teams/5844/pages/ihp/people/dut-china-zh.webp" 
+                                alt="iGEM Team 5844 (China DUT) IHP People Zhang Hui" 
+                                style="
+                                        width: 100%;
+                                        height: auto;
+                                        max-width: 100%;
+                                        object-fit: contain;
+                                        border: 3px solid #6B46C1;
+                                        border-radius: 20px;
+                                        box-shadow: 0 0 30px rgba(107, 70, 193, 0.5),    /* 发光效果 */
+                                                    0 10px 40px rgba(107, 70, 193, 0.3),  /* 扩散阴影 */
+                                                    inset 0 0 10px rgba(107, 70, 193, 0.1); /* 内阴影 */
+                                    "
+                            >
+                        </a>
+                        <span class="text-title2">Who is she?</span>
+                        <br>&emsp;&emsp;She is a Professor of the Department of Philosophy, Dalian University of Technology, with research focuses on the ethics of science and technology, the methodology of scientific and technological innovation, and the ethics of synthetic biology in Europe and America.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;When interacting with the public (as stakeholders), we need to pay close attention to their willingness to listen, and use more accessible language to help the public understand the potential risks and benefits they may face as comprehensively as possible. Additionally, the technology of innovative mRNA drugs is complex, which may result in a relatively high cognitive threshold for the public. Therefore, it is suggested that the right of patients to informed consent during the process should be ensured.
+                        <br>&emsp;&emsp;Team Reflection: As iGEMers , we advocate the spirit of open science and humanistic care. Our team should establish a more transparent, inclusive, and sustainable communication mechanism, and present the project in a more user-friendly way to obtain effective feedback from the public.
+                    </p>
+                </div>
+                </div>
+
+
+                <!-- 第二个文本框 -->
+                <div id="" class="text-box-container text-box-position-42">
+                <div class="main-text-box b ri">
+                    <p><span class="text-title">Wang Shaoquan, Division Chief of Shenyang Food and Drug Administration.</span>
+                        <br>&emsp;&emsp;From the perspective of drug regulation, to accelerate drug access to the medical insurance system, it is essential to enhance evidence generation throughout the drug's lifecycle, ensuring that drug approval aligns more closely with real-world clinical needs.
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box b">
+                    <p>
+                        <span class="text-title2">Who is he?</span>
+                        <br>&emsp;&emsp;Division Chief of Shenyang Food and Drug Administration.
+                        <br><span class="text-title2">What have we learned?</span>
+                        <br>&emsp;&emsp;From the perspective of drug regulation, to accelerate the drug's access to the medical insurance system, we must start by strengthening evidence generation throughout the drug's entire lifecycle, so that drug access aligns more closely with actual clinical needs.
+                        <br>&emsp;&emsp;Meanwhile, Division Chief Wang also provided us with extensive information on the market access requirements and regulatory requirements for mRNA drugs to enter the market, as well as key policy-related issues that we may need to consider during the drug rollout phase. This has provided strong support and a clear direction for our subsequent drug rollout efforts.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第三个文本框 -->
+                <div id="" class="text-box-container text-box-position-43">
+                <div class="main-text-box y le">
+                    <p>
+                        <span class="text-title">&emsp;&emsp;The public hopes for affordable pricing and insurance coverage.</span>
+                    </p>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第四个文本框 -->
+                <div id="" class="text-box-container text-box-position-44">
+                <div class="main-text-box y ri">
+                    <p>
+                        <span class="text-title">Morality in Social Interaction.</span>
+                        <br>&emsp;&emsp;During the process of advancing the implementation of mRNA-based precision medicine for liver cancer, we have found that the successful translation of any innovative therapeutic approach depends not only on the advanced nature of the technology itself, but also on whether it truly responds to the actual needs of the public.
+                    </p>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第五个文本框 -->
+                <div id="" class="text-box-container text-box-position-45">
+                <div class="main-text-box y up">
+                    <span class="text-title">Establish sustained two-way public communication.</span>
+                    <br>
+                    <span style="color: #000000; font-size: 1.8vh;">
+                    Learn more about our public engagement. Click 
+                    <a href="https://2025.igem.wiki/DUT-China/public_communication" style="color: #6B46C1; text-decoration: underline;">here</a>.
+                    </span>
+                    <div class="button1" ></div>
+                </div>
+                </div>
+
+                <!-- 第六个文本框 -->
+                <div id="" class="text-box-container text-box-position-46">
+                <div class="main-text-box y do">
+                    <p>
+                        <span class="text-title">Proactively analyze costs to address the public’s concerns about pricing.</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;Surveys conducted through public engagement activities have revealed significant concern about potential unaffordability of the treatment. In response to these pricing concerns, and as the developer of this novel therapeutic, we have estimated a production cost of $3 per 100μg for the mRNA drug, based on data from commercialized mRNA vaccines.
+                        <br>&emsp;&emsp;When compared with CAR-T therapy, another innovative treatment with a market price of approximately $150,000 per dose, our mRNA drug is projected to be substantially more affordable. We anticipate it will achieve broad price accessibility upon market entry in subsequent phases.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第七个文本框 -->
+                <div id="" class="text-box-container text-box-position-47">
+                <div class="main-text-box y up">
+                    <p>
+                        <span class="text-title">Explore the possibility of including the drug in medical insurance.</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;Through multiple public surveys and communication activities, we have found that the public has a widespread concern about whether innovative drugs can be included in medical insurance. They worry that delayed updates to the medical insurance catalog will result in these drugs failing to be included in the reimbursement scope for a long time, forcing patients to bear the high costs entirely at their own expense and imposing a heavier financial burden on their families. We aim to address issues related to medical insurance as much as possible to alleviate the public’s burden of medication costs.
+                    </p>
+                </div>
+                </div>
+
+                <!-- 第八个文本框 -->
+                <div id="" class="text-box-container text-box-position-48">
+                <div class="main-text-box y ri">
+                    <p>
+                        <span class="text-title">Clarify specific implementation directions.</span>
+                    </p>
+                    <div class="expand-dot" onclick="toggleExpand(this)"></div>
+                </div>
+                <div class="expanded-text-box y">
+                    <p>
+                        &emsp;&emsp;Division Chief Wang has pointed out the implementation path for us. In the future, we will also refer to the opinions of Division Chief Wang, strengthen the clinical verification of mRNA liver cancer drug therapy, and proactively communicate with the Medical Insurance Bureau to facilitate the possibility of its inclusion in medical insurance.
+                    </p>
+                </div>
+                </div>
+
+
+            </div>
+        </section>
+
+
+        <div class="section" id="references">
+        <div class="section-title-container">
+            <h1 class="ihp-title" style="font-size: 33px;">References</h1>
+        </div>
+        
+        <div id="references-content" class="section-content">
+            <div class="references-container">
+                <ol class="references-list">
+                    <li class="reference-item">
+                        Global burden of primary liver cancer in 2020 and predictions to 2040. <em>Journal of Hepatology</em>, 77(6), 1598-1606.
+                    </li>
+                    
+                    <li class="reference-item">
+                        Cancer incidence and mortality in China, 2022.
+                    </li>
+                    
+                    <li class="reference-item">
+                        Changing epidemiology of hepatocellular carcinoma in Asia. <em>Liver International</em>, 42(9), 2029-2041.
+                    </li>
+                    
+                    <li class="reference-item">
+                        Advances in targeting 'undruggable' transcription factors with small molecules. <em>Nature Reviews Drug Discovery</em>, 20, 669–688 (2021).
+                    </li>
+                    
+                    <li class="reference-item">
+                        The Role of TGF-β/SMAD Signaling in Hepatocellular Carcinoma: from Mechanism to Therapy and Prognosis. <em>International Journal of Biological Sciences</em>, 20(4), 1436-1451.
+                    </li>
+                    
+                    <li class="reference-item">
+                        Codelivery of TGFβ and Cox2 siRNA inhibits HCC by promoting T-cell penetration into the tumor and improves response to Immune Checkpoint Inhibitors. <em>NAR Cancer</em>, 6(1), zcad059 (2024).
+                    </li>
+                    
+                    <li class="reference-item">
+                        Hepatocyte nuclear factor 4α and cancer-related cell signaling pathways: a promising insight into cancer treatment. <em>Experimental & Molecular Medicine</em>, 53(1), 8-18 (2021).
+                    </li>
+                    
+                    <li class="reference-item">
+                        Gelation of cytoplasmic expanded CAG RNA repeats suppresses global protein synthesis. <em>Nature Chemical Biology</em>, 19, 1372–1383 (2023).
+                    </li>
+                    
+                    <li class="reference-item">
+                        MicroRNA-21 as a diagnostic marker for hepatocellular carcinoma: A systematic review and meta-analysis. <em>Pakistan Journal of Medical Sciences</em>, 35(5), 1466-1471 (2019).
+                    </li>
+                    
+                    <li class="reference-item">
+                        Significance of serum microRNA-21 in diagnosis of hepatocellular carcinoma (HCC): clinical analyses of patients and an HCC rat model. <em>International Journal of Clinical and Experimental Pathology</em>, 8(2), 1466-78 (2015).
+                    </li>
+                    
+                    <li class="reference-item">
+                        MicroRNA-21 promotes cell transformation by targeting the programmed cell death 4 gene. <em>Oncogene</em>, 27(31), 4373-9 (2008).
+                    </li>
+                    
+                    <li class="reference-item">
+                        Why Do Lipid Nanoparticles Target the Liver? Understanding of Biodistribution and Liver-Specific Tropism. <em>Molecular Therapy - Methods & Clinical Development</em>, 33(1), 101436 (2025).
+                    </li>
+                    
+                    <li class="reference-item">
+                        Delivery of therapeutic RNA by extracellular vesicles derived from Saccharomyces cerevisiae for medicine applications (2024).
+                    </li>
+                    
+                    <li class="reference-item">
+                        UTR-Insight: integrating deep learning for efficient 5' UTR discovery and design. <em>BMC Genomics</em>, 26(1), 107 (2025).
+                    </li>
+                    
+                    <li class="reference-item">
+                        UTRGAN: learning to generate 5' UTR sequences for optimized translation efficiency and gene expression. <em>Bioinformatics Advances</em>, 5(1), vbaf134 (2025).
+                    </li>
+                    
+                    <li class="reference-item">
+                        Induction of HIV-1 Gag Specific Immune Responses by Cationic Micelles Mediated Delivery of Gag mRNA. <em>Journal of Controlled Release</em>, 172, 169–176 (2013).
+                    </li>
+                    
+                    <li class="reference-item">
+                        mRNA vaccines — a new era in vaccinology. <em>Nature Reviews Drug Discovery</em>, 17, 261–279 (2018).
+                    </li>
+                    
+                    <li class="reference-item">
+                        Step-by-step comparison of ordinary differential equation and agent-based approaches to pharmacokinetic-pharmacodynamic models. <em>CPT: Pharmacometrics & Systems Pharmacology</em>, 11(2), 133-148 (2021).
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+
+
+
+        <!-- 其他 Stage 部分保持不变... -->
+        
+
+        <section class="section" id="stage6">
+        <div class="section-title-container">
+            <h2 class="section-title"><span class="stage-number">Epilogue</span></h2>
+        </div>
+        
+        <div id="stage6-content" class="section-content">
+            <div class="epilogue-container">
+                <div class="epilogue-quote">"We're building a HOME."</div>
+                
+                <div class="epilogue-section">
+                    <p class="epilogue-text">
+                        After all the conversations, the reflections, the iteration, we all understand more deeply:
+                        What we need to do is not to control our technology, but to integrate our values into the development process and create a truly human-centered project.
+                    </p>
+                    <p class="epilogue-text">
+                        So everything you see is the HOME that we built from the foundation.
+                    </p>
+                </div>
+                
+                <div class="epilogue-section">
+                    <p class="epilogue-text">
+                        Through repeated interactions with stakeholders, we refine the blueprint of this HOME, integrating the human-centered belief into every biobrick.
+                    </p>
+                    <div class="epilogue-list">
+                        <div class="epilogue-list-item">We listen, so we start from concerns and precisely anchor the responsibilities, missions, and specific issues to be addressed as iGEMers.</div>
+                        <div class="epilogue-list-item">We feel, so we incorporate core concerns into project design.</div>
+                        <div class="epilogue-list-item">We understand, so we produce responsible synthetic biology solutions.</div>
+                    </div>
+                </div>
+                
+                <div class="epilogue-highlight">
+                    We proposed and designed the iHP cycle of CARE, highlighting the design concept, which is universal and can serve as a reference for other iGEM teams.
+                    Here, you can see how we closely interacted and collaborated with other parts, achieving project iteration and enhancement through team coordination.
+                </div>
+                
+                <div class="epilogue-section">
+                    <p class="epilogue-text">
+                        Through communication with other teams, we have received diverse suggestions and perspectives.
+                        We have absorbed the essence of these ideas and integrated them into our synthetic biology solutions.
+                    </p>
+                </div>
+                
+                <div class="epilogue-finale">
+                    <p class="epilogue-finale-text">
+                        We hope that people can walk into this HOME we have built.<br>
+                        But what we hope even more is that although diseases drive people away from home, our solution will help more people regain health and happiness,<br>
+                        and then:
+                    </p>
+                    <span class="epilogue-finale-emphasis">Return to their own HOME. (R-HOME)</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+</div>
+
+<script>
+    // 导航高亮功能
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('.section');
+        const navItems = document.querySelectorAll('.nav-list li');
+        
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (window.scrollY >= (sectionTop - 200)) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            const link = item.querySelector('a');
+            if (link.getAttribute('href') === `#${current}`) {
+                item.classList.add('active');
+            }
+        });
+    });
+    
+    // 平滑滚动
+    document.querySelectorAll('.nav-list a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    // 展开/收起功能
+    function toggleExpand(dotElement) {
+        // 找到当前点击的圆点所属的容器
+        const container = dotElement.closest('.text-box-container');
+        const mainBox = container.querySelector('.main-text-box');
+        const expandedContent = container.querySelector('.expanded-text-box');
+        
+        // 找到当前文本框所属的舞台 (特定 section)
+        const stage = container.closest('.section');
+        
+        // 收起其他已展开的文本框（如果有）
+        stage.querySelectorAll('.expanded-text-box.active').forEach(expanded => {
+            if (expanded !== expandedContent) { // 本文本框除外
+                expanded.classList.remove('active');
+                expanded.previousElementSibling.querySelector('.expand-dot').classList.remove('active');
+            }
+        });
+
+        // 切换当前文本框的展开状态
+        dotElement.classList.toggle('active');
+        expandedContent.classList.toggle('active');
+        
+        // 确保展开框与主框颜色同步
+        if (mainBox.classList.contains('y')) {
+            expandedContent.classList.add('y');
+            expandedContent.classList.remove('b');
+        } else if (mainBox.classList.contains('b')) {
+            expandedContent.classList.add('b');
+            expandedContent.classList.remove('y');
+        }
+    }
+</script>
+
+{% endblock %}

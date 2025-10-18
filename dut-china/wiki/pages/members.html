@@ -1,0 +1,493 @@
+{% extends "layout.html" %}
+
+{% block title %}Meet Our Team{% endblock %}
+{% block lead %}
+  <div class="lead-img-container" style="padding: 2% 0 0 0 !important">
+    <img src="https://static.igem.wiki/teams/5844/lead/member1.webp" class="lead-fullpage-img" alt="iGEM lead-img">
+  </div>
+{% endblock %}
+
+{% block page_content %}
+    <style>
+      
+        /* 团队展示容器样式 */
+        .team-container {
+            position: relative;
+            width: 100%;
+            overflow-x: hidden; /* 禁止横向滚动 */
+            overflow-y: hidden; /*禁止纵向滚动 */
+        }
+        
+        /* 大图容器 */
+        .team-image {
+            width: 100%;
+            position: relative;
+            margin-bottom: -24vh;
+        }
+        
+        /* 大图样式 */
+        .team-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        /* 文字内容容器 */
+        .image-text {
+            padding: 5% 10%;
+            box-sizing: border-box;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 标题文字样式 */
+        .main-title {
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #6B46C1;
+        }
+        
+        /* 副标题样式 */
+        .subtitle {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: #000000cc;
+            text-align: left;
+        }
+        
+        /* 描述文字样式 */
+        .description {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #444;
+            max-width: 1200px;
+        }
+        
+        /* 新增提示文字样式 */
+        .info-prompt {
+            font-size: 1.6rem;
+            color: #0d47a1; /* 深蓝色 */
+            text-align: center;
+            margin-top: 1rem;
+        }
+      
+        /* 小图容器通用样式 - 相对于大图定位 */
+        .small-image-container {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            cursor: pointer;
+            z-index: 10; /* 确保小图在文字上方显示 */
+        }
+        
+        /* 小图样式 */
+        .small-image-container .overlay-image {
+            width: 85.8%;
+            object-fit: cover;
+            /* 使用clip-path实现从下往上显示的效果 */
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 0.6s ease-out;
+        }
+        
+        /* 鼠标悬停时小图内容由下往上渐显 */
+        .small-image-container:hover .overlay-image {
+            clip-path: inset(0 0 0 0);
+        }
+        
+        /* 各个小图的位置设置 - 相对于大图定位 */
+        /* 第1行 */
+        .member1 { top: 12.394%; left: 27.86%; }
+        .member2 { top: 12.394%; left: 38.58%; }
+        .member3 { top: 12.394%; left: 71.65%; }
+        
+        /* 第2行（+5%） */
+        .member4 { top: 17.36%; left: 27.86%; }
+        .member5 { top: 17.36%; left: 38.58%; }
+        .member6 { top: 17.36%; left: 71.65%; }
+        
+        /* 第3行（+5%） */
+        .member7 { top: 22.394%; left: 27.86%; }
+        .member8 { top: 22.394%; left: 38.58%; }
+        .member9 { top: 22.394%; left: 71.65%; }
+        
+        /* 第4行（+5%） */
+        .member10 { top: 27.394%; left: 27.86%; }
+        .member11 { top: 27.394%; left: 38.58%; }
+        .member12 { top: 27.394%; left: 71.65%; }
+        
+        /* 第5行（+5%） */
+        .member13 { top: 32.4197%; left: 27.86%; }
+        .member14 { top: 32.4197%; left: 38.58%; }
+        .member15 { top: 32.4197%; left: 71.65%; }
+        
+        /* 第6行（+5%） */
+        .member16 { top: 37.3742%; left: 27.86%; }
+        .member17 { top: 37.3742%; left: 38.58%; }
+        .member18 { top: 37.3742%; left: 71.65%; }
+        
+        /* 第7行（+5%） */
+        .member19 { top: 42.394%; left: 27.86%; }
+        .member20 { top: 42.394%; left: 38.58%; }
+        .member21 { top: 42.394%; left: 71.65%; }
+        
+        /* 第8行（+5%） */
+        .member22 { top: 47.373%; left: 27.86%; }
+        .member23 { top: 47.373%; left: 38.58%; }
+        .member24 { top: 47.373%; left: 71.65%; }
+        
+        /* 第9行（+5%） */
+        .member25 { top: 52.54%; left: 27.86%; }
+        .member26 { top: 52.54%; left: 38.58%; }
+        
+        /* 第10行（+5%） */
+        .member28 { top: 57.448%; left: 27.86%; }
+        .member29 { top: 57.448%; left: 38.58%; }
+        
+        /* 第11行（+5%） */
+        .member31 { top: 62.432%; left: 27.86%; }
+        .member32 { top: 62.432%; left: 38.58%; }
+        
+        /* 第12行（+5%） */
+        .member34 { top: 67.537%; left: 27.86%; }
+        .member35 { top: 67.537%; left: 38.58%; }
+        .member36 { top: 67.537%; left: 71.65%; }
+        
+        /* 第13行（+5%） */
+        .member37 { top: 72.47%; left: 27.86%; }
+        .member38 { top: 72.47%; left: 38.58%; }
+        .member39 { top: 72.47%; left: 71.65%; }
+        
+        /* 第14行（+5%） */
+        .member40 { top: 77.558%; left: 27.86%; }
+        .member41 { top: 77.558%; left: 38.58%; }
+        
+        /* 点击弹出的文本框（模态框）样式 */
+        .member-modal {
+            display: none; /* 默认隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* 半透明遮罩 */
+            z-index: 100; /* 确保在最上层 */
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+        .modal-name {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .modal-group {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #6B46C1;
+            margin-bottom: 15px;
+        }
+        .modal-motto {
+            font-size: 1.2rem;
+            color: #444;
+            line-height: 1.6;
+        }
+        .close-modal {
+            margin-top: 20px;
+            padding: 8px 24px;
+            background: #6B46C1;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        .close-modal:hover {
+            background: #553C9A;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            .description {
+                font-size: 1rem;
+            }
+            .info-prompt {
+                font-size: 1rem;
+            }
+            .small-image-container {
+                width: 120px;
+                height: 120px;
+            }
+            .modal-name {
+                font-size: 1.7rem;
+            }
+            .modal-group {
+                font-size: 1.5rem;
+            }
+            .modal-motto {
+                font-size: 1rem;
+            }
+        }
+    </style>
+
+
+<div class="team-container">
+    <!-- 文字内容 - 位于图片上方 -->
+    <div class="image-text">
+        <h2 class="main-title" style="text-shadow : none;">The Heart of Our Project</h2>
+        <p class="subtitle">Hello, we are the iGEM Team DUT-China</p>
+        <p class="description">Our team name "R-Home" blends "RNA" with the concept of "Home." "R" represents the mRNA platform we create while Home embodies warmth, protection, and belonging. Just as RNA guides protein synthesis, we strive to build a team as dependable as a home—where innovative ideas take root, and our ideas safeguards the health and hope of every family.</p>
+        <p class="info-prompt">Click to see more information about members</p>
+    </div>
+
+    <!-- 大图容器 -->
+    <div class="team-image">
+        <img src="https://static.igem.wiki/teams/5844/member/building2.webp" alt="building">
+        
+        <!-- 团队成员小图容器 -->
+        <!-- 第1行 -->
+        <div class="small-image-container member1" data-name="Mingkai Li" data-group="Student Leader" data-motto="Tremble before your programmed apoptosis.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/li-mingkai.webp" alt="Mingkai Li">
+        </div>
+        <div class="small-image-container member2" data-name="Bowen Yang" data-group="Wiki" data-motto="The heaven revolves ceaselessly; a gentleman should strive for self-improvement unremittingly.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/yang-bowen.webp" alt="Bowen Yang">
+        </div>
+        <div class="small-image-container member3" data-name="Chenxu Zha" data-group="Hardware" data-motto="It never rains but it pours.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/zha-chenxu.webp" alt="Chenxu Zha">
+        </div>
+        
+        <!-- 第2行 -->
+        <div class="small-image-container member4" data-name="Alhoussainy Diallo" data-group="HP" data-motto="I don’t just want to understand the world 🌍. I want to connect its meanings, from molecules to minds.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/diallo.webp" alt="Alhoussainy Diallo">
+        </div>
+        <div class="small-image-container member5" data-name="Haolin Zhan" data-group="Wet Lab" data-motto="Precision is the difference between a butcher and a surgeon.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/zhan-haolin.webp" alt="Haolin Zhan">
+        </div>
+        <div class="small-image-container member6" data-name="Jingyu Xia" data-group="Dry Lab" data-motto="At four in the early morning, I see the crabapples still awake!">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/xia-jingyu.webp" alt="Jingyu Xia">
+        </div>
+        
+        <!-- 第3行 -->
+        <div class="small-image-container member7" data-name="Dawei Kang" data-group="Wet Lab" data-motto="Rise, my servants. Rise and serve me.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/kang-dawei.webp" alt="kang-dawei">
+        </div>
+        <div class="small-image-container member8" data-name="KongYuting" data-group="Art" data-motto="Sleep well.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/kong-yuting.webp" alt="KongYuting">
+        </div>
+        <div class="small-image-container member9" data-name="Luyao Wang" data-group="HP" data-motto="Brave to the end.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/wang-luyao.webp" alt="Luyao Wang">
+        </div>
+        
+        <!-- 第4行 -->
+        <div class="small-image-container member10" data-name="Qingxin Hu" data-group="HP" data-motto="Through adversity to the stars.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/hu-qingxin.webp" alt="Qingxin Hu">
+        </div>
+        <div class="small-image-container member11" data-name="Ruiqi Tian" data-group="Wet Lab" data-motto="Don't forget,we all came from there.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/tian-ruiqi.webp" alt="Ruiqi Tian">
+        </div>
+        <div class="small-image-container member12" data-name="Rui Wang" data-group="Dry Lab" data-motto="It's in the process of development, which is why it's out of tune.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/wang-rui.webp" alt="Rui Wang">
+        </div>
+        
+        <!-- 第5行 -->
+        <div class="small-image-container member13" data-name="Ruizhe Wu" data-group="HP" data-motto="Be the change that you want to see in the world.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/wu-ruizhe.webp" alt="Ruizhe Wu">
+        </div>
+        <div class="small-image-container member14" data-name="Tao Zhu" data-group="HP" data-motto="Trying to be better.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/zhu-tao.webp" alt="Tao Zhu">
+        </div>
+        <div class="small-image-container member15" data-name="Wenyu Yao" data-group="HP" data-motto="Own the moment.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/yao-wenyu.webp" alt="Wenyu Yao">
+        </div>
+        
+        <!-- 第6行 -->
+        <div class="small-image-container member16" data-name="Xiangcheng Cui" data-group="Wiki" data-motto="Follow your heart; find the light ☀️.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/cui-xiangcheng.webp" alt="Xiangcheng Cui">
+        </div>
+        <div class="small-image-container member17" data-name="Yang Lu" data-group="Dry Lab" data-motto="If forever last still now.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/lu-yang.webp" alt="Yang Lu">
+        </div>
+        <div class="small-image-container member18" data-name="Yihan Xu" data-group="Dry Lab" data-motto="It is not the stars to hold our destiny but in ourselves">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/xu-yihan.webp" alt="Yihan Xu">
+        </div>
+        
+        <!-- 第7行 -->
+        <div class="small-image-container member19" data-name="Yuhan Wang" data-group="Dry Lab" data-motto="Get busy living，or get busy dying.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/wang-yuhan.webp" alt="Yuhan Wang">
+        </div>
+        <div class="small-image-container member20" data-name="Yuqi Jiang" data-group="Wet Lab" data-motto="I was fully involved in the experiment — exhausting yet fulfilling.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/jiang-yuqi.webp" alt="Yuqi Jiang">
+        </div>
+        <div class="small-image-container member21" data-name="Yushan Wang" data-group="Art" data-motto="Don't give up on your dream.Keep sleeping.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/wang-yushan.webp" alt="Yushan Wang">
+        </div>
+        
+        <!-- 第8行 -->
+        <div class="small-image-container member22" data-name="Yuying Li" data-group="Wet Lab" data-motto="At the end of all burdens and sufferings lies this life, flowing with the serene grace of clouds and streams.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/li-yuying.webp" alt="Yuying Li">
+        </div>
+        <div class="small-image-container member23" data-name="Zihan Zheng" data-group="Dry Lab" data-motto="Coding brings me to tears. Good thing they make great coffee for me.">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/zheng-zihan.webp" alt="Zihan Zheng">
+        </div>
+        <div class="small-image-container member24" data-name="Zixuan Lin" data-group="Dry Lab" data-motto="Hakuna Matata!">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/lin-zixuan.webp" alt="Zixuan Lin">
+        </div>
+        
+        <!-- 第9行 -->
+        <div class="small-image-container member25" data-name="Jun Yang" data-group="Primary PI" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/yang-jun.webp" alt="Jun Yang">
+            <!-- 可爱的表情包~ https://static.igem.wiki/teams/5844/easter-egg/.avif ~创新在大工 -->
+        </div>
+        <div class="small-image-container member26" data-name="Jiaqi Lin" data-group="Primary PI" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/lin-jiaqi.webp" alt="Jiaqi Lin">
+        </div>
+        
+        <!-- 第10行 -->
+        <div class="small-image-container member28" data-name="Du shubo" data-group="Secondary PI" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/du-shubo.webp" alt="Du shubo">
+        </div>
+        <div class="small-image-container member29" data-name="Lihan Zi" data-group="Secondary PI" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/zi-lihan.webp" alt="Lihan Zi">
+        </div>
+        
+        <!-- 第11行 -->
+        <div class="small-image-container member31" data-name="Yaming Cao" data-group="Instructor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/cao-yaming.webp" alt="Yaming Cao">
+        </div>
+        <div class="small-image-container member32" data-name="Yujing zhao" data-group="Instructor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/zhao-yujing.webp" alt="Yujing zhao">
+        </div>
+        
+        <!-- 第12行 -->
+        <div class="small-image-container member34" data-name="Jiangang Ren" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/ren-jiangang.webp" alt="Jiangang Ren">
+        </div>
+        <div class="small-image-container member35" data-name="JiaYang Zhang" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/zhang-jiayang.webp" alt="JiaYang Zhang">
+        </div>
+        <div class="small-image-container member36" data-name="Liming Ma" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/ma-liming.webp" alt="Liming Ma">
+        </div>
+        
+        <!-- 第13行 -->
+        <div class="small-image-container member37" data-name="Shengshuo Guo" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/guo-shengshuo.webp" alt="Shengshuo Guo">
+        </div>
+        <div class="small-image-container member38" data-name="Siheng Cheng" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/cheng-siheng.webp" alt="Siheng Cheng">
+        </div>
+        <div class="small-image-container member39" data-name="Xinghuan Ma" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/ma-xinghuan.webp" alt="Xinghuan Ma">
+        </div>
+        
+        <!-- 第14行 -->
+        <div class="small-image-container member40" data-name="Yi Jin" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/jin-yi.webp" alt="Yi Jin">
+        </div>
+        <div class="small-image-container member41" data-name="Ying Li" data-group="Advisor" data-motto="">
+            <img class="overlay-image" src="https://static.igem.wiki/teams/5844/member/li-ying.webp" alt="Ying Li">
+        </div>
+    </div>
+</div>
+
+<!-- 点击弹出的文本框（模态框） -->
+<div class="member-modal" id="memberModal">
+    <div class="modal-content">
+        <div class="modal-name" id="modalName"></div>
+        <div class="modal-group" id="modalGroup"></div>
+        <div class="modal-motto" id="modalMotto"></div>
+        <button class="close-modal" id="closeModal">Close</button>
+    </div>
+</div>
+
+<script>
+    // DOM加载完成后执行
+    document.addEventListener('DOMContentLoaded', function() {
+        // 1. 移动端触摸事件（保留原有效果）
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            let touchTimeout;
+            const containers = document.querySelectorAll('.small-image-container');
+            
+            containers.forEach(container => {
+                container.addEventListener('touchstart', function(e) {
+                    e.preventDefault();
+                    const img = this.querySelector('.overlay-image');
+                    img.style.clipPath = 'inset(0 0 0 0)';
+                    
+                    clearTimeout(touchTimeout);
+                    touchTimeout = setTimeout(() => {
+                        img.style.clipPath = 'inset(100% 0 0 0)';
+                    }, 2000);
+                });
+            });
+        }
+
+        // 2. 点击图片弹出模态框功能
+        const modal = document.getElementById('memberModal');
+        const modalName = document.getElementById('modalName');
+        const modalGroup = document.getElementById('modalGroup');
+        const modalMotto = document.getElementById('modalMotto');
+        const closeModal = document.getElementById('closeModal');
+        const memberContainers = document.querySelectorAll('.small-image-container');
+
+        // 给每个成员容器添加点击事件
+        memberContainers.forEach(container => {
+            container.addEventListener('click', function() {
+                // 获取当前成员的名字、组别和格言（从data属性中读取）
+                const name = this.getAttribute('data-name');
+                const group = this.getAttribute('data-group');
+                const motto = this.getAttribute('data-motto');
+                
+                // 填充模态框内容
+                modalName.textContent = name;
+                modalGroup.textContent = group;
+                modalMotto.textContent = motto ? motto : ''; // 无格言时不显示内容
+                modalMotto.style.display = motto ? 'block' : 'none'; // 无格言时隐藏格言容器
+                
+                // 显示模态框
+                modal.style.display = 'flex';
+            });
+        });
+
+        // 关闭模态框（点击关闭按钮）
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // 关闭模态框（点击遮罩层空白处）
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // 键盘ESC关闭模态框
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+
